@@ -8,7 +8,7 @@ library(gradethis)
 .course_id <- "150040"
 .assignment_ids <- list(
   `01-Rithmatic` = "1129571",
-  `02-Atomic` = "1129572",
+  `02-Atomic-Data-Types` = "1129572",
   `03-Rcel1` = "1129577",
   `04-Rcel2` = "1129578"
 )

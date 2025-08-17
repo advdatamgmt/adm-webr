@@ -1,0 +1,682 @@
+---
+title: "Atomic Data Types"
+---
+
+{{< include _static/_shared.qmd >}}
+
+## Exposition
+
+### Introduction
+
+In this exercise we will explore three important atomic data types called
+numeric, logical, and character. We call them *atomic* because they can
+not be broken down into simpler data structures.[^notatomic]
+
+[^notatomic]: Much like we now know that atoms can, in fact, be split into smaller
+subatomic particles, these atomic data types can also be split further, but that
+is far beyond the scope of this course.
+
+Contrast this with *complex* data types that we will learn about in
+later lessons and which are composed by these atomic data types.
+
+### Numeric
+
+You have already met the numeric data type in [Rithmatic](01-Rithmatic.html).
+How do you know? We can just ask R if `1`{.r} is numeric by
+typing and running `is.numeric(1)`{.r}. Try it yourself:
+
+```{webr}
+#| caption: Exercise 1
+#| exercise: e1
+```
+
+::: { .solution exercise="e1" }
+```{webr}
+#| exercise: e1
+#| solution: true
+is.numeric(1)
+```
+:::
+
+```{webr}
+#| exercise: e1
+#| check: true
+gradethis::grade_this_code()
+```
+
+`is.numeric`{.r} is a name that refers to a method or recipe in R, called a *function*, that determines if the value it recieves is a number or not, i.e., is it numeric or not.
+
+Now, try running `is.numeric(2 + 2)`{.r} to see the result.
+
+```{webr}
+#| caption: Exercise 2
+#| exercise: e2
+```
+
+```{webr}
+#| exercise: e2
+#| solution: true
+is.numeric(2 + 2)
+```
+
+```{webr}
+#| exercise: e2
+#| check: true
+gradethis::grade_this_code()
+```
+
+### Logical
+
+I hope you've noticed that R responds `TRUE`{.r} when the value the `is.numeric`{.r} function recieves is indeed numeric.
+
+The value `TRUE`{.r} is a kind of the next atomic data type we will explore, i.e., the logical data type.
+
+`TRUE`{.r} is R's word for "yes." R is case-sensitive, so `TRUE`{.r} is not the same as `true`{.r}, `True`{.r},
+or even `TrUe`{.r}, so be sure to type it carefully.
+R can be very particular about such things.
+
+`TRUE`{.r} is not a numeric value.  How can you find out?
+
+```{webr}
+#| caption: Exercise 3
+#| exercise: e3
+```
+
+```{webr}
+#| exercise: e3
+#| solution: true
+is.numeric(TRUE)
+```
+
+```{webr}
+#| exercise: e3
+#| check: true
+gradethis::grade_this_code()
+```
+
+Instead of `TRUE`{.r}, R responds with `FALSE`{.r}, which is R's word for "no."  `TRUE`{.r} and `FALSE`{.r} are the only two possible values for the logical data type in R.
+
+Can you guess how we test for logical values? Try running `is.logical(FALSE)`{.r}.
+
+```{webr}
+#| caption: Exercise 4
+#| exercise: e4
+```
+
+```{webr}
+#| exercise: e4
+#| solution: true
+is.logical(FALSE)
+```
+
+```{webr}
+#| exercise: e4
+#| check: true
+gradethis::grade_this_code()
+```
+
+If you ran `is.logical(TRUE)`{.r}, what should the answer be?
+Type and check it below.
+
+```{webr}
+#| caption: Exercise 5
+#| exercise: e5
+```
+
+```{webr}
+#| exercise: e5
+#| solution: true
+TRUE
+```
+
+```{webr}
+#| exercise: e5
+#| check: true
+gradethis::grade_this_code()
+```
+
+R will let you use `T`{.r} for `TRUE`{.r} and `F`{.r} for `FALSE`{.r}, but please don't do that in this class or
+in your work.  It makes your code harder to read for others, just as it made it harder for your 5th grade teacher to
+grade your true-false test. However, I want you to know that in case you see someone use it in their code or if your instructor is being lazy as he types in class. After all,
+that's only what it should be---a shortcut. Note, though your instructor always types `TRUE`{.r} and `FALSE`{.r} out completely in his production code as 4--5 extra characters are worth the clarity.
+
+OK, I'm pretty confident you have this now. What would `is.logical(1)`{.r} return?
+
+```{webr}
+#| caption: Exercise 6
+#| exercise: e6
+```
+
+```{webr}
+#| exercise: e6
+#| solution: true
+FALSE
+```
+
+```{webr}
+#| exercise: e6
+#| check: true
+gradethis::grade_this_code()
+```
+
+### Character
+
+The last important atomic data type you should know about
+for now is the character data type. The character type is used to represent text in R. So you know some of the lingo text for computers is often called *character strings* or simply *strings*.
+
+R knows you intend something to be a string if you enclose it in quotes. The preferred style in R code is to use double quotes,
+
+```{r}
+#| eval: false
+"Hello!"
+```
+
+but single quotes
+
+```{r}
+#| eval: false
+'Hello!'
+```
+
+also work just fine and are sometimes important for getting
+your code to work right as we will see.
+
+See what R does when you type and run `"Hello, my name is R"`{.r}.
+
+```{webr}
+#| caption: Exercise 7
+#| exercise: e7
+```
+
+```{webr}
+#| exercise: e7
+#| solution: true
+"Hello, my name is R"
+```
+
+```{webr}
+#| exercise: e7
+#| check: true
+gradethis::grade_this({
+  if (.user_code == '"Hello, my name is R"') {
+    pass()
+  } else if (.user_code == "'Hello, my name is R'") {
+    pass(glue::glue("It works, but remember double quotes are preferred",
+     " when writing R code. Note that even R's response uses them!"
+    ))
+  } else {
+    fail("Type it just like I wrote it.", encourage = TRUE)
+  }
+})
+```
+
+Even though double quotes are preferred, single quotes can be used. Let's
+test that by typing and running `'What is your name?'`{.r}.
+
+```{webr}
+#| caption: Exercise 8
+#| exercise: e8
+```
+
+```{webr}
+#| exercise: e8
+#| solution: true
+'What is your name?'
+```
+
+```{webr}
+#| exercise: e8
+#| check: true
+gradethis::grade_this({
+  if (.user_code == "'What is your name?'") {
+    pass()
+  } else if (.user_code == '"What is your name?"') {
+    pass(glue::glue("You are right that double quotes are preferred,",
+     " but this time I wanted you to use single quotes."
+    ))
+  } else {
+    fail("Type it just like I wrote it.", encourage = TRUE)
+  }
+})
+```
+
+```{adm}
+#| exercise: e8
+#| type: open-on-pass
+Look at R's response above. R said back `"What is your name?"` with double
+quotes even when single quotes were used, which emphasizes, in part, why double
+quotes are preferred when writing R code.
+```
+
+Since the `is.logical`{.r} function tests whether something is of the logical
+datatype, and `is.numeric`{.r} tests whether something is of the numeric data
+type, what function do you think tests whether something is of the character
+type?
+
+Go for it!  Test whether
+
+```{r}
+#| eval: false
+"Hi!"
+```
+
+is of type character.
+
+```{webr}
+#| caption: Exercise 9
+#| exercise: e9
+```
+
+```{webr}
+#| exercise: e9
+#| solution: true
+is.character("Hi!")
+```
+
+```{webr}
+#| exercise: e9
+#| check: true
+gradethis::grade_this_code()
+```
+
+## Experimentation
+
+Now it is time to try out your skills. Experiment below and figure out
+which atomic data type (numeric, logical, or character) is the result of
+dividing another number by zero.
+
+```{webr}
+#| caption: Experiment
+```
+
+What did you conclude?  Type just `numeric`, `logical`, or `character`
+below.
+
+```{webr}
+#| caption: Exercise 10
+#| exercise: e10
+#| output: false
+```
+
+```{webr}
+#| exercise: e10
+#| solution: true
+numeric
+```
+
+```{webr}
+#| exercise: e10
+#| check: true
+gradethis::grade_this_code()
+```
+
+You know what `is.character(2)`{.r} will return, right? ... `FALSE`{.r} 
+
+But what if you wanted to use `is.character`{.r} and the number `2`{.r}
+together, and get `TRUE`{.r} instead (i.e., what would you need to add 
+surrounding the number `2`{.r} to get `TRUE`{.r})?  
+
+Type the full expression using `is.character`{.r} and the
+number `2`{.r} that returns `TRUE`{.r}.
+
+```{webr}
+#| caption: Exercise 11
+#| exercise: e11
+```
+
+```{webr}
+#| exercise: e11
+#| solution: true
+is.character("2")
+```
+
+```{webr}
+#| exercise: e11
+#| hint: true
+What do you enclose a group of characters in to make R recognize it as a 
+character type?
+```
+
+```{webr}
+#| exercise: e11
+#| check: true
+gradethis::grade_this_code()
+```
+
+## Exposition, part 2
+
+### Logical Operators
+
+Useful operators for the logical data type include `&`{.r}, `|`{.r}, and `!`{.r}. They are called logical operators. The `|`{.r} is often called a pipe character. You usually find it above the backslash <kbd>`\`</kbd> key on the right side of your keyboard. Let's try each of the logical operators out, starting with the `!`{.r} operator. In the code cell below, try evaluating `!TRUE`{.r} and `!FALSE`{.r}, then answer the questions that follow.
+
+```{webr}
+#| caption: Experiment
+```
+
+What does the `!`{.r} operator return when applied to `TRUE`{.r}?
+
+```{webr}
+#| caption: Exercise 12
+#| exercise: e12
+#| output: false
+```
+
+```{webr}
+#| exercise: e12
+#| solution: true
+FALSE
+```
+
+```{webr}
+#| exercise: e12
+#| check: true
+gradethis::grade_this_code()
+```
+
+What does the `!`{.r} operator return when applied to `FALSE`{.r}?
+
+```{webr}
+#| caption: Exercise 13
+#| exercise: e13
+#| output: false
+```
+
+```{webr}
+#| exercise: e13
+#| solution: true
+TRUE
+```
+
+```{webr}
+#| exercise: e13
+#| check: true
+gradethis::grade_this_code()
+```
+
+Now, experiment with the `&`{.r} and `|`{.r} operators. Try all combinations of `TRUE`{.r} and `FALSE`{.r} (e.g., `TRUE & FALSE`{.r}, `FALSE | FALSE`{.r}, etc.), then answer the questions that follow.
+
+```{webr}
+#| caption: Experiment
+```
+
+What is `TRUE & FALSE`{.r}?
+
+```{webr}
+#| caption: Exercise 14
+#| exercise: e14
+#| output: false
+```
+
+```{webr}
+#| exercise: e14
+#| solution: true
+FALSE
+```
+
+```{webr}
+#| exercise: e14
+#| check: true
+gradethis::grade_this_code()
+```
+
+What is `TRUE | FALSE`{.r}?
+
+```{webr}
+#| caption: Exercise 15
+#| exercise: e15
+#| output: false
+```
+
+```{webr}
+#| exercise: e15
+#| solution: true
+TRUE
+```
+
+```{webr}
+#| exercise: e15
+#| check: true
+gradethis::grade_this_code()
+```
+
+What is `TRUE | TRUE`{.r}?
+
+```{webr}
+#| caption: Exercise 16
+#| exercise: e16
+#| output: false
+```
+
+```{webr}
+#| exercise: e16
+#| solution: true
+TRUE
+```
+
+```{webr}
+#| exercise: e16
+#| check: true
+gradethis::grade_this_code()
+```
+
+Which operator name best fits `&`{.r}? Type either
+`"or"`, `"and"`, or `"not"`.  Don't forget the double
+quotes!
+
+```{webr}
+#| caption: Exercise 17
+#| exercise: e17
+#| output: false
+```
+
+```{webr}
+#| exercise: e17
+#| solution: true
+"and"
+```
+
+```{webr}
+#| exercise: e17
+#| check: true
+gradethis::grade_this_code()
+```
+
+Which operator name best fits `|`{.r}? Type either
+`"or"`, `"and"`, or `"not"`.
+
+```{webr}
+#| caption: Exercise 18
+#| exercise: e18
+#| output: false
+```
+
+```{webr}
+#| exercise: e18
+#| solution: true
+"or"
+```
+
+```{webr}
+#| exercise: e18
+#| check: true
+gradethis::grade_this_code()
+```
+
+::: {.callout-note}
+The `!`{.r} operator is different from the others you have seen so far in that it only takes one input (argument), whereas the others take two. One-argument operators are called *unary*, while those that take two are called *binary*. Those that take more than two are called *multiary* or *multary*. So `!`{.r} is unary while `+`{.r}, `&`{.r}, and others you have learned so far are binary. We have not yet met any multiary operators: `2 + 2 + 3`{.r} is just using a binary operator twice.
+:::
+
+## Relational Operators
+
+Another group of useful binary operators for all the atomic data types are the six relational operators: `<`{.r}, `>`{.r}, `<=`{.r}, `>=`{.r}, `==`{.r}, and `!=`{.r}. Most situations make sense intuitively, especially with numerics, when you know their meaning.
+
+The symbol `<`{.r} means "less than", and `>`{.r} means "greater than". So, `5 > 6`{.r} is `FALSE`{.r} and `5 < 6`{.r} is `TRUE`{.r}. The symbol `<=`{.r} means "less than or equal to". So, `5 <= 5`{.r} is `TRUE`{.r} as is `5 <= 6`{.r}.
+
+Two equal signs without any space between them `==`{.r} is the test of whether two things are equal or not. A single equals sign `=`{.r} means something different, so be careful or you will get an error message from your code or worse an unsuspected logical error (a "bug") that may surprise you! The symbol `!=`{.r} tests whether two things are not equal.
+
+So, `3 == 3`{.r} is `TRUE`{.r} and `2 != 3`{.r} is `TRUE`{.r}.
+
+Let's test your knowledge. What is `5 == 10`{.r}?
+
+```{webr}
+#| caption: Exercise 19
+#| exercise: e19
+#| output: false
+```
+
+```{webr}
+#| exercise: e19
+#| solution: true
+FALSE
+```
+
+```{webr}
+#| exercise: e19
+#| check: true
+gradethis::grade_this_code()
+```
+
+What is `8 > 10`{.r}?
+
+```{webr}
+#| caption: Exercise 20
+#| exercise: e20
+#| output: false
+```
+
+```{webr}
+#| exercise: e20
+#| solution: true
+FALSE
+```
+
+```{webr}
+#| exercise: e20
+#| check: true
+gradethis::grade_this_code()
+```
+
+What is `100 < 101`{.r}?
+
+```{webr}
+#| caption: Exercise 21
+#| exercise: e21
+#| output: false
+```
+
+```{webr}
+#| exercise: e21
+#| solution: true
+TRUE
+```
+
+```{webr}
+#| exercise: e21
+#| check: true
+gradethis::grade_this_code()
+```
+
+What is `"a" < "b"`{.r}? (Trust your gut on this one!)
+
+```{webr}
+#| caption: Exercise 22
+#| exercise: e22
+#| output: false
+```
+
+```{webr}
+#| exercise: e22
+#| solution: true
+TRUE
+```
+
+```{webr}
+#| exercise: e22
+#| check: true
+gradethis::grade_this_code()
+```
+
+What is `"b" > "!"`{.r}?
+
+```{webr}
+#| caption: Exercise 23
+#| exercise: e23
+#| output: false
+```
+
+```{webr}
+#| exercise: e23
+#| solution: true
+TRUE
+```
+
+```{webr}
+#| exercise: e23
+#| check: true
+gradethis::grade_this_code()
+```
+
+What is `"A" == "a"`{.r}?
+
+```{webr}
+#| caption: Exercise 24
+#| exercise: e24
+#| output: false
+```
+
+```{webr}
+#| exercise: e24
+#| solution: true
+FALSE
+```
+
+```{webr}
+#| exercise: e24
+#| check: true
+gradethis::grade_this_code()
+```
+
+What is `TRUE > FALSE`{.r}? 
+
+```{webr}
+#| caption: Exercise 25
+#| exercise: e25
+```
+
+::: { .solution exercise="e25" }
+```{webr}
+#| exercise: e25
+#| solution: true
+```
+
+`TRUE` is the answer! After all, truth is indeed greater than falsity! Now you have a good sense of how the relational operators work on all the data types we've learned about.
+:::
+
+```{webr}
+#| exercise: e25
+#| check: true
+gradethis::grade_this({
+  if (.user_code == "TRUE") {
+    pass("Correct!")
+  } else {
+    fail("Nope... try the other one. ☺️")
+  }
+})
+```
+
+```{adm}
+#| exercise: e25
+#| type: open-solution-on-pass
+```
+
+## Submit Your Assignment
+
+```{adm}
+#| type: progress-submit
+```
+::: {#adm-progress-submit}
+```{webr}
+#| autorun: true
+.progress_submit("02-Atomic-Data-Types", 25)
+```
+:::
