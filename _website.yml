@@ -27,3 +27,5 @@ website:
     contents:
       - href: 01-Rithmatic.qmd
         text: Rithmatic
+      - href: 02-Atomic-Data-Types.qmd
+        text: Atomic Data Types
