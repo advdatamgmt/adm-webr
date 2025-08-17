@@ -1,0 +1,367 @@
+---
+title: "Rithmatic"
+---
+
+{{< include ./_extensions/r-wasm/live/_knitr.qmd >}}
+{{< include ./_extensions/r-wasm/live/_gradethis.qmd >}}
+{{< include ./_extensions/advdatamgmt/webr-adm-ext/_knitr.qmd >}}
+{{< include ./_run_button.qmd >}}
+
+## Exposition
+
+### Introduction
+
+One of the best ways to start learning R is to use it as a calculator. Below
+we'll start to do some simple arithmetic in R.  We are using a special kind of
+R called `webr`{.txt} that runs directly in your web browser.
+
+This means you can use R without having to install anything on your computer!
+
+When you see text that is formated like `2 + 2`{.r}, it is code that should be
+typed exactly as it is written for R to read or represents a verbatim response
+from R.
+
+### Addition
+
+Try typing `2 + 2`{.r} in the box labelled "Exercise" just below this paragraph
+and then click  on the `{r} run_button()` button in the upper right to evaluate
+the code. When you run the code, you should see the result `[1] 4`{.txt} printed
+below the editor. We'll learn why there is a `[1]`{.txt} in front of the answer
+`4`{.txt} later.
+
+```{webr}
+#| exercise: e1
+```
+
+::: { .solution exercise="e1" }
+```{webr}
+#| exercise: e1
+#| solution: true
+2 + 2
+```
+:::
+
+```{webr}
+#| exercise: e1
+#| check: true
+gradethis::grade_this_code()
+```
+
+### Subtraction
+
+Now try subtraction below by asking R what `20 - 4.2`{.r} equals.  However,
+this time, instead of clicking `{r} run_button()`,
+use the keyboard shortcut <span class="kbdcombo"><kbd>Ctrl</kbd> +
+<kbd>Enter</kbd></span> on Windows/Linux or <span class="kbdcombo">
+<kbd>⌘ command</kbd> + <kbd>Enter</kbd></span> on Mac (note the + sign means to
+press both keys at the same time).
+
+Using the keyboard shortcut is a lot faster than clicking the button, so you
+should get in the habit of using it for all the exercises below.
+
+```{webr}
+#| exercise: e2
+```
+
+::: { .solution exercise="e2" }
+```{webr}
+#| exercise: e2
+#| solution: true
+20 - 4.2
+```
+:::
+
+```{webr}
+#| exercise: e2
+#| check: true
+gradethis::grade_this_code()
+```
+
+Why stop with just one subtraction? Now try `100 - 20 - 5`{.r}.
+
+```{webr}
+#| exercise: e3
+```
+
+::: { .solution exercise="e3" }
+```{webr}
+#| exercise: e3
+#| solution: true
+100 - 20 - 5
+```
+:::
+
+```{webr}
+#| exercise: e3
+#| check: true
+gradethis::grade_this_code()
+```
+
+### Multiplication and Division
+
+OK, now multiplication:
+`5 * 4 * 3 * 2 * 1`{.r}.
+
+```{webr}
+#| exercise: e4
+```
+
+::: { .solution exercise="e4" }
+```{webr}
+#| exercise: e4
+#| solution: true
+5 * 4 * 3 * 2 * 1
+```
+:::
+
+```{webr}
+#| exercise: e4
+#| check: true
+gradethis::grade_this_code()
+```
+
+How about division with `25 / 5`{.r}?
+
+```{webr}
+#| exercise: e5
+```
+
+::: { .solution exercise="e5" }
+```{webr}
+#| exercise: e5
+#| solution: true
+25 / 5
+```
+:::
+
+```{webr}
+#| exercise: e5
+#| check: true
+gradethis::grade_this_code()
+```
+
+## Experimentation
+
+### Division by Zero
+
+Now is a time for you to extend your knowledge by
+exploring and experimenting some yourself.  So before you
+answer the next question you need to play around some.
+
+Below is a code editor where you can type in any R code you want.
+
+First, figure out what R thinks a number divided by zero is in the box
+labeled "Experiment" just below.
+
+```{webr}
+#| caption: Experiment
+```
+
+So what did you learn?  Just type your answer in the code editor below and
+run it to submit and check your answer.
+
+```{webr}
+#| exercise: e6
+#| output: false
+```
+
+::: { .hint exercise="e6" }
+Do **NOT** put the `[1]`{.txt} as part of your answer, and note that R is case
+sensitive.  Upper vs. lowercase letters matter.
+
+If you still aren't sure, then try again and type `5 / 0`{.r} in the Experiment
+box above or something similar to see the result.
+:::
+
+::: { .solution exercise="e6" }
+```{webr}
+#| exercise: e6
+#| solution: true
+```
+
+Three answers are each correct depending on the
+situation.  If you divide a positive number by zero, R returns `Inf`{.txt}
+(infinity).  If you divide a negative number by zero, R returns `-Inf`{.txt}
+(negative infinity). If you divide zero by zero, R returns `NaN`{.txt}
+(not a number)!
+
+```{webr}
+#| edit: false
+#| autorun: true
+2 / 0
+```
+
+
+```{webr}
+#| edit: false
+#| autorun: true
+-5 / 0
+```
+
+```{webr}
+#| edit: false
+#| autorun: true
+0 / 0
+```
+
+As you learn to program, you'll find it is helpful to try to think of
+possible edge cases that might give you different results than you expect.
+It is also be good to be aware of the possiblilities, because if you see
+`NaN`{.txt} come from your code, you'll know you probably divided by zero
+somewhere without expecting it.
+:::
+
+```{webr}
+#| exercise: e6
+#| check: true
+gradethis::grade_this({
+  if (.user_code == "NaN" || .user_code == "Inf" || .user_code == "-Inf") {
+    pass("Correct! But did you realize there are three possible answers?")
+  } else {
+    fail("Hmm, I think you should try division by zero again in the
+     Experiment box above.  Remember, type only the answer here.")
+  }
+})
+```
+
+```{adm}
+#| exercise: e6
+#| type: open-solution-on-pass
+```
+
+### A mystery operator
+
+Now, I want you to try to figure something else out.  What does the
+`%%`{.r} operator do?  You code with it just like `+`{.r}, `-`{.r}, `*`{.r},
+or `/`{.r} with two numbers.
+
+For now limit your experiments to the left number being larger than the
+right and use only whole positive numbers, i.e., positive integers, on both
+sides.
+
+For example:
+
+```{r}
+#| eval: false
+12 %% 5
+```
+
+Experiment for a bit until you are pretty sure you have it right, and then,
+answer the questions below.
+
+```{webr}
+#| caption: Experiment
+```
+
+Ready to test your knowledge?  Answer the following questions.
+
+What is `13 %% 3`{.r}? (Of course, you could just type it in the "Experiment"
+box above to find out, but try to figure it out without doing that!)
+
+```{webr}
+#| exercise: e7
+#| output: false
+```
+
+::: { .hint exercise="e7" }
+Are you sure you tried enough examples in the Experiment box above?
+Try `12 %% 5`{.r}, `11 %% 5`{.r}, `10 %% 5`{.r}, and `9 %% 5`{.r}
+then try `12 %% 6`{.r}, `12 %% 5`{.r}, `12 %% 4`{.r}, `12 %% 3`{.r},
+`12 %% 2` to see if you can find a pattern. It's related to division.
+:::
+
+::: { .solution exercise="e7" }
+The answer is `1`{.txt} because `3`{.r} goes into `13`{.r} four
+times with a remainder of
+`1`{.r}.
+
+```{webr}
+#| exercise: e7
+#| solution: true
+1
+```
+:::
+
+```{webr}
+#| exercise: e7
+#| check: true
+gradethis::grade_this({
+  if (.user_code == "1") {
+    pass()
+  } else {
+    fail('Remember, you are only supposed to put the answer in the box. Do
+    **NOT** put the `[1]` as part of your answer, and only put the answer
+    in the box.  No extra text. If you
+     are only putting a number in the box, then I suggest trying more in the
+     "Experiment" box above to see if you can figure out the mystery operator
+     or clicking "Show Hint" to see a hint.')
+  }
+})
+```
+
+OK, what is `8 %% 8`{.r}?
+
+```{webr}
+#| exercise: e8
+#| output: false
+```
+
+::: { .solution exercise="e8" }
+```{webr}
+#| exercise: e8
+#| solution: true
+0
+```
+:::
+
+```{webr}
+#| exercise: e8
+#| check: true
+gradethis::grade_this({
+  if (.user_code == "0") {
+    pass()
+  } else {
+    fail("Remember, you are only supposed to put the answer in the box. Do
+    **NOT** put the `[1]` as part of your answer, and only put the answer
+    in the box.  No extra text. {random_encouragement()}")
+  }
+})
+```
+
+Last one: Even though I only asked you to use integers when you played
+it works the same for fractional values... so what is `7.1 %% 0.2`{.r}?
+
+```{webr}
+#| exercise: e9
+#| output: false
+```
+
+::: { .solution exercise="e9" }
+```{webr}
+#| exercise: e9
+#| solution: true
+0.1
+```
+:::
+
+```{webr}
+#| exercise: e9
+#| check: true
+gradethis::grade_this({
+  if (.user_code == "0.1") {
+    pass()
+  } else {
+    fail("It is tricky, but write it out and solve it like a long division
+    problem. {random_encouragement()}")
+  }
+})
+```
+
+```{adm}
+#| exercise: e9
+#| type: open-on-pass
+It seems you figured out that the `%%`{.r} operator finds the remainder of
+dividing one number by another! This function is also called the modulo
+operator.  Where in daily life do you use this operator relatively frequently
+and probably without much thought? Any ideas?
+```

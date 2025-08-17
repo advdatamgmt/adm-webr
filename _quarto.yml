@@ -1,0 +1,38 @@
+project:
+  type: website
+  preview:
+    port: 8000
+
+author:
+  name: Beau B. Bruce, MD, PhD
+  affiliation: Emory University
+  email: bbbruce@emory.edu
+
+engine: knitr
+
+website:
+  title: "MSCR 596 - Advanced Data Management with R"
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - href: about.qmd
+        text: About
+  sidebar:
+    contents:
+      - href: 01-Rithmatic.qmd
+        text: Rithmatic
+
+webr:
+  packages:
+    - later
+
+filters:
+  - webr-adm-ext
+
+format:
+  live-html:
+    theme:
+      - zypher
+    css: styles.css
+    toc: true

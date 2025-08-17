@@ -1,0 +1,7 @@
+title: Webr-adm-ext
+author: Beau B. Bruce
+version: 1.0.0
+quarto-required: ">=1.6.0"
+contributes:
+  filters:
+    - webr-adm-ext.lua

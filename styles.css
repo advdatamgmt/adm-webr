@@ -1,0 +1,32 @@
+/* css styles */
+
+/* thanks @yihui! https://yihui.org/en/2023/02/key-buttons/ */
+kbd {
+    border: 2px solid #ccc;
+    box-shadow: 2px 2px #999;
+    display: inline-block;
+    padding: 0 5px;
+    border-radius: 0.25em;
+    min-width: 1.5em;
+    text-align: center;
+    margin-right: .15em;
+}
+
+kbd:hover {
+    position: relative;
+    top: 2px;
+    left: 2px;
+}
+
+span.kbdcombo:hover > kbd {
+    position: relative;
+    top: 2px;
+    left: 2px;
+}
+
+code.sourceCode.default {
+  color: black;
+  background-color: transparent;
+  font-family: SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+  font-weight: semibold;
+}
