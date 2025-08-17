@@ -56,3 +56,5 @@ scripts/output/
 
 _site/
 /.luarc.json
+
+/_*.local

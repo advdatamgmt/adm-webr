@@ -2,10 +2,7 @@
 title: "Rithmatic"
 ---
 
-{{< include ./_extensions/r-wasm/live/_knitr.qmd >}}
-{{< include ./_extensions/r-wasm/live/_gradethis.qmd >}}
-{{< include ./_extensions/advdatamgmt/webr-adm-ext/_knitr.qmd >}}
-{{< include ./_run_button.qmd >}}
+{{< include shared/_shared.qmd >}}
 
 ## Exposition
 

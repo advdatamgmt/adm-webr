@@ -1,0 +1,12 @@
+website:
+  title: "MSCR 596 - Advanced Data Management with R"
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - href: about.qmd
+        text: About
+  sidebar:
+    contents:
+      - href: 01-Rithmatic.qmd
+        text: Rithmatic
