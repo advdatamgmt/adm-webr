@@ -2,7 +2,7 @@
 title: "Rithmatic"
 ---
 
-{{< include shared/_shared.qmd >}}
+{{< include _static/_shared.qmd >}}
 
 ## Exposition
 

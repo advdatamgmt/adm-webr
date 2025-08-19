@@ -1,11 +1,28 @@
 website:
   title: "MSCR 596 - Advanced Data Management with R"
+  search:
+    location: navbar
+    type: textbox
+  repo-url: https://github.com/advdatamgmt/adm-webr
+  issue-url: https://github.com/advdatamgmt/adm-webr/issues
+  repo-actions: [issue]
   navbar:
     left:
       - href: index.qmd
         text: Home
       - href: about.qmd
         text: About
+    right:
+      - href: https://canvas.emory.edu
+        text: "![](_static/Canvas_Bug_White_RGB.svg)"
+        aria-label: "Emory Canvas"
+    tools:
+      - icon: github
+        menu:
+          - text: Source code
+            href:  https://github.com/advdatamgmt/adm-webr
+          - text: Report an issue
+            href:  https://github.com/advdatamgmt/adm-webr/issues
   sidebar:
     contents:
       - href: 01-Rithmatic.qmd
