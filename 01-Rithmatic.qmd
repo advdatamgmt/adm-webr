@@ -325,7 +325,7 @@ gradethis::grade_this({
 })
 ```
 
-Last one: Even though I only asked you to use integers when you played
+Last one: Even though I only asked you to use integers when you played with
 it works the same for fractional values... so what is `7.1 %% 0.2`{.r}?
 
 ```{webr}
