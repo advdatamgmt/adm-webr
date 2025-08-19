@@ -1,0 +1,46 @@
+name: Publish Website
+
+# Allow one concurrent deployment
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+on:
+  push:
+    branches: ['main']
+
+jobs:
+  quarto:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Setup R
+        uses: r-lib/actions/setup-r@v2
+      - name: Install R dependencies
+        uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          cache-version: 1
+          extra-packages: |
+            any::knitr
+            any::rmarkdown
+      - name: Install Quarto
+        uses: quarto-dev/quarto-actions/setup@v2
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+      - name: Render Website
+        run: quarto render
+      - name: Upload GitHub Pages artifact
+        uses: actions/upload-pages-artifact@v4.0.0
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@main
