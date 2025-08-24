@@ -1,0 +1,279 @@
+---
+title: "Atomic Data Types"
+---
+
+{{< include _static/_shared.qmd >}}
+
+## Exposition
+
+### Introduction
+
+In this exercise we will explore three important atomic data types called
+numeric, logical, and character. We call them *atomic* because they can
+not be broken down into simpler data structures.[^notatomic]
+
+[^notatomic]: Much like we now know that atoms can, in fact, be split into smaller
+subatomic particles, these atomic data types can also be split further, but that
+is far beyond the scope of this course.
+
+Contrast this with *complex* data types that we will learn about in
+later lessons and which are composed by these atomic data types.
+
+### Numeric
+
+You have already met the numeric data type in [Rithmatic](01-Rithmatic.html).
+How do you know? We can just ask R if `1`{.r} is numeric by
+typing and running `is.numeric(1)`{.r}. Try it yourself:
+
+```{webr}
+#| exercise: e1
+```
+
+::: { .solution exercise="e1" }
+```{webr}
+#| exercise: e1
+#| solution: true
+is.numeric(1)
+```
+:::
+
+```{webr}
+#| exercise: e1
+#| check: true
+gradethis::grade_this_code()
+```
+
+`is.numeric`{.r} is a name that refers to a method or recipe in R, called a *function*, that determines if the value it recieves is a number or not, i.e., is it numeric or not.
+
+Now, try running `is.numeric(2 + 2)`{.r} to see the result.
+
+```{webr}
+#| exercise: e2
+```
+
+```{webr}
+#| exercise: e2
+#| solution: true
+is.numeric(2 + 2)
+```
+
+```{webr}
+#| exercise: e2
+#| check: true
+gradethis::grade_this_code()
+```
+
+### Logical
+
+I hope you've noticed that R responds `TRUE`{.r} when the value the `is.numeric`{.r} function recieves is indeed numeric.
+
+The value `TRUE`{.r} is a kind of the next atomic data type we will explore, i.e., the logical data type.
+
+`TRUE`{.r} is R's word for "yes." R is case-sensitive, so `TRUE`{.r} is not the same as `true`{.r}, `True`{.r},
+or even `TrUe`{.r}, so be sure to type it carefully.
+R can be very particular about such things.
+
+`TRUE`{.r} is not a numeric value.  How can you find out?
+
+```{webr}
+#| exercise: e3
+```
+
+```{webr}
+#| exercise: e3
+#| solution: true
+is.numeric(TRUE)
+```
+
+```{webr}
+#| exercise: e3
+#| check: true
+gradethis::grade_this_code()
+```
+
+Instead of `TRUE`{.r}, R responds with `FALSE`{.r}, which is R's word for "no."  `TRUE`{.r} and `FALSE`{.r} are the only two possible values for the logical data type in R.
+
+Can you guess how we test for logical values? Try running `is.logical(FALSE)`{.r}.
+
+```{webr}
+#| exercise: e4
+```
+
+```{webr}
+#| exercise: e4
+#| solution: true
+is.logical(FALSE)
+```
+
+```{webr}
+#| exercise: e4
+#| check: true
+gradethis::grade_this_code()
+```
+
+If you ran `is.logical(TRUE)`{.r}, what should the answer be?
+Type and check it below.
+
+```{webr}
+#| exercise: e5
+```
+
+```{webr}
+#| exercise: e5
+#| solution: true
+TRUE
+```
+
+```{webr}
+#| exercise: e5
+#| check: true
+gradethis::grade_this_code()
+```
+
+R will let you use `T`{.r} for `TRUE`{.r} and `F`{.r} for `FALSE`{.r}, but please don't do that in this class or
+in your work.  It makes your code harder to read for others, just as it made it harder for your 5th grade teacher to
+grade your true-false test. However, I want you to know that in case you see someone use it in their code or if your instructor is being lazy as he types in class. After all,
+that's only what it should be---a shortcut. Note, though your instructor always types `TRUE`{.r} and `FALSE`{.r} out completely in his production code as 4--5 extra characters are worth the clarity.
+
+OK, I'm pretty confident you have this now. What would `is.logical(1)`{.r} return?
+
+```{webr}
+#| exercise: e6
+```
+
+```{webr}
+#| exercise: e6
+#| solution: true
+FALSE
+```
+
+```{webr}
+#| exercise: e6
+#| check: true
+gradethis::grade_this_code()
+```
+
+### Character
+
+The last important atomic data type you should know about
+for now is the character data type. The character type is used to represent text in R. So you know some of the lingo text for computers is often called *character strings* or simply *strings*.
+
+R knows you intend something to be a string if you enclose it in quotes. The preferred style in R code is to use double quotes,
+
+```{r}
+#| eval: false
+"Hello!"
+```
+
+but single quotes
+
+```{r}
+#| eval: false
+'Hello!'
+```
+
+also work just fine and are sometimes important for getting
+your code to work right as we will see.
+
+See what R does when you type and run `"Hello, my name is R"`{.r}.
+
+```{webr}
+#| exercise: e7
+```
+
+```{webr}
+#| exercise: e7
+#| solution: true
+"Hello, my name is R"
+```
+
+```{webr}
+#| exercise: e7
+#| check: true
+gradethis::grade_this({
+  if (.user_code == '"Hello, my name is R"') {
+    pass()
+  } else if (.user_code == "'Hello, my name is R'") {
+    pass(glue::glue("It works, but remember double quotes are preferred",
+     " when writing R code. Note that even R's response uses them!"
+    ))
+  } else {
+    fail("Type it just like I wrote it.", encourage = TRUE)
+  }
+})
+```
+
+Even though double quotes are preferred, single quotes can be used. Let's
+test that by typing and running `'What is your name?'`{.r}.
+
+```{webr}
+#| exercise: e8
+```
+
+```{webr}
+#| exercise: e8
+#| solution: true
+'What is your name?'
+```
+
+```{webr}
+#| exercise: e8
+#| check: true
+gradethis::grade_this({
+  if (.user_code == "'What is your name?'") {
+    pass()
+  } else if (.user_code == '"What is your name?"') {
+    pass(glue::glue("You are right that double quotes are preferred,",
+     " but this time I wanted you to use single quotes."
+    ))
+  } else {
+    fail("Type it just like I wrote it.", encourage = TRUE)
+  }
+})
+```
+
+```{adm}
+#| exercise: e8
+#| type: open-on-pass
+Look at R's response above. R said back `"What is your name?"` with double
+quotes even when single quotes were used, which emphasizes, in part, why double
+quotes are preferred when writing R code.
+```
+
+Since the `is.logical`{.r} function tests whether something is of the logical
+datatype, and `is.numeric`{.r} tests whether something is of the numeric data
+type, what function do you think tests whether something is of the character
+type?
+
+Go for it!  Test whether
+
+```{r}
+#| eval: false
+"Hi!"
+```
+
+is of type character.
+
+```{webr}
+#| exercise: e9
+```
+
+```{webr}
+#| exercise: e9
+#| solution: true
+is.character("Hi!")
+```
+
+```{webr}
+#| exercise: e9
+#| check: true
+gradethis::grade_this_code()
+```
+
+Now it is time to try out your skills. Experiment below and figure out
+which atomic data type (numeric, logical, or character) is the result of
+dividing another number by zero.
+
+```{webr}
+#| caption: Experiment
+```
