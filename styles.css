@@ -36,3 +36,21 @@ span.menu-text > img.img-fluid {
   height: auto;
   vertical-align: -0.1em;
 }
+
+.btn.progress-submit {
+  border: 1px solid #000;
+  background-color: #e69f00;
+  border-radius: 0.25em;
+  padding: 0.5em 1em;
+  cursor: pointer;
+}
+
+.btn.progress-submit:hover {
+  color: #000;
+  background-color: #f0e442;
+}
+
+.btn.progress-submit.clicked {
+  color: #fff;
+  background-color: #359b73;
+}

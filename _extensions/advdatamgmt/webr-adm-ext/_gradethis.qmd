@@ -1,0 +1,190 @@
+```{webr}
+#| edit: false
+#| output: false
+# from r-wasm/live/_gradethis.qmd
+# adds the capability to record progress
+webr::install("gradethis", quiet = TRUE)
+library(gradethis)
+.course_id <- "150040"
+.assignment_ids <- list(
+  `01-Rithmatic` = "1129571",
+  `02-Atomic` = "1129572",
+  `03-Rcel1` = "1129577",
+  `04-Rcel2` = "1129578"
+)
+.canvas_link <- function(a) glue::glue("https://canvas.emory.edu/courses/{.course_id}/assignments/{.assignment_ids[{a}]}")
+.webr_progress <- data.frame(label = character(), user_code = character(), solution_code = character(), result = logical())
+options(webr.exercise.checker = function(
+  label, user_code, solution_code, check_code, envir_result, evaluate_result,
+  envir_prep, last_value, engine, stage, ...
+) {
+  if (is.null(check_code)) {
+    # No grading code, so just skip grading
+    invisible(NULL)
+  } else if (is.null(label)) {
+    list(
+      correct = FALSE,
+      type = "warning",
+      message = "All exercises must have a label."
+    )
+  } else if (is.null(solution_code)) {
+    list(
+      correct = FALSE,
+      type = "warning",
+      message = htmltools::tags$div(
+        htmltools::tags$p("A problem occurred grading this exercise."),
+        htmltools::tags$p(
+          "No solution code was found. Note that grading exercises using the ",
+          htmltools::tags$code("gradethis"),
+          "package requires a model solution to be included in the document."
+        )
+      )
+    )
+  } else {
+    res <- gradethis::gradethis_exercise_checker(
+      label = label, solution_code = solution_code, user_code = user_code,
+      check_code = check_code, envir_result = envir_result,
+      evaluate_result = evaluate_result, envir_prep = envir_prep,
+      last_value = last_value, stage = stage, engine = engine)
+    .webr_progress <<- rbind(
+      .webr_progress,
+      data.frame(
+        label = label,
+        user_code = user_code,
+        solution_code = solution_code,
+        result = res$correct
+      )
+    )
+    res
+  }
+})
+.csv_data_uri <- function(df) {
+  enc_csv <- base64enc::base64encode(
+    charToRaw(
+      paste(
+        capture.output(
+          write.csv(df)),
+          collapse = "\n")
+    )
+  )
+  glue::glue("data:text/csv;base64,{enc_csv}")
+}
+.steps_to_submit <- function(assignment_name, df = .webr_progress) {
+  now <- strftime(Sys.time(), "%Y%m%d-%H%M%S")
+  htmltools::div(
+    htmltools::p(
+      htmltools::strong("Steps to submit:")
+    ),
+    htmltools::tags$ol(
+        htmltools::tags$li(
+        "Save your work to your computer by clicking: ",
+        htmltools::tags$a(
+            download = glue::glue('adm-{.assignment_ids[assignment_name]}-{now}.csv'),
+            href = .csv_data_uri(df),
+            htmltools::tags$button(
+                onClick = "this.classList.add('clicked');",
+                class="progress-submit",
+                "Download"
+            )
+        )
+        ),
+        htmltools::tags$li(
+        "Go to related Canvas assignment (note this will open a new tab or window) by clicking:",
+        htmltools::tags$a(
+            href = .canvas_link("01-Rithmatic"),
+            target = "_blank",
+            htmltools::tags$button(
+                onClick = "this.classList.add('clicked');",
+                class="progress-submit",
+                "Open Canvas Assignment"
+            )
+        )
+        ),
+        htmltools::tags$li(
+        "On the page that just opened find and click on a button",
+        "that looks like this in the upper right corner:",
+        htmltools::tags$img(
+            src = "_static/canvas_start_assignment.png",
+            alt = "Start Assignment Button",
+            style = "max-width: 200px; border: 1px solid black; margin-left: 1em;"
+        )
+        ),
+        htmltools::tags$li(
+        htmltools::p("After you click you should see the following:"),
+        htmltools::tags$img(
+            src = "_static/canvas_submission.png",
+            alt = "Submit Assignment Image",
+            style = "max-width: 400px; border: 1px solid black; margin-left: 5em;"
+        ),
+        htmltools::p(
+            "Either drag the file you saved in the first step or click ",
+            "\"Choose a file to upload\" under the rocket drawing ",
+            "to find the file."
+        )
+        ),
+        htmltools::tags$li(
+        "Finally, click the \"Submit Assignment\" button."
+        )
+    )
+  )
+}
+.progress_submit <- function(assignment_name, n_exercises, progress_obj = .webr_progress) {
+  all <- as.character(1:n_exercises)
+  done <- gsub("e", "", sort(unique(progress_obj$label[progress_obj$result])))
+  todo <- setdiff(all, done)
+  collapse_runs <- function(x) {
+    x <- as.integer(x)
+    out <- character()
+    for (i in seq_along(x)) {
+      if (i == 1) {
+        run_start <- run_end <- x[i]
+        next
+      }
+      if (x[i] == run_end + 1) {
+        run_end <- x[i]
+      } else {
+        if (run_start == run_end) {
+          out <- c(out, as.character(run_start))
+        } else {
+          out <- c(out, glue::glue("{run_start}–{run_end}"))
+        }
+        run_start <- run_end <- x[i]
+      }
+    }
+    if (run_start == run_end) {
+      out <- c(out, as.character(run_start))
+    } else {
+      out <- c(out, glue::glue("{run_start}–{run_end}"))
+    }
+    out
+  }
+  collapse_nums <- function(x) {
+    x <- collapse_runs(x)
+    if (length(x) == 1) {
+      return(x)
+    } else if (length(x) == 2) {
+      return(glue::glue("{x[1]} and {x[2]}"))
+    } else {
+      return(glue::glue_collapse(x, ", ", last = ", and "))
+    }
+  }
+  if (length(todo) > 0) {
+    htmltools::tags$p(
+      glue::glue(
+        "Before you can submit you still need correctly complete exercises ",
+        collapse_nums(todo),
+        "."
+        ),
+        style = "color: red; font-weight: bold;"
+      )
+  } else {
+    htmltools::div(
+      htmltools::p(
+        "All done! You can submit now!",
+        style = "color: green; font-weight: bold;"
+      ),
+    .steps_to_submit(assignment_name)
+    )
+  }
+}
+```
