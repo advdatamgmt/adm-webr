@@ -3,7 +3,7 @@
 local function load_r_wasm_helpers()
   local rwasm = quarto.utils.resolve_path("../../r-wasm/live/live.lua")
 
-  -- Make a sandbox env with access to core globals Quarto/Pandoc APIs
+  -- Make a sandbox env with access to core Quarto/Pandoc APIs
   local live_env = {
     quarto = quarto,
     pandoc = pandoc,
@@ -78,13 +78,16 @@ function AdmCodeBlock(block)
 
   quarto.doc.include_text("after-body", content)
 
-  local out = pandoc.Div(
-    pandoc.read(pblock.code).blocks,
-    pandoc.Attr(
-      "open-on-pass-" .. pblock.attr.exercise,
-      { 'webr-adm-ext' },
-      { style = 'visibility: hidden;' }
+  local out = {}
+  if (pblock.attr.type == 'open-on-pass') then
+    out = pandoc.Div(
+      pandoc.read(pblock.code).blocks,
+      pandoc.Attr(
+        "open-on-pass-" .. pblock.attr.exercise,
+        { 'webr-adm-ext' },
+        { style = 'visibility: hidden;' }
+      )
     )
-  )
+  end
   return out
 end

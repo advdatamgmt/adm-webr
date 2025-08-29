@@ -27,6 +27,7 @@ below the editor. We'll learn why there is a `[1]`{.txt} in front of the answer
 `4`{.txt} later.
 
 ```{webr}
+#| caption: Exercise 1
 #| exercise: e1
 ```
 
@@ -57,6 +58,7 @@ Using the keyboard shortcut is a lot faster than clicking the button, so you
 should get in the habit of using it for all the exercises below.
 
 ```{webr}
+#| caption: Exercise 2
 #| exercise: e2
 ```
 
@@ -77,6 +79,7 @@ gradethis::grade_this_code()
 Why stop with just one subtraction? Now try `100 - 20 - 5`{.r}.
 
 ```{webr}
+#| caption: Exercise 3
 #| exercise: e3
 ```
 
@@ -100,6 +103,7 @@ OK, now multiplication:
 `5 * 4 * 3 * 2 * 1`{.r}.
 
 ```{webr}
+#| caption: Exercise 4
 #| exercise: e4
 ```
 
@@ -120,6 +124,7 @@ gradethis::grade_this_code()
 How about division with `25 / 5`{.r}?
 
 ```{webr}
+#| caption: Exercise 5
 #| exercise: e5
 ```
 
@@ -158,6 +163,7 @@ So what did you learn?  Just type your answer in the code editor below and
 run it to submit and check your answer.
 
 ```{webr}
+#| caption: Exercise 6
 #| exercise: e6
 #| output: false
 ```
@@ -256,6 +262,7 @@ What is `13 %% 3`{.r}? (Of course, you could just type it in the "Experiment"
 box above to find out, but try to figure it out without doing that!)
 
 ```{webr}
+#| caption: Exercise 7
 #| exercise: e7
 #| output: false
 ```
@@ -299,6 +306,7 @@ gradethis::grade_this({
 OK, what is `8 %% 8`{.r}?
 
 ```{webr}
+#| caption: Exercise 8
 #| exercise: e8
 #| output: false
 ```
@@ -329,6 +337,7 @@ Last one: Even though I only asked you to use integers when you played with
 it works the same for fractional values... so what is `7.1 %% 0.2`{.r}?
 
 ```{webr}
+#| caption: Exercise 9
 #| exercise: e9
 #| output: false
 ```
@@ -362,3 +371,16 @@ dividing one number by another! This function is also called the modulo
 operator.  Where in daily life do you use this operator relatively frequently
 and probably without much thought? Any ideas?
 ```
+
+
+## Evaluation
+
+```{adm}
+#| type: progress-submit
+```
+::: {#adm-progress-submit}
+```{webr}
+#| autorun: true
+.progress_submit("01-Rithmatic", 9)
+```
+:::
