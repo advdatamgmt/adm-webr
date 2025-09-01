@@ -20,3 +20,9 @@ theory of analyses covered. Nevertheless, anyone who successfully completes the
 course will have acquired the skills to find and run any common statistical
 analysis available in R while gaining the much more valuable skills of
 creatively solving challenging data management problems.
+
+# General disclaimer
+
+The statements contained throughout this course are solely those of the 
+instructor and do not necessarily reflect the views or policies of the Centers 
+for Disease Control and Prevention.
