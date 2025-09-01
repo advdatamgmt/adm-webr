@@ -77,7 +77,7 @@ options(webr.exercise.checker = function(
     ),
     htmltools::tags$ol(
         htmltools::tags$li(
-        "Save your work to your computer by clicking: ",
+        "Save your work to your device by clicking: ",
         htmltools::tags$a(
             download = glue::glue('adm-{.assignment_ids[assignment_name]}-{now}.csv'),
             href = .csv_data_uri(df),
