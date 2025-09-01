@@ -89,7 +89,7 @@ options(webr.exercise.checker = function(
         )
         ),
         htmltools::tags$li(
-        "Go to related Canvas assignment (note this will open a new tab or window) by clicking:",
+        "Go to related Canvas assignment (note this will open a new tab or window and you may need to login) by clicking:",
         htmltools::tags$a(
             href = .canvas_link("01-Rithmatic"),
             target = "_blank",
