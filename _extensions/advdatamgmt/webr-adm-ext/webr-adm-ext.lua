@@ -84,8 +84,7 @@ function AdmCodeBlock(block)
       pandoc.read(pblock.code).blocks,
       pandoc.Attr(
         "open-on-pass-" .. pblock.attr.exercise,
-        { 'webr-adm-ext' },
-        { style = 'visibility: hidden;' }
+        { 'webr-adm-ext' }
       )
     )
   end
