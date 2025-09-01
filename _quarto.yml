@@ -10,6 +10,8 @@ format:
       - zypher
     css: styles.css
     toc: true
+    resources:
+      - _static/data
 
 author:
   name: Beau B. Bruce, MD, PhD

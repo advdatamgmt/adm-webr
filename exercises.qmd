@@ -1,0 +1,13 @@
+---
+title: "Exercises"
+---
+
+{{< include _static/_shared.qmd >}}
+
+The exercises form the core instructional and evaluative material for the 
+course.
+
+1. [Rithmatic](01-Rithmatic.html): a basic introduction starring the arithmetic operators [[canvas]](`r .canvas_link("01-Rithmatic")`){.canvas}
+2. [Atomic Data Types](02-Atomic-Data-Types.html): a deep dive into R's most important basic data types, i.e., numeric, character (strings), and logical (boolean) data types [[canvas]](`r .canvas_link("02-Atomic-Data-Types")`){.canvas} 
+
+

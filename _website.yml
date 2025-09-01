@@ -10,6 +10,8 @@ website:
     left:
       - href: index.qmd
         text: Home
+      - href: exercises.qmd
+        text: Exercises
       - href: about.qmd
         text: About
     right:
@@ -23,9 +25,4 @@ website:
             href:  https://github.com/advdatamgmt/adm-webr
           - text: Report an issue
             href:  https://github.com/advdatamgmt/adm-webr/issues
-  sidebar:
-    contents:
-      - href: 01-Rithmatic.qmd
-        text: Rithmatic
-      - href: 02-Atomic-Data-Types.qmd
-        text: Atomic Data Types
+
