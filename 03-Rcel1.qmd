@@ -1,0 +1,1087 @@
+---
+title: "Rcel, Part 1"
+---
+
+{{< include _static/_shared.qmd >}}
+
+## Exposition
+
+### Introduction
+
+Once you learn R well, you will likely find that you do not tend to use spreadsheets like Microsoft Excel as much for common tasks that you might have previously done in spreadsheet software. We will learn about a spreadsheet-like structure, `data.frame`{.r}, that develops naturally as we work with the composite data types `vector`{.r}, 
+`factor`{.r}, and `list`{.r}.
+
+These are foundational exercises so do not just type mindlessly at the R console to get the "right" answer, but also try to be sure you understand what is happening.
+
+This lesson will only cover the `vector`{.r} and `factor`{.r} data types.
+
+### Vectors
+
+A `vector`{.r} is constructed using a function simply called `c`{.r}. Note that `c` is lower case which, as you now know, matters because R is a case-sensitive language. If you type a capital, or upper case, "C" instead of lower case "c" then R will *not* know what you mean.
+This seems a minor inconvenience when you realize that "c" stands for "combine"
+or "concatenate."  Let's thank the designers of R for giving this important
+and commonly used function a short name!
+
+Try it out! Type and run `c(1, 2, 3)`{.r}.
+
+```{webr}
+#| caption: Exercise 1
+#| exercise: e1
+```
+
+::: { .hint exercise="e1"}
+::: { .callout-note collapse="false"}
+Just type: `c(1, 2, 3)`{.r}
+:::
+:::
+
+::: { .solution exercise="e1"}
+::: { .callout-note collapse="false"}
+```{webr}
+#| exercise: e1
+#| solution: true
+c(1, 2, 3)
+```
+:::
+:::
+
+```{webr}
+#| exercise: e1
+#| check: true
+gradethis::grade_this_code()
+```
+
+A convenient way to make a `vector`{.r} of consecutive numbers is to use a colon, 
+i.e, `:`{.r}, between them them like `1:5`{.r}.
+
+Try it now.
+
+```{webr}
+#| caption: Exercise 2
+#| exercise: e2
+```
+
+
+::: { .hint exercise="e2"}
+::: { .callout-note collapse="false"}
+Type `1:5`{.r}
+:::
+:::
+
+::: { .solution exercise="e2"}
+::: { .callout-note collapse="false"}
+```{webr}
+#| exercise: e2
+#| solution: true
+1:5
+```
+:::
+:::
+
+```{webr}
+#| exercise: e2
+#| check: true
+gradethis::grade_this_code()
+```
+
+A `vector`{.r} can only be made of values from the same atomic type.  So, we can
+also make a `vector`{.r} of a different type, e.g., 
+a character `vector`{.r} like this:
+
+```{r}
+#| eval: false
+c("a", "b", "c")
+```
+
+Now, you try to make a *logical* `vector`{.r}.
+
+```{webr}
+#| caption: Exercise 3
+#| exercise: e3
+```
+
+::: { .hint exercise="e3"}
+::: { .callout-note collapse="false"}
+Use the function c, TRUE, and FALSE.
+:::
+:::
+
+::: { .solution exercise="e3"}
+::: { .callout-note collapse="false"}
+An example solution would be `c(TRUE, FALSE, FALSE)`{.r}
+```{webr}
+#| exercise: e3
+#| solution: true
+```
+:::
+:::
+
+```{webr}
+#| exercise: e3
+#| check: true
+gradethis::grade_this(
+    if(is.logical(.user) && length(.user) > 1) {
+        pass()
+    } else {
+        fail()
+    }
+)
+```
+
+
+The `is.numeric`{.r}, `is.character`{.r}, and `is.logical`{.r} functions that you learned about in the [Atomic Data Types](02-Atomic-Data-Types.html) work on a `vector`{.r} too.
+Type one of those functions with a `vector`{.r}---e.g., `is.numeric(c("a", "b"))`---below,
+think about what R will respond, and then run it.
+
+
+```{webr}
+#| caption: Exercise 4
+#| exercise: e4
+```
+
+::: { .hint exercise="e4"}
+::: { .callout-note collapse="false"}
+Use the function `c`{.r} and one of these functions: `is.numeric`{.r}, 
+`is.character`{.r}, or `is.logical`{.r}.
+:::
+:::
+
+::: { .solution exercise="e4"}
+::: { .callout-note collapse="false"}
+```{webr}
+#| exercise: e4
+#| solution: true
+```
+
+Lots of valid choices here! For example:
+```{r}
+#| eval: false
+is.logical(c(TRUE, FALSE, TRUE))
+is.character(c("a", "b", "c"))
+is.numeric(c(1, 2, 3))
+```
+:::
+:::
+
+```{webr}
+#| exercise: e4
+#| check: true
+gradethis::grade_this(
+    if(grepl("is\\.(logical|character|numeric)\\( *c", .user_code)) {
+        pass()
+    } else {
+        fail()
+    }
+)
+```
+
+By now you are probably pretty tired of typing things like `c(TRUE,TRUE,TRUE,FALSE,TRUE)`{.r} and wonder if there is a way you could save things like that for later use. There is! It is called *assignment*.
+
+We can assign a name to represent a `vector`{.r} (or any R object). We do this using the `<-`{.r} operator (that is made of two characters, the less than symbol, `<`, and a hyphen, `-` with no space between). Think of it as an arrow that directs the value on the right-hand side of `<-`{.r} into the name on the left-hand side.
+
+Type `x <- c(TRUE, TRUE, TRUE, FALSE, TRUE)` below and run it.
+
+```{webr}
+#| caption: Exercise 5
+#| exercise: e5
+#| envir: env1
+```
+
+::: { .hint exercise="e5"}
+::: { .callout-note collapse="false"}
+Type `x <- c(TRUE, TRUE, TRUE, FALSE, TRUE)`{.r}
+:::
+:::
+
+::: { .solution exercise="e5"}
+::: { .callout-note collapse="false"}
+```{webr}
+#| exercise: e5
+#| solution: true
+x <- c(TRUE, TRUE, TRUE, FALSE, TRUE)
+```
+:::
+:::
+
+```{webr}
+#| exercise: e5
+#| check: true
+gradethis::grade_this_code()
+```
+
+Now you can use the name `x`{.r} in place of the `vector`{.r}.
+Type `is.logical(x)` below and run it.
+
+```{webr}
+#| caption: Exercise 6
+#| exercise: e6
+#| envir: env1
+```
+
+::: { .hint exercise="e6"}
+::: { .callout-note collapse="false"}
+Type `is.logical(x)`{.r}
+:::
+:::
+
+::: { .solution exercise="e6"}
+::: { .callout-note collapse="false"}
+```{webr}
+#| exercise: e6
+#| solution: true
+is.logical(x)
+```
+:::
+:::
+
+```{webr}
+#| exercise: e6
+#| check: true
+gradethis::grade_this_code()
+```
+
+The name `x`{.r} is just one of a nearly infinite number of names, but R does have some rules for valid names:
+
+A valid name can only consist of:
+
+- letters,
+- numbers,
+- the dot or period character (`.`), and
+- the underscore or underline character (`_`),
+
+And it can only start with:
+
+- a letter, or
+- the dot not followed by a number.
+
+You can see what the name `x`{.r} contains by typing that name. Try it now, just type `x`{.r}.
+
+```{webr}
+#| caption: Exercise 7
+#| exercise: e7
+#| envir: env1
+```
+
+::: { .hint exercise="e7"}
+::: { .callout-note collapse="false"}
+Type `x`{.r}
+:::
+:::
+
+::: { .solution exercise="e7"}
+::: { .callout-note collapse="false"}
+```{webr}
+#| exercise: e7
+#| solution: true
+x
+```
+:::
+:::
+
+```{webr}
+#| exercise: e7
+#| check: true
+gradethis::grade_this_code()
+```
+
+When you name something the same thing, it is replaced. Type and run
+`x <- c(1, 2, 3)`{.r}
+
+```{webr}
+#| caption: Exercise 8
+#| exercise: e8
+#| envir: env1
+```
+
+::: { .hint exercise="e8"}
+::: { .callout-note collapse="false"}
+Type `x <- c(1, 2, 3)`{.r}
+:::
+:::
+
+::: { .solution exercise="e8"}
+::: { .callout-note collapse="false"}
+```{webr}
+#| exercise: e8
+#| solution: true
+x <- c(1, 2, 3)
+```
+:::
+:::
+
+```{webr}
+#| exercise: e8
+#| check: true
+gradethis::grade_this_code()
+```
+
+Now look at what is in the variable `x`{.r}.
+
+```{webr}
+#| caption: Exercise 9
+#| exercise: e9
+#| envir: env1
+```
+
+```{webr}
+#| exercise: e9
+#| solution: true
+x
+```
+
+```{webr}
+#| exercise: e9
+#| check: true
+gradethis::grade_this(
+  if (.user_code == "x" && identical(.user, c(1, 2, 3))) {
+    pass()
+    } else {
+    fail()
+  }
+)
+```
+
+As you can see, `x`{.r} now contains that new numeric `vector`{.r}.  The name can stand in
+for the object that is assigned to it anywhere that the object can be used,
+even in assignment.  See that now by assigning `x`{.r} to `y`{.r}.
+
+```{webr}
+#| caption: Exercise 10
+#| exercise: e10
+#| envir: env1
+```
+
+::: { .hint exercise="e10"}
+::: { .callout-note collapse="false"}
+Type `y <- x`{.r}
+:::
+:::
+
+::: { .solution exercise="e10"}
+::: { .callout-note collapse="false"}
+```{webr}
+#| exercise: e10
+#| solution: true
+y <- x
+```
+:::
+:::
+
+```{webr}
+#| exercise: e10
+#| check: true
+gradethis::grade_this_code()
+```
+
+Finally, you cannot use one of the reserved words as names. You have seen a
+few of these already, e.g., `TRUE`{.r} and `NaN`{.r}
+
+It could really wreck havoc on R if you could change the value of those names.  
+Try to assign `5`{.r} to the name `TRUE`{.r}.
+
+```{webr}
+#| caption: Exercise 11
+#| exercise: e11
+#| envir: env1
+```
+
+::: { .hint exercise="e11"}
+::: { .callout-note collapse="false"}
+Type `TRUE <- 5`{.r}
+:::
+:::
+
+::: { .solution exercise="e11"}
+::: { .callout-note collapse="false"}
+```{webr}
+#| exercise: e11
+#| solution: true
+```
+Hopefully, the error makes a little sense.  You have an invalid left-hand
+side (i.e., TRUE) for the assignment.
+:::
+:::
+
+
+```{webr}
+#| exercise: e11
+#| check: true
+gradethis::grade_this(
+    if (.user_code == "TRUE <- 5") {
+        pass()
+    } else {
+        fail()
+    }
+)
+```
+
+```{adm}
+#| exercise: e11
+#| type: open-solution-on-pass
+```
+
+### Factors
+
+OK, it is time to turn to a new data type, i.e., `factor`{.r}.
+
+A `factor`{.r} is similar to a `vector`{.r}, but is used to represent a nominal or
+ordinal variable. This allows R to automatically give you back the right
+statistics for something that is not numeric. For now, we will use the
+summary function to show the difference.  Let's start by assigning the
+following to `c(1, 1, 2, 3, 1)`{.r} to `x`{.r}.
+
+```{webr}
+#| caption: Exercise 12
+#| exercise: e12
+#| envir: env2
+```
+
+::: { .hint exercise="e12"}
+::: { .callout-note collapse="false"}
+Type `x <- c(1, 1, 2, 3, 1)`{.r}
+:::
+:::
+
+::: { .solution exercise="e12"}
+::: { .callout-note collapse="false"}
+```{webr}
+#| exercise: e12
+#| solution: true
+x <- c(1, 1, 2, 3, 1)
+```
+:::
+:::
+
+```{webr}
+#| exercise: e12
+#| check: true
+gradethis::grade_this_code()
+```
+
+Now let's create a `factor`{.r} version of `x`{.r} in the variable `y`{.r} like this:
+
+```{r}
+#| eval: false
+y <- factor(x)
+```
+
+
+```{webr}
+#| caption: Exercise 13
+#| exercise: e13
+#| envir: env2
+```
+
+::: {.solution exercise="e13"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e13
+#| solution: true
+y <- factor(x)
+```
+:::
+:::
+
+```{webr}
+#| exercise: e13
+#| check: true
+gradethis::grade_this_code()
+```
+
+Now apply the summary function to `x`, like this: `summary(x)`{.r}
+
+```{webr}
+#| caption: Exercise 14
+#| exercise: e14
+#| envir: env2
+```
+
+::: {.solution exercise="e14"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e14
+#| solution: true
+summary(x)
+```
+:::
+:::
+
+```{webr}
+#| exercise: e14
+#| check: true
+gradethis::grade_this_code()
+```
+
+::: {.solution exercise="e14b"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e14
+#| solution: true
+y <- factor(x)
+```
+:::
+:::
+
+```{webr}
+#| exercise: e14
+#| check: true
+gradethis::grade_this_code()
+```
+
+Now apply the `summary`{.r} function to `x`{.r}:
+
+Do the same for `y`.
+
+```{webr}
+#| caption: Exercise 15
+#| exercise: e15
+#| envir: env2
+```
+
+::: {.solution exercise="e15"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e15
+#| solution: true
+summary(y)
+```
+:::
+:::
+
+```{webr}
+#| exercise: e15
+#| check: true
+gradethis::grade_this_code()
+```
+
+That last output may be a little confusing at first, but notice that it is a
+type of table with the different values in the first row and the number of
+elements in the factor that take that value in the second row.  So you see in
+the first instance, `x`{.r} is a numeric `vector`{.r} and R provides summary statistics
+that make sense for a continuous variable.  In the second case, `y`{.r} is a
+`factor`{.r} that R understands to be categorical.
+
+When you give the values labels, as you often will, it can be much easier to
+understand the summary of a `factor`{.r}. Make a new `factor`{.r} from `x` called `state`
+using labels, like this (you don't have to always create new names, we
+could just have chosen to write over `y`, but for now let's do it this way):
+`state <- factor(x, labels = c("GA", "FL", "AL"))`{.r}
+
+```{webr}
+#| caption: Exercise 16
+#| exercise: e16
+#| envir: env2
+```
+
+::: {.solution exercise="e16"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e16
+#| solution: true
+state <- factor(x, labels = c("GA", "FL", "AL"))
+```
+:::
+:::
+
+```{webr}
+#| exercise: e16
+#| check: true
+gradethis::grade_this_code()
+```
+
+Now make a summary of `state`{.r} and examine the results.
+
+```{webr}
+#| exercise: e17
+#| caption: Exercise 17
+#| envir: env2
+```
+
+::: {.solution exercise="e17"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e17
+#| solution: true
+summary(state)
+```
+:::
+:::
+
+```{webr}
+#| exercise: e17
+#| check: true
+gradethis::grade_this_code()
+```
+
+The `labels = c(...)`{.r} is a named argument to the `factor`{.r} function. The argument's name is `labels` and the argument itself is the `c(...)`{.r}. Notice the `=`{.r} sign that connects the name to the argument. We will discuss this more in the future. For now, just use this exact syntax if you need to label a numeric `vector`{.r} when creating a `factor`{.r}.
+
+Note that the labels match the order of the values if you use numbers, not the order they appear in the `vector`{.r} you convert to a `factor`{.r}. Try the following by putting `x`{.r} in a different order even though it represents the same data:
+
+`x <- c(2, 3, 1, 1, 1)`{.r}
+
+```{webr}
+#| caption: Exercise 18
+#| exercise: e18
+#| envir: env2
+```
+
+::: {.solution exercise="e18"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e18
+#| solution: true
+x <- c(2, 3, 1, 1, 1)
+```
+:::
+:::
+
+```{webr}
+#| exercise: e18
+#| check: true
+gradethis::grade_this_code()
+```
+
+Now create a `factor`{.r} named `state`{.r} from `x`{.r} in the same way as before using `labels = c("GA", "FL", "AL")`{.r}.
+
+```{webr}
+#| caption: Exercise 19
+#| exercise: e19
+#| envir: env2
+```
+
+::: {.solution exercise="e19"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e19
+#| solution: true
+state <- factor(x, labels = c("GA", "FL", "AL"))
+```
+:::
+:::
+
+```{webr}
+#| exercise: e19
+#| check: true
+gradethis::grade_this_code()
+```
+
+Examine the summary of `state`{.r}.
+
+```{webr}
+#| caption: Exercise 20
+#| exercise: e20
+#| envir: env2
+```
+
+::: {.solution exercise="e20"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e20
+#| solution: true
+summary(state)
+```
+:::
+:::
+
+```{webr}
+#| exercise: e20
+#| check: true
+gradethis::grade_this_code()
+```
+As you can see the results turned out exactly the same even though the numeric `vector`{.r} was in a different order. You can also use a character `vector`{.r} to create a `factor`{.r}, try this: `state <- factor(c("GA", "GA", "FL", "AL", "GA"))`{.r}
+
+```{webr}
+#| caption: Exercise 21
+#| exercise: e21
+#| envir: env2
+```
+
+::: {.solution exercise="e21"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e21
+#| solution: true
+state <- factor(c("GA", "GA", "FL", "AL", "GA"))
+```
+:::
+:::
+
+```{webr}
+#| exercise: e21
+#| check: true
+gradethis::grade_this_code()
+```
+
+Examine the summary of `state`{.r} again.
+
+```{webr}
+#| caption: Exercise 22
+#| exercise: e22
+#| envir: env2
+```
+
+::: {.solution exercise="e22"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e22
+#| solution: true
+summary(state)
+```
+:::
+:::
+
+```{webr}
+#| exercise: e22
+#| check: true
+gradethis::grade_this_code()
+```
+
+Now they are alphabetically ordered. Thus, how the data is structured can have an influence on the order of the names in a `factor`{.r}. There are many other ways to influence the order and we will likely see those as we progress.
+
+### Extracting Elements
+
+When you want to extract a specific element from a `vector`{.r} or `factor`{.r}, you use square brackets (i.e., `[ ]`) and the index (the number) of the element within the data structure. So to get the fifth element of `x`{.r} from before, which was `c(2, 3, 1, 1, 1)`{.r}, you'd type `x[5]`{.r}.
+
+Try it now.
+
+```{webr}
+#| caption: Exercise 23
+#| exercise: e23
+#| envir: env2
+```
+
+::: {.solution exercise="e23"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e23
+#| solution: true
+x[5]
+```
+:::
+:::
+
+```{webr}
+#| exercise: e23
+#| check: true
+gradethis::grade_this_code()
+```
+
+As you can see we got `1`{.r} which was the fifth element of the `vector`{.r} `x`{.r}. So since `x`{.r} is `c(2, 3, 1, 1, 1)`{.r}. What would you do to get R to return `3`{.r} instead of `1`{.r}?
+
+```{webr}
+#| caption: Exercise 24
+#| exercise: e24
+#| envir: env2
+```
+
+::: {.solution exercise="e24"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e24
+#| solution: true
+x[2]
+```
+:::
+:::
+
+```{webr}
+#| exercise: e24
+#| check: true
+gradethis::grade_this_code()
+
+```
+
+Just like with names we can use these extract values anywhere they would be valid. Try `x[2] + x[5]`{.r}.
+
+```{webr}
+#| caption: Exercise 25
+#| exercise: e25
+#| envir: env2
+```
+
+::: {.solution exercise="e25"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e25
+#| solution: true
+x[2] + x[5]
+```
+:::
+:::
+
+```{webr}
+#| exercise: e25
+#| check: true
+gradethis::grade_this_code()
+```
+
+What if you want a new `vector`{.r} of a subset of the values in the `vector`{.r} `x`{.r}? We need our trusty friend `c`{.r} again, try `x[c(2, 5)]`{.r}.
+
+```{webr}
+#| caption: Exercise 26
+#| exercise: e26
+#| envir: env2
+```
+
+::: {.solution exercise="e26"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e26
+#| solution: true
+x[c(2, 5)]
+```
+:::
+:::
+
+```{webr}
+#| exercise: e26
+#| check: true
+gradethis::grade_this_code()
+```
+
+So you see that returns a new `vector`{.r} of length two made up of the second and fifth elements of `x`{.r}. The square bracket notation also works on a `factor`{.r}. Now extract the third element of `state`{.r}.
+
+```{webr}
+#| caption: Exercise 27
+#| exercise: e27
+#| envir: env2
+```
+
+::: {.solution exercise="e27"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e27
+#| solution: true
+state[3]
+```
+:::
+:::
+
+```{webr}
+#| exercise: e27
+#| check: true
+gradethis::grade_this_code()
+```
+
+Now is where you'll see how `vector`{.r} operations in R are a lot like using
+functions on columns in Excel.  Keep in mind `x`{.r} is `c(2, 3, 1, 1, 1)`{.r}.  
+Type `x * 2`{.r}.
+
+```{webr}
+#| exercise: e28
+#| caption: Exercise 28
+#| envir: env2
+```
+
+::: {.solution exercise="e28"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e28
+#| solution: true
+x * 2
+```
+:::
+:::
+
+```{webr}
+#| exercise: e28
+#| check: true
+gradethis::grade_this_code()
+```
+
+How about `x < 2`{.r}?
+
+```{webr}
+#| caption: Exercise 29
+#| exercise: e29
+#| envir: env2
+```
+
+::: {.solution exercise="e29"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e29
+#| solution: true
+x < 2
+```
+:::
+:::
+
+```{webr}
+#| exercise: e29
+#| check: true
+gradethis::grade_this_code()
+
+```
+
+See how it applies the expression elementwise? 
+
+You can also apply operators to two `vector`{.r}'s of the same length in which case the resulting `vector`{.r} will be the result of the operator applied to the first element of each `vector`{.r}, then the second element of each `vector`{.r}, and so on. Remember `x`{.r} is `c(2, 3, 1, 1, 1)`{.r} and try:
+
+```{r}
+#| eval: false
+x - c(1, 0, 1, 0, 1)
+```
+
+```{webr}
+#| caption: Exercise 30
+#| exercise: e30
+#| envir: env2
+```
+
+::: {.solution exercise="e30"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e30
+#| solution: true
+x - c(1, 0, 1, 0, 1)
+```
+:::
+:::
+
+```{webr}
+#| exercise: e30
+#| check: true
+gradethis::grade_this_code()
+```
+
+You can even use a `vector`{.r} that is shorter than the other. The shorter one will be recycled, try:
+
+```{r}
+#| eval: false
+c(1, 0, 1, 0, 1, 0) + c(0, 1)
+```
+
+```{webr}
+#| caption: Exercise 31
+#| exercise: e31
+```
+
+::: {.solution exercise="e31"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e31
+#| solution: true
+c(1, 0, 1, 0, 1, 0) + c(0, 1)
+```
+:::
+:::
+
+```{webr}
+#| exercise: e31
+#| check: true
+gradethis::grade_this_code()
+```
+
+However, you will get a warning if the shorter `vector`{.r} is not a multiple of the longer `vector`{.r} because this is usually unintentional, and it most often indicates a bug in your program. In this case, though, it works the way we expect, try `c(1, 0, 1, 0, 1) + c(0, 1)`{.r}.
+
+```{webr}
+#| caption: Exercise 32
+#| exercise: e32
+```
+
+::: {.solution exercise="e32"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e32
+#| solution: true
+c(1, 0, 1, 0, 1) + c(0, 1)
+```
+:::
+:::
+
+```{webr}
+#| exercise: e32
+#| check: true
+gradethis::grade_this_code()
+
+```
+
+::: {.callout-note}
+A warning is issued by a program when it can continue executing, but is not sure it did what you were expecting it to do. A warning does not rise to the level of an error which is something that the program cannot recover from.
+:::
+
+## Experimentation
+
+Let's make a really long `vector`{.r} of sequential integers from 5 to 123.
+
+```{webr}
+#| caption: Exercise 33
+#| exercise: e33
+```
+
+::: {.solution exercise="e33"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e33
+#| solution: true
+5:123
+```
+:::
+:::
+
+```{webr}
+#| exercise: e33
+#| check: true
+gradethis::grade_this_code()
+```
+
+::: { .callout-note}
+Examine the output. Now that you know how to extract elements from a `vector`{.r} with square brackets, can you explain why R has been printing [1] at the beginning of the output all this time and why R is now printing other numbers between the square brackets ([ ])? Come ready to discuss in class.
+:::
+
+I bet you can also guess what function can test if something is a `vector`{.r} (of any type). Find out if a `factor`{.r} is also a `vector`{.r} by trying that function on `state`{.r}.
+
+```{webr}
+#| caption: Exercise 34
+#| exercise: e34
+#| envir: env2
+```
+
+::: {.solution exercise="e34"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e34
+#| solution: true
+is.vector(state)
+```
+:::
+:::
+
+```{webr}
+#| exercise: e34
+#| check: true
+gradethis::grade_this_code()
+```
+
+Remember that I said that a vector can only be made from the same atomic type? 
+
+Try typing and running `c(TRUE, 0, FALSE, 3)`{.r} and look at R's response.
+
+```{webr}
+#| caption: Experiment
+```
+
+Now, try typing and running `c("a", 3, TRUE)`{.r} and likewise examine
+R's response.
+
+```{webr}
+#| caption: Experiment
+```
+
+What is R doing? Why does this always work? Come to class prepared to discuss.
+Now submit your assignment!
+
+## Evaluate
+
+### Submit Your Assignment
+
+```{adm}
+#| type: progress-submit
+```
+::: {#adm-progress-submit}
+```{webr}
+#| autorun: true
+.progress_submit("03-Rcel1", 34)
+```
+:::
