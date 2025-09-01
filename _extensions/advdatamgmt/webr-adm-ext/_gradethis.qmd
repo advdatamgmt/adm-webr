@@ -5,14 +5,12 @@
 # adds the capability to record progress
 webr::install("gradethis", quiet = TRUE)
 library(gradethis)
-.course_id <- "150040"
-.assignment_ids <- list(
-  `01-Rithmatic` = "1129571",
-  `02-Atomic-Data-Types` = "1129572",
-  `03-Rcel1` = "1129577",
-  `04-Rcel2` = "1129578"
-)
+###########################################################
+# if you edit this section note there is an `r` block below too
+.course_id <- readLines("_static/data/course_id.txt")
+.assignment_ids <- dget("_static/data/assignment_ids.txt")
 .canvas_link <- function(a) glue::glue("https://canvas.emory.edu/courses/{.course_id}/assignments/{.assignment_ids[{a}]}")
+############################################################
 .webr_progress <- data.frame(label = character(), user_code = character(), solution_code = character(), result = logical())
 options(webr.exercise.checker = function(
   label, user_code, solution_code, check_code, envir_result, evaluate_result,
@@ -187,4 +185,11 @@ options(webr.exercise.checker = function(
     )
   }
 }
+```
+```{r}
+#| echo: false
+#| results: hide
+.course_id <- readLines("_static/data/course_id.txt")
+.assignment_ids <- dget("_static/data/assignment_ids.txt")
+.canvas_link <- function(a) glue::glue("https://canvas.emory.edu/courses/{.course_id}/assignments/{.assignment_ids[{a}]}")
 ```

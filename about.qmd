@@ -4,22 +4,23 @@ title: "About"
 
 {{< include ./_extensions/r-wasm/live/_knitr.qmd >}}
 
-This site accompanies the course MSCR 596 - Advanced Data Management at
+This website accompanies the course **MSCR 596 - Advanced Data Management** at
 [Emory University](https://www.emory.edu). It provides resources
 and information for students enrolled in this elective course that aims to
-introduce the R statistical programming language with a focus on data management
+introduce the [R statistical programming language](https://www.r-project.org/) with a focus on data management
 tasks (importing, cleaning, reshaping, transforming, and exploring data) and
 reproducible statistical analysis. R packages for the creation of
 publication-quality figures and tables will be introduced further extending the
 student's capabilities to create complete and reproducible data-processing
-pipelines from raw data to presentation and publication. While the course
-introduces some of the statistical methods available in R along with packages
-for logistic and time-to-event modeling, little of the course is devoted to how
-to perform a given statistical analysis in R nor is the underlying statistical
-theory of analyses covered. Nevertheless, anyone who successfully completes the
-course will have acquired the skills to find and run any common statistical
-analysis available in R while gaining the much more valuable skills of
-creatively solving challenging data management problems.
+pipelines from raw data to presentation and publication. 
+
+While the course introduces some of the statistical methods available in R along
+with packages for logistic and time-to-event modeling, little of the course is
+devoted to how to perform a given statistical analysis in R nor is the underlying
+statistical theory of analyses covered. Nevertheless, anyone who successfully
+completes the course will have acquired the skills to find and run any common
+statistical analysis available in R while gaining the much more valuable skills
+of creatively solving challenging data management problems.
 
 # General disclaimer
 
