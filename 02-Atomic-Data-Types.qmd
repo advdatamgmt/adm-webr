@@ -502,6 +502,17 @@ Which operator name best fits `|`{.r}? Type either
 gradethis::grade_this_code()
 ```
 
+```{adm}
+#| exercise: e18
+#| type: open-on-pass
+You may have been surprised that `TRUE | TRUE`{.r} is `TRUE`{.r} above because 
+in English the statement is ambiguous.  We often say things like "if A is true 
+or B is true (or both)" to make ourselves clear, but in R (and in mathematics
+in general) the "or" operator means "or" in the inclusive sense, i.e.,
+if either A or B is true *or both are true*, then the result is TRUE.
+```
+
+
 ::: {.callout-note}
 The `!`{.r} operator is different from the others you have seen so far in that it only takes one input (argument), whereas the others take two. One-argument operators are called *unary*, while those that take two are called *binary*. Those that take more than two are called *multiary* or *multary*. So `!`{.r} is unary while `+`{.r}, `&`{.r}, and others you have learned so far are binary. We have not yet met any multiary operators: `2 + 2 + 3`{.r} is just using a binary operator twice.
 :::
@@ -595,6 +606,11 @@ TRUE
 #| check: true
 gradethis::grade_this_code()
 ```
+
+So, that probably made sense but does the fact that `"B"`{.r} is less than 
+`"a"`{.r} make sense?  Perhaps not, but the capitals are all less than the
+lower case letters and most (if not all) punctuation is less than upper case
+letters and thus the lower case letters too.
 
 What is `"b" > "!"`{.r}?
 
