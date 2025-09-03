@@ -1,0 +1,1251 @@
+---
+title: "Rcel, Part 2"
+---
+
+{{< include _static/_shared.qmd >}}
+
+## Exposition
+
+### Introduction
+
+In the first part of this exercise we learned about `vector`{.r} and `factor`{.r} which are two composite data types as we build toward a `data.frame`{.r}. As you recall, a `vector`{.r} requires that each element to be of the same atomic data type.
+
+Now, we meet the first composite R data type that can contain different atomic types as elements simultaneously: `list`{.r}. A specialized `list`{.r} called `data.frame`{.r} will be used to store our datasets and will allow us to operate on our datasets as spreadsheet-like objects.
+
+### Lists
+
+Starting with `list`{.r}, a `list`{.r} allows you to mix ‘n’ match atomic data types. You build a list with the function `list`{.r}, like this:
+
+`l <- list("A", 2, TRUE)`{.r}
+
+See the subtle difference between `l`{.r} ("ell") and `1`{.r} ("one"). Notice that there is also a difference between `O` ("oh") and `0` ("zero"). This is important so keep an eye out for it throughout this lesson.
+
+Try creating `l` with the expression above now.
+
+```{webr}
+#| caption: Exercise 1
+#| exercise: e1
+#| envir: env1
+```
+
+::: {.hint exercise="e1"}
+::: {.callout-note collapse="false"}
+Type `l <- list("A", 2, TRUE)`{.r}.
+:::
+:::
+
+::: {.solution exercise="e1"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e1
+#| solution: true
+l <- list("A", 2, TRUE)
+```
+:::
+:::
+
+```{webr}
+#| exercise: e1
+#| check: true
+gradethis::grade_this_code()
+```
+
+To extract an element from a `list`{.r}, use double square brackets. For example, `l[[1]]`{.r} will extract the first element of `l`{.r}.
+
+Try it now.
+
+```{webr}
+#| caption: Exercise 2
+#| exercise: e2
+#| envir: env1
+```
+
+::: {.solution exercise="e2"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e2
+#| solution: true
+l[[1]]
+```
+:::
+:::
+
+```{webr}
+#| exercise: e2
+#| check: true
+gradethis::grade_this_code()
+```
+
+Now test if the first element of `l`{.r} really is a character.
+
+```{webr}
+#| caption: Exercise 3
+#| exercise: e3
+#| envir: env1
+```
+
+::: {.hint exercise="e3"}
+::: {.callout-note collapse="false"}
+Use `is.character`{.r}, `l`{.r}, and `[[1]]` somehow.
+:::
+:::
+
+::: {.solution exercise="e3"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e3
+#| solution: true
+is.character(l[[1]])
+```
+:::
+:::
+
+```{webr}
+#| exercise: e3
+#| check: true
+gradethis::grade_this_code()
+```
+
+Now test if the second element of `l`{.r} really is numeric.
+
+```{webr}
+#| caption: Exercise 4
+#| exercise: e4
+#| envir: env1
+```
+
+::: {.hint exercise="e4"}
+::: {.callout-note collapse="false"}
+Use `is.numeric`{.r}, `l`{.r}, and `[[2]]` somehow.
+:::
+:::
+
+::: {.solution exercise="e4"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e4
+#| solution: true
+is.numeric(l[[2]])
+```
+:::
+:::
+
+```{webr}
+#| exercise: e4
+#| check: true
+gradethis::grade_this_code()
+```
+
+Now check if the third element of `l`{.r} really is logical.
+
+```{webr}
+#| caption: Exercise 5
+#| exercise: e5
+#| envir: env1
+```
+
+::: {.hint exercise="e5"}
+::: {.callout-note collapse="false"}
+Use `is.logical`{.r}, `l`{.r}, and `[[3]]` somehow.
+:::
+:::
+
+::: {.solution exercise="e5"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e5
+#| solution: true
+is.logical(l[[3]])
+```
+:::
+:::
+
+```{webr}
+#| exercise: e5
+#| check: true
+gradethis::grade_this_code()
+```
+
+Finally, what function do you think checks if something really is a list? Try it now on `l`{.r}.
+
+```{webr}
+#| caption: Exercise 6
+#| exercise: e6
+#| envir: env1
+```
+
+::: {.hint exercise="e6"}
+::: {.callout-note collapse="false"}
+`is.list`{.r}?
+:::
+:::
+
+::: {.solution exercise="e6"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e6
+#| solution: true
+is.list(l)
+```
+:::
+:::
+
+```{webr}
+#| exercise: e6
+#| check: true
+gradethis::grade_this_code()
+```
+
+Each element does not have to be a single atomic value. You can use longer vectors.
+
+Reassign `l`{.r} to be `list("A", c(1,3,2,4), TRUE)`{.r}.
+
+```{webr}
+#| caption: Exercise 7
+#| exercise: e7
+#| envir: env1
+```
+
+::: {.hint exercise="e7"}
+::: {.callout-note collapse="false"}
+Type `l <- list("A", c(1,3,2,4), TRUE)`{.r}
+:::
+:::
+
+::: {.solution exercise="e7"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e7
+#| solution: true
+l <- list("A", c(1,3,2,4), TRUE)
+```
+:::
+:::
+
+```{webr}
+#| exercise: e7
+#| check: true
+gradethis::grade_this_code()
+```
+
+Now examine the value of `l`{.r} and notice how R gives you hints about how to access the elements.
+
+```{webr}
+#| caption: Exercise 8
+#| exercise: e8
+#| envir: env1
+```
+
+::: {.hint exercise="e8"}
+::: {.callout-note collapse="false"}
+Nothing more than just typing `l`{.r} ("ell").
+:::
+:::
+
+::: {.solution exercise="e8"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e8
+#| solution: true
+l
+```
+:::
+:::
+
+```{webr}
+#| exercise: e8
+#| check: true
+gradethis::grade_this_code()
+```
+
+Now examine the second element of `l`{.r}.
+
+```{webr}
+#| caption: Exercise 9
+#| exercise: e9
+#| envir: env1
+```
+
+::: {.hint exercise="e9"}
+::: {.callout-note collapse="false"}
+Don't forget the double bracket!
+:::
+:::
+
+::: {.solution exercise="e9"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e9
+#| solution: true
+l[[2]]
+```
+:::
+:::
+
+```{webr}
+#| exercise: e9
+#| check: true
+gradethis::grade_this_code()
+```
+
+You can also name the elements in a `list`{.r} like this:
+
+`l2 <- list(a = "A", b = c(1, 3, 2, 4), c = TRUE)`{.r}
+
+Try it now.
+
+```{webr}
+#| caption: Exercise 10
+#| exercise: e10
+#| envir: env2
+```
+
+::: {.hint exercise="e10"}
+::: {.callout-note collapse="false"}
+Type `l2 <- list(a = "A", b = c(1, 3, 2, 4), c = TRUE)`{.r}
+:::
+:::
+
+::: {.solution exercise="e10"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e10
+#| solution: true
+l2 <- list(a = "A", b = c(1, 3, 2, 4), c = TRUE)
+```
+:::
+:::
+
+```{webr}
+#| exercise: e10
+#| check: true
+gradethis::grade_this_code()
+```
+
+Now examine the value of `l2`{.r} and notice how R gives you hints about how to access the elements.
+
+```{webr}
+#| caption: Exercise 11
+#| exercise: e11
+#| envir: env2
+```
+
+::: {.hint exercise="e11"}
+::: {.callout-note collapse="false"}
+Type `l2`{.r}, that is ell two (`l2`) not twelve (`12`).
+:::
+:::
+
+::: {.solution exercise="e11"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e11
+#| solution: true
+l2
+```
+:::
+:::
+
+```{webr}
+#| exercise: e11
+#| check: true
+gradethis::grade_this_code()
+```
+
+So, those hints tell you to use a dollar sign to access the element by name. For example, to access the logical value in `l2`{.r}, type `l2$c`{.r}.
+
+```{webr}
+#| caption: Exercise 12
+#| exercise: e12
+#| envir: env2
+```
+
+::: {.hint exercise="e12"}
+::: {.callout-note collapse="false"}
+Type `l2$c`{.r}
+:::
+:::
+
+::: {.solution exercise="e12"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e12
+#| solution: true
+l2$c
+```
+:::
+:::
+
+```{webr}
+#| exercise: e12
+#| check: true
+gradethis::grade_this_code()
+```
+
+With a `vector`{.r} recall that you can assign to a specific element. Let's create a vector to try this with. Type `x <- c(1, 3, 2, 4)`{.r}.
+
+```{webr}
+#| caption: Exercise 13
+#| exercise: e13
+#| envir: env3
+```
+
+::: {.hint exercise="e13"}
+::: {.callout-note collapse="false"}
+Type `x <- c(1, 3, 2, 4)`{.r}
+:::
+:::
+
+::: {.solution exercise="e13"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e13
+#| solution: true
+x <- c(1, 3, 2, 4)
+```
+:::
+:::
+
+```{webr}
+#| exercise: e13
+#| check: true
+gradethis::grade_this_code()
+```
+
+If we wanted to reassign the second element to be 100, what would we do?
+
+```{webr}
+#| caption: Exercise 14
+#| exercise: e14
+#| envir: env3
+```
+
+::: {.hint exercise="e14"}
+::: {.callout-note collapse="false"}
+Type `x[2] <- 100`{.r}
+:::
+:::
+
+::: {.solution exercise="e14"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e14
+#| solution: true
+x[2] <- 100
+```
+:::
+:::
+
+```{webr}
+#| exercise: e14
+#| check: true
+gradethis::grade_this_code()
+```
+
+Now examine `x`{.r} to check the result.
+
+```{webr}
+#| caption: Exercise 15
+#| exercise: e15
+#| envir: env3
+```
+
+::: {.hint exercise="e15"}
+::: {.callout-note collapse="false"}
+Type `x`{.r}
+:::
+:::
+
+::: {.solution exercise="e15"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e15
+#| solution: true
+x
+```
+:::
+:::
+
+```{webr}
+#| exercise: e15
+#| check: true
+gradethis::grade_this_code()
+```
+
+Now, change the third element of `x`{.r} to 5.
+
+```{webr}
+#| caption: Exercise 16
+#| exercise: e16
+#| envir: env3
+```
+
+::: {.hint exercise="e16"}
+::: {.callout-note collapse="false"}
+Type `x[3] <- 5`{.r}
+:::
+:::
+
+::: {.solution exercise="e16"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e16
+#| solution: true
+x[3] <- 5
+```
+:::
+:::
+
+```{webr}
+#| exercise: e16
+#| check: true
+gradethis::grade_this_code()
+```
+
+You can also assign to parts of a list. Let's remember what `l`{.r} looks like first. Type `l`{.r}.
+
+```{webr}
+#| caption: Exercise 17
+#| exercise: e17
+#| envir: env1
+```
+
+::: {.hint exercise="e17"}
+::: {.callout-note collapse="false"}
+Type `l`{.r} ("ell")
+:::
+:::
+
+::: {.solution exercise="e17"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e17
+#| solution: true
+l
+```
+:::
+:::
+
+```{webr}
+#| exercise: e17
+#| check: true
+gradethis::grade_this_code()
+```
+
+So if I wanted to assign to the 3rd element of the `vector`{.r} that is the
+2nd element of `l`{.r}, what would one do?  Start by telling me what the
+second element of `l`{.r} is?
+
+```{webr}
+#| caption: Exercise 18
+#| exercise: e18
+#| envir: env1
+```
+
+::: {.hint exercise="e18"}
+::: {.callout-note collapse="false"}
+Type `l[[2]]`{.r} (don't forget the double brackets)
+:::
+:::
+
+::: {.solution exercise="e18"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e18
+#| solution: true
+l[[2]]
+```
+:::
+:::
+
+```{webr}
+#| exercise: e18
+#| check: true
+gradethis::grade_this_code()
+```
+
+`l[[2]]`{.r} is a `vector`{.r}.  I want the third element.  I use single square
+brackets to get an element.  If I tell you that you can treat `l[[2]]`
+just like the name for that `vector`{.r} what would you type to get the third
+element?
+
+
+```{webr}
+#| caption: Exercise 19
+#| exercise: e19
+#| envir: env1
+```
+
+::: {.hint exercise="e19"}
+::: {.callout-note collapse="false"}
+Type `l[[2]][3]`{.r}. If you didn't get it, let's talk more about it in class.
+:::
+:::
+
+::: {.solution exercise="e19"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e19
+#| solution: true
+l[[2]][3]
+```
+:::
+:::
+
+```{webr}
+#| exercise: e19
+#| check: true
+gradethis::grade_this_code()
+```
+
+Now, change that same value to 42.
+
+```{webr}
+#| caption: Exercise 20
+#| exercise: e20
+#| envir: env1
+```
+
+::: {.hint exercise="e20"}
+::: {.callout-note collapse="false"}
+Use `l[[2]][3]`, the assignment operator (`<-`), and 42.
+:::
+:::
+
+::: {.solution exercise="e20"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e20
+#| solution: true
+l[[2]][3] <- 42
+```
+:::
+:::
+
+```{webr}
+#| exercise: e20
+#| check: true
+gradethis::grade_this_code()
+```
+
+### Dataframes
+
+Now, to the last major data type that we are going to learn about in this course, the `data.frame`{.r}. A `data.frame`{.r} is a specialized list where all the elements of the list have equal length. It is perfect for representing data where there are several values (in columns) per observation (in rows).
+
+You create a `data.frame`{.r} with the `data.frame`{.r} function. Type:
+
+```{r}
+#| eval: false
+df <- data.frame(age = c(3, 2, 3, 3, 1, 2, 4, 4), 
+                 sex = factor(c("m", "f", "m", "f", "m", "f", "m", "f")), 
+                 sorethroat = factor(c("no", "no", "no", "no", "yes", 
+                                       "yes", "yes", "yes")
+                                    )
+                )
+```
+
+Here, the places that I put the line endings are not strictly required; they are
+there to help clarity with where the parentheses open and close.
+
+```{webr}
+#| caption: Exercise 21
+#| exercise: e21
+#| envir: env4
+```
+
+::: {.hint exercise="e21"}
+::: {.callout-note collapse="false"}
+Just type it out carefully. I know it is a pain, but it will make you appreciate the other ways we will create these in the future!
+:::
+:::
+
+::: {.solution exercise="e21"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e21
+#| solution: true
+df <- data.frame(age = c(3, 2, 3, 3, 1, 2, 4, 4), sex = factor(c("m", "f", "m", "f", "m", "f", "m", "f")), sorethroat = factor(c("no", "no", "no", "no", "yes", "yes", "yes", "yes")))
+```
+:::
+:::
+
+```{webr}
+#| exercise: e21
+#| check: true
+gradethis::grade_this_code()
+```
+
+Now type `df`{.r} to take a look at your new data.frame!
+
+```{webr}
+#| caption: Exercise 22
+#| exercise: e22
+#| envir: env4
+```
+
+::: {.hint exercise="e22"}
+::: {.callout-note collapse="false"}
+Type `df`{.r}
+:::
+:::
+
+::: {.solution exercise="e22"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e22
+#| solution: true
+df
+```
+:::
+:::
+
+```{webr}
+#| exercise: e22
+#| check: true
+gradethis::grade_this_code()
+```
+
+OK, do you remember how to access the element of a list by name? The `$` right? So how could you get just the age column out of `df`{.r}?
+
+```{webr}
+#| caption: Exercise 23
+#| exercise: e23
+#| envir: env4
+```
+
+::: {.hint exercise="e23"}
+::: {.callout-note collapse="false"}
+Does `df$age`{.r} make sense?
+:::
+:::
+
+::: {.solution exercise="e23"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e23
+#| solution: true
+df$age
+```
+:::
+:::
+
+```{webr}
+#| exercise: e23
+#| check: true
+gradethis::grade_this_code()
+```
+
+You can also use `summary`{.r} on data.frames. Try it now on `df`{.r}.
+
+```{webr}
+#| caption: Exercise 24
+#| exercise: e24
+#| envir: env4
+```
+
+::: {.hint exercise="e24"}
+::: {.callout-note collapse="false"}
+Does `summary(df)`{.r} make sense?
+:::
+:::
+
+::: {.solution exercise="e24"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e24
+#| solution: true
+summary(df)
+```
+:::
+:::
+
+```{webr}
+#| exercise: e24
+#| check: true
+gradethis::grade_this_code()
+```
+
+You can check what variables are in a `data.frame`{.r} like this (it also works for a list): `names(df)`{.r}. Try it now.
+
+```{webr}
+#| caption: Exercise 25
+#| exercise: e25
+#| envir: env4
+```
+
+::: {.hint exercise="e25"}
+::: {.callout-note collapse="false"}
+Type `names(df)`{.r}
+:::
+:::
+
+::: {.solution exercise="e25"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e25
+#| solution: true
+names(df)
+```
+:::
+:::
+
+```{webr}
+#| exercise: e25
+#| check: true
+gradethis::grade_this_code()
+```
+
+There are several ways to access elements in a `data.frame`{.r} and each will be useful somewhere as we get better at programming. We can access a single value by row and column. Rows first, columns second. Try `df[2, 3]`{.r}.
+
+```{webr}
+#| caption: Exercise 26
+#| exercise: e26
+#| envir: env4
+```
+
+::: {.hint exercise="e26"}
+::: {.callout-note collapse="false"}
+Type `df[2, 3]`{.r}
+:::
+:::
+
+::: {.solution exercise="e26"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e26
+#| solution: true
+df[2, 3]
+```
+:::
+:::
+
+```{webr}
+#| exercise: e26
+#| check: true
+gradethis::grade_this_code()
+```
+
+If we leave out the column specification, you get the whole row: `df[2, ]`{.r}. Try it.
+
+```{webr}
+#| caption: Exercise 27
+#| exercise: e27
+#| envir: env4
+```
+
+::: {.hint exercise="e27"}
+::: {.callout-note collapse="false"}
+Type `df[2, ]`{.r}
+:::
+:::
+
+::: {.solution exercise="e27"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e27
+#| solution: true
+df[2, ]
+```
+:::
+:::
+
+```{webr}
+#| exercise: e27
+#| check: true
+gradethis::grade_this_code()
+```
+
+If we leave out the row specification, you get the whole column: `df[, 3]`{.r}. Try it.
+
+```{webr}
+#| caption: Exercise 28
+#| exercise: e28
+#| envir: env4
+```
+
+::: {.hint exercise="e28"}
+::: {.callout-note collapse="false"}
+Type `df[, 3]`{.r}
+:::
+:::
+
+::: {.solution exercise="e28"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e28
+#| solution: true
+df[, 3]
+```
+:::
+:::
+
+```{webr}
+#| exercise: e28
+#| check: true
+gradethis::grade_this_code()
+```
+
+You can also use the column name instead of the index when you are accessing elements or columns. An example would be: `df[, "sorethroat"]`{.r}. Try it.
+
+```{webr}
+#| caption: Exercise 29
+#| exercise: e29
+#| envir: env4
+```
+
+::: {.hint exercise="e29"}
+::: {.callout-note collapse="false"}
+Type `df[, "sorethroat"]`{.r}
+:::
+:::
+
+::: {.solution exercise="e29"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e29
+#| solution: true
+df[, "sorethroat"]
+```
+:::
+:::
+
+```{webr}
+#| exercise: e29
+#| check: true
+gradethis::grade_this_code()
+```
+
+Finally, you can use the `subset`{.r} command to find rows that match certain criteria. Try `subset(df, age == 2)`{.r} to find the observations where the age of the subject is 2.
+
+```{webr}
+#| caption: Exercise 30
+#| exercise: e30
+#| envir: env4
+```
+
+::: {.hint exercise="e30"}
+::: {.callout-note collapse="false"}
+Type `subset(df, age == 2)`{.r}
+:::
+:::
+
+::: {.solution exercise="e30"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e30
+#| solution: true
+subset(df, age == 2)
+```
+:::
+:::
+
+```{webr}
+#| exercise: e30
+#| check: true
+gradethis::grade_this_code()
+```
+
+## Experimentation
+
+Now try to combine your knowledge of the `&`, `|`, and `!` operators (you may only need one of those) to find those subjects who are both age 2 and have a sorethroat using the `subset`{.r} function. 
+
+```{webr}
+#| caption: Exercise 31
+#| exercise: e31
+#| envir: env4
+```
+
+::: {.hint exercise="e31"}
+::: {.callout-note collapse="false"}
+The wording implies and (`&`) and don't forget the quotes around `"yes"`{.r} for sorethroat because you are accessing by a character type not a variable name.
+:::
+:::
+
+::: {.solution exercise="e31"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e31
+#| solution: true
+subset(df, age == 2 & sorethroat == "yes")
+```
+:::
+:::
+
+```{webr}
+#| exercise: e31
+#| check: true
+gradethis::grade_this_code()
+```
+
+What comes out of the `subset`{.r} function is a `data.frame`{.r} that you can further subset using the operators you already know. For example, try `subset(df, sorethroat == "yes")$age`{.r}.
+
+```{webr}
+#| caption: Exercise 32
+#| exercise: e32
+#| envir: env4
+```
+
+::: {.hint exercise="e32"}
+::: {.callout-note collapse="false"}
+Type `subset(df, sorethroat == "yes")$age`{.r}
+:::
+:::
+
+::: {.solution exercise="e32"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e32
+#| solution: true
+subset(df, sorethroat == "yes")$age
+```
+:::
+:::
+
+```{webr}
+#| exercise: e32
+#| check: true
+gradethis::grade_this_code()
+```
+
+And we can apply functions to that like `summary`, e.g., `summary(subset(df, sorethroat == "yes")$age)`{.r}. Try it.
+
+```{webr}
+#| caption: Exercise 33
+#| exercise: e33
+#| envir: env4
+```
+
+::: {.hint exercise="e33"}
+::: {.callout-note collapse="false"}
+Type `summary(subset(df, sorethroat == "yes")$age)`{.r}
+:::
+:::
+
+::: {.solution exercise="e33"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e33
+#| solution: true
+summary(subset(df, sorethroat == "yes")$age)
+```
+:::
+:::
+
+```{webr}
+#| exercise: e33
+#| check: true
+gradethis::grade_this_code()
+```
+
+R has a lot of built in data.frames. One we'll use a lot in this course is the `esoph`{.r} dataset. You load it with `data(esoph)`{.r}. Do that now.
+
+```{webr}
+#| caption: Exercise 34
+#| exercise: e34
+#| envir: env5
+```
+
+::: {.hint exercise="e34"}
+::: {.callout-note collapse="false"}
+Type `data(esoph)`{.r}
+:::
+:::
+
+::: {.solution exercise="e34"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e34
+#| solution: true
+data(esoph)
+```
+:::
+:::
+
+```{webr}
+#| exercise: e34
+#| check: true
+gradethis::grade_this_code()
+```
+
+Now that it is loaded (under the name `esoph`{.r}) use `summary`{.r} to examine it.
+
+```{webr}
+#| caption: Exercise 35
+#| exercise: e35
+#| envir: env5
+```
+
+::: {.hint exercise="e35"}
+::: {.callout-note collapse="false"}
+Type `summary(esoph)`{.r}
+:::
+:::
+
+::: {.solution exercise="e35"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e35
+#| solution: true
+summary(esoph)
+```
+:::
+:::
+
+```{webr}
+#| exercise: e35
+#| check: true
+gradethis::grade_this_code()
+```
+
+Extract `esoph`'s 4th row.
+
+```{webr}
+#| caption: Exercise 36
+#| exercise: e36
+#| envir: env5
+```
+
+::: {.hint exercise="e36"}
+::: {.callout-note collapse="false"}
+Type `esoph[4, ]`{.r}
+:::
+:::
+
+::: {.solution exercise="e36"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e36
+#| solution: true
+esoph[4, ]
+```
+:::
+:::
+
+```{webr}
+#| exercise: e36
+#| check: true
+gradethis::grade_this_code()
+```
+
+List the variable names in `esoph`{.r}.
+
+```{webr}
+#| caption: Exercise 37
+#| exercise: e37
+#| envir: env5
+```
+
+::: {.hint exercise="e37"}
+::: {.callout-note collapse="false"}
+Type `names(esoph)`{.r}
+:::
+:::
+
+::: {.solution exercise="e37"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e37
+#| solution: true
+names(esoph)
+```
+:::
+:::
+
+```{webr}
+#| exercise: e37
+#| check: true
+gradethis::grade_this_code()
+```
+
+`esoph`{.r} is in a case-control format where each row represents multiple cases and controls, in variables named `ncases`{.r} and `ncontrols`{.r}. So, if you are asked how many observations there are you’d add the number of cases and controls.
+
+So, write code that will give the number of cases which have tobacco consumption (`tobgp`) of 30+ gm/day. You’ll find the function `sum`{.r} helpful, which takes a vector and adds it up. You'll use it in a pattern just like you did with `summary` above on a column of a subset. 
+
+```{webr}
+#| caption: Exercise 38
+#| exercise: e38
+#| envir: env5
+```
+
+::: {.hint exercise="e38"}
+::: {.callout-note collapse="false"}
+`subset(esoph, tobgp == "30+")`{.r} is the kernel of what you need. Then, that is a little `data.frame`{.r} from which you need the variable `ncases`{.r} and you then need to add it up - how do you put it all together?
+:::
+:::
+
+::: {.solution exercise="e38"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e38
+#| solution: true
+```
+A couple of examples that work are `sum(subset(esoph, tobgp == "30+")$ncases)`
+and `sum(esoph$ncases[esoph$tobgp == "30+"])`.
+:::
+:::
+
+```{webr}
+#| exercise: e38
+#| check: true
+gradethis::grade_this(
+    if(.user == sum(subset(esoph, tobgp == "30+")$ncases) && 
+       grepl("ncases", .user_code)) {
+       pass()
+    } else {
+        fail("There are at least a couple of solutions. Don't give up!")
+    }
+)
+```
+
+OK, here is your most challenging problem yet. What is the number of observations (`ncases`{.r} + `ncontrols`{.r}) where both the age group (`agegp`) is 25-34 years and tobacco consumption is 10-19 gm/day?
+
+```{webr}
+#| caption: Exercise 39
+#| exercise: e39
+#| envir: env5
+```
+
+::: {.hint exercise="e39"}
+::: {.callout-note collapse="false"}
+Don't overthink it. It is a straightforward extension of the last problem. Calculate each of the two pieces separately even though it requires repetition and simply add them together with `+`{.r} is one solution.
+:::
+:::
+
+::: {.solution exercise="e39"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e39
+#| solution: true
+```
+Some things that work are `sum(subset(esoph, agegp == "25-34" & tobgp == "10-19")$ncases) + sum(subset(esoph, agegp == "25-34" & tobgp == "10-19")$ncontrols)`, `sum(subset(esoph, agegp == "25-34" & tobgp == "10-19")[, c("ncases", "ncontrols")])`, and `sum(esoph$ncases[esoph$agegp == "25-34" & esoph$tobgp == "10-19"],esoph$ncontrols[esoph$agegp == "25-34" & esoph$tobgp == "10-19"])`.
+:::
+:::
+
+```{webr}
+#| exercise: e39
+#| check: true
+gradethis::grade_this(
+    if(.user == sum(subset(esoph, agegp == "25-34" & tobgp == "10-19")[, c("ncases", "ncontrols")]) && 
+       grepl("ncases", .user_code)) {
+       pass()
+    } else {
+        fail("There are at few possible solutions. Don't give up!")
+    }
+)
+```
+
+## Evaluate
+
+### Submit Your Assignment
+
+Submit your assignment below.
+
+```{adm}
+#| type: progress-submit
+```
+::: {#adm-progress-submit}
+```{webr}
+#| autorun: true
+.progress_submit("04-Rcel2", 39)
+```
+:::
