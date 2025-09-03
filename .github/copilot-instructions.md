@@ -1,3 +1,18 @@
+# Environment Key for Shared Objects
+
+- If an exercise requires R code execution that shares a common object (e.g., `l`), add an `envir` key to the defining block (e.g., `#| envir: env1`).
+- Use `envY` where Y is a number representing the shared group of exercises that rely on a given object.
+- Only include the `envir` key when needed for shared state between exercises.
+
+# File Initialization
+
+- Every new lesson `.qmd` file must begin with YAML front matter containing only the `title` field.
+- Immediately after the YAML, include an blank line and the shared include line: `{{< include _static/_shared.qmd >}}`
+- Narrative and didactic text should precede the first exercise, with all R code, function names, variable names, and literals formatted as `code`{.r}.
+- Start with a `## Exposition` section with subsections as appropriate.
+- If the overall flow becomes more experimental and less direct, change to a `## Experiment` section.
+- Finally just before submission, start a `## Evaluate` section.
+
 # Repository-Specific Copilot Instructions for adm-webr
 
 These instructions are requirements for all Copilot-assisted editing in this repository. Please follow them strictly for all Quarto `.qmd` lesson files and related content.
@@ -16,7 +31,10 @@ These instructions are requirements for all Copilot-assisted editing in this rep
   4. Solution block (always in a fenced div: `::: {.solution exercise="eX"}`)
   5. Check block (always last, never containing hints or instructions)
 
-Each of the preceding should be contiguous and in that order, with no unrelated content except for one blank line between each component.
+
+When adding new exercises, always append them after the last existing content or exercise in the file, unless a specific insertion point is requested.
+
+The didactic/instructional text before each exercise must explicitly state any R code or assignment the user is expected to type, especially for object creation or reassignment. Do not rely on hints or solutions for essential instructions as they are not visible to the user.
 
 **Solution and Hint Requirements:**
 - Every exercise must have a solution block (fenced div with `.solution`), and the solution must contain a code block in the required format.
