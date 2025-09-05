@@ -76,9 +76,14 @@ Do not alter instructional text preceding the defining blocks or after the check
 
 ## Process
 
-- When in doubt, ask for confirmation after the first few changes before sweeping the whole file.
-- If the user requests a repo-wide sweep, apply the above rules to all `.qmd` files in the repository.
-- Document any additional repo-specific conventions here as they arise.
+- When clearing a file, always use a patch to remove all lines (not just an empty string edit) to ensure the file is truly empty.
+  This guarantees no residual content remains.
+  Do not use the insert_edit_into_file tool with an empty string for this purpose.
+  Use apply_patch to remove all lines instead.
+  
+When in doubt, ask for confirmation after the first few changes before sweeping the whole file.
+If the user requests a repo-wide sweep, apply the above rules to all `.qmd` files in the repository.
+Document any additional repo-specific conventions here as they arise.
 
 ---
 _Last updated: 2025-08-30_
