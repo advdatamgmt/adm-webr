@@ -1,0 +1,341 @@
+---
+title: "Functions"
+---
+
+{{< include _static/_shared.qmd >}}
+
+## Exposition
+
+Data are the "nouns" of a computer language while functions are the "verbs." We now have a solid foundation with respect to the various datatypes in R so it is a good time to turn to the language's verbs, functions.
+
+I also like to think of functions as a type of creature that eats and processes data thereby providing a useful output. Think of yeast which "eat" sugar and process it into alcohol.
+
+Functions, like creatures, also have an anatomy: a name, a mouth, and a body. Take the `c`{.r} function as an example that we learned about back in [Rcel, part 1](03-Rcel1.html). The name of the function is `c`{.r}. The mouth is the parentheses.
+
+`c("e", "a", "t")`{.r}
+
+The food, called arguments, i.e., the characters of the word "eat", goes in the mouth separated by commas (I like to think of them as teeth, but now, maybe I’m taking the analogy too far... 😆).
+
+Where is the body? R functions are generally shy and do not like to show off their body, so they hide it. However, if you call their name without offering food, they will show it to you as they turn to run away realizing you do not plan to offer them anything to eat. (Yes, the analogy is definitely getting thin 🤣)
+
+Try it now with the function named `c`{.r}. Just type `c`{.r} to see the body of the function.
+
+```{webr}
+#| caption: Exercise 1
+#| exercise: e1
+```
+
+::: {.hint exercise="e1"}
+::: {.callout-note collapse="false"}
+Type just `c`{.r}. No parentheses, just `c`{.r}.
+:::
+:::
+
+::: {.solution exercise="e1"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e1
+#| solution: true
+c
+```
+:::
+:::
+
+```{webr}
+#| exercise: e1
+#| check: true
+gradethis::grade_this_code()
+```
+
+`c`{.r} has an unusually strange body. Trust me, dark magic is going on there so 
+I suggest you just look away, unless you are into that sort of thing. Let’s look
+at a more typical function, `factor`{.r}, which you also met in 
+[Rcel, part 1](03-Rcel1.html). How can you make `factor`{.r} show you its body? 
+
+```{webr}
+#| caption: Exercise 2
+#| exercise: e2
+```
+
+::: {.hint exercise="e2"}
+::: {.callout-note collapse="false"}
+Type just `factor`{.r}. No parentheses, just `factor`{.r}.
+:::
+:::
+
+::: {.solution exercise="e2"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e2
+#| solution: true
+factor
+```
+:::
+:::
+
+```{webr}
+#| exercise: e2
+#| check: true
+gradethis::grade_this_code()
+```
+
+There is a lot going on there, but look at the general structure. The keyword 
+`function`{.r} followed by the mouth enclosed in parentheses `()` tells you some details about the foods this creature eats. Next, you see a section enclosed in
+curly brackets `{}`: that’s the body. What is inside? Even now, I hope you can
+appreciate that is the very R code we have been learning so far! The body of a
+function holds a recipe of R code that can be reused to repeat a useful action.
+
+If you thought `c`{.r} was odd, there are even functions that do not show their mouth without some coaxing. Can you think of one? What is an "action" you have taken on data that did not need parentheses? Think about it for a moment before continuing.
+
+How about the operators, like `+`, `*`, `>`, etc.? Can you believe that they are 
+**ALL** functions? They are, but you have to know how to get these painfully shy creatures to show even their mouth.
+
+```{=html}
+<div>You usually find the pipe, <code class="sourceCode r"><span class="sc">|</span></code>,
+above the backslash, <code class="sourceCode r"><span class="sc">\</span></code>, on a key at the right edge 
+of your keyboard, i.e., 
+<kbd><div>|</div><div>\</div></kbd>, which means you need to press 
+<span class="kbdcombo">
+  <kbd>Shift</kbd> + <kbd><div>|</div><div>\</div></kbd>
+  </span> to get the 
+<code class="sourceCode r"><span class="sc">|</span></code> character. 
+</div><br/>
+```
+
+```{=html}
+<div>To do so, you need to get bold by calling their name by using backticks. 
+A backtick looks like, <code class="sourceCode r"><span class="sc">`</span></code>, 
+and is not a quote, <code class="sourceCode r"><span class="sc">'</span></code>. 
+On the keyboard, you usually find it on the same key as and under the tilde, 
+<code class="sourceCode r"><span class="sc">~</span></code>, i.e., 
+<kbd><div>~</div><div>`</div></kbd></div>
+on the upper left side of your keyboard under the <kbd>Esc</kbd> key.
+```
+
+Try this: `` `*`(2, 2) ``{.r}
+
+```{webr}
+#| caption: Exercise 3
+#| exercise: e3
+```
+
+::: {.solution exercise="e3"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e3
+#| solution: true
+`*`(2, 2)
+```
+:::
+:::
+
+```{webr}
+#| exercise: e3
+#| check: true
+gradethis::grade_this_code()
+```
+
+Can you guess how to get `*` to show you its body? (Hint: use backticks.)
+
+```{webr}
+#| caption: Exercise 4
+#| exercise: e4
+```
+
+::: {.hint exercise="e4"}
+::: {.callout-note collapse="false"}
+Did you forget the backticks?
+:::
+:::
+
+::: {.solution exercise="e4"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e4
+#| solution: true
+`*`
+```
+:::
+:::
+
+```{webr}
+#| exercise: e4
+#| check: true
+gradethis::grade_this_code()
+```
+
+All arguments have names, but you do not always need to use them. Look at the help for `factor`{.r} by typing `?factor`{.r}. Near the top of the help, you’ll see the arguments for the function. In order, the names of the arguments for the `factor`{.r} function are `x`, `levels`, `labels`, `exclude`, `ordered`, and `nmax`. After many you will note an equals sign with something after it. These are the defaults for the argument if you do not specify them. However, just because `levels` does not have an explicit default in the list does not mean that it does not have one. If you read further into the help it says that `levels` does have a default value.
+
+Since all values have a default, the function `factor`{.r} will return valid output even if run with no arguments, like this:
+
+`factor()`{.r}
+
+Try it now.
+
+```{webr}
+#| caption: Exercise 5
+#| exercise: e5
+```
+
+::: {.solution exercise="e5"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e5
+#| solution: true
+factor()
+```
+:::
+:::
+
+```{webr}
+#| exercise: e5
+#| check: true
+gradethis::grade_this_code()
+```
+
+R's response means that you created an empty (length 0) factor. On the other hand, `+` does not have default arguments, so if you type \`+\`() you'll get: Error in \`+\`(): operator needs one or two arguments.
+
+So why the names? The most important reason as you will learn in the next section is so that you can refer to the arguments by name in the body of the function. A secondary use has to do with the way you call functions.
+
+If you do not name the arguments when you call the function, R assumes that you are using them in order starting with the first listed. Names are useful when you need to skip an argument, want to be explicit about which argument something is, or if you are (or are afraid you might be) using them out of order.
+
+Let's explore this. Start by creating a variable named `a` that contains the vector `c(1, 1, 2, 2)`{.r}.
+
+```{webr}
+#| caption: Exercise 6
+#| exercise: e6
+```
+
+::: {.hint exercise="e6"}
+::: {.callout-note collapse="false"}
+Type just `a <- c(1, 1, 2, 2)`{.r}
+:::
+:::
+
+::: {.solution exercise="e6"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e6
+#| solution: true
+a <- c(1, 1, 2, 2)
+```
+:::
+:::
+
+```{webr}
+#| exercise: e6
+#| check: true
+gradethis::grade_this_code()
+```
+
+OK, when we use the `labels` argument to give them nice labels we have to type `factor(a, labels = c("M", "F"))`{.r}. Why? Because the second argument is not used and the third is named `labels`.
+
+What is the name of the first argument according to the help file? Now specify that name (even though you do not have to) and run this same command: `factor(a, labels = c("M", "F"))`{.r}
+
+```{webr}
+#| caption: Exercise 7
+#| exercise: e7
+```
+
+::: {.hint exercise="e7"}
+::: {.callout-note collapse="false"}
+Don't forget to add the correct tag to the first argument!
+:::
+:::
+
+::: {.solution exercise="e7"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e7
+#| solution: true
+factor(x = a, labels = c("M", "F"))
+```
+:::
+:::
+
+```{webr}
+#| exercise: e7
+#| check: true
+gradethis::grade_this_code()
+```
+
+Now you know most everything you need to know about how to call functions that already exist, but a lot of programming should be writing your own functions.
+
+Functions are your friend. Have you ever cut-and-paste a piece code to run it again after just tweaking it to run on slightly different data? Try not to do that, instead use functions. Why?
+
+* When you use functions, you encapsulate little pieces of logic in your program. It makes your code and the thinking behind it much easier to understand and modify. The code will also be shorter overall.
+
+* If you cut-and-paste and realize you need to change something you have to do it everywhere and not make any mistakes, with a function you do it in one place: the function.
+
+* You will also likely find your functions are useful in your next project, and a function is a good way to carry something useful from one project to another in a useful way.
+
+A major principle of programming is DRY which stands for "Don’t Repeat Yourself". I might cut and paste something twice, but by the 3rd paste unless I’m seriously not going to do it again, and it is a very short (one line) piece of code, I am going to be trying to make a function out of it. This rule of not using the same code more than three times is also known as the "rule of three" in computer programming.
+
+So how to write a function? Name it (via assignment with `<-`), use the keyword `function` followed by the mouth with a list of arguments. Then, write the R code as the body. Use it just like any other R function. Use the name you chose for the argument in the function to work on the data that it will pass in. The name is NOT magic. You can pick anything you like and it will stand in for the object that is passed, just like you assigned that data to that name outside the function. Type this example of a trivial function:
+
+```{webr}
+#| caption: Exercise 8
+#| exercise: e8
+```
+
+::: {.solution exercise="e8"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e8
+#| solution: true
+add2 <- function(x) { x + 2 }
+```
+:::
+:::
+
+```{webr}
+#| exercise: e8
+#| check: true
+gradethis::grade_this_code()
+```
+
+Now try it out, like this:
+
+```{webr}
+#| caption: Exercise 9
+#| exercise: e9
+```
+
+::: {.solution exercise="e9"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e9
+#| solution: true
+add2(5)
+```
+:::
+:::
+
+```{webr}
+#| exercise: e9
+#| check: true
+gradethis::grade_this_code()
+```
+
+And again:
+
+```{webr}
+#| caption: Exercise 10
+#| exercise: e10
+```
+
+::: {.solution exercise="e10"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e10
+#| solution: true
+add2(2)
+```
+:::
+:::
+
+```{webr}
+#| exercise: e10
+#| check: true
+gradethis::grade_this_code()
+```
