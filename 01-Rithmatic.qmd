@@ -49,9 +49,9 @@ gradethis::grade_this_code()
 
 Now try subtraction below by asking R what `20 - 4.2`{.r} equals.  However,
 this time, instead of clicking `{r} run_button()`,
-use the keyboard shortcut <span class="kbdcombo"><kbd>Ctrl</kbd> +
-<kbd>Enter</kbd></span> on Windows/Linux or <span class="kbdcombo">
-<kbd>⌘ command</kbd> + <kbd>Enter</kbd></span> on Mac (note the + sign means to
+use the keyboard shortcut `<span class="kbdcombo"><kbd>Ctrl</kbd> +
+<kbd>Enter</kbd></span>`{=html} on Windows/Linux or `<span class="kbdcombo">
+<kbd>⌘ command</kbd> + <kbd>Enter</kbd></span>`{=html} on Mac (note the + sign means to
 press both keys at the same time).
 
 Using the keyboard shortcut is a lot faster than clicking the button, so you

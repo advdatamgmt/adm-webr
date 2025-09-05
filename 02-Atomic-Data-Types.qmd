@@ -347,7 +347,21 @@ gradethis::grade_this_code()
 
 ### Logical Operators
 
-Useful operators for the logical data type include `&`{.r}, `|`{.r}, and `!`{.r}. They are called logical operators. The `|`{.r} is often called a pipe character. You usually find it above the backslash <kbd>`\`</kbd> key on the right side of your keyboard. Let's try each of the logical operators out, starting with the `!`{.r} operator. In the code cell below, try evaluating `!TRUE`{.r} and `!FALSE`{.r}, then answer the questions that follow.
+Useful operators for the logical data type include `&`{.r}, `|`{.r}, and `!`{.r}. They are called logical operators. The `|`{.r} is often called a pipe character. 
+
+```{=html}
+<div>You usually find the pipe, <code class="sourceCode r"><span class="sc">|</span></code>,
+above the backslash, <code class="sourceCode r"><span class="sc">\</span></code>, on a key at the right edge 
+of your keyboard, i.e., 
+<kbd><div>|</div><div>\</div></kbd>, which means you need to press 
+<span class="kbdcombo">
+  <kbd>Shift</kbd> + <kbd><div>|</div><div>\</div></kbd>
+  </span> to get the 
+<code class="sourceCode r"><span class="sc">|</span></code> character. 
+</div><br/>
+```
+
+Let's try each of the logical operators out, starting with the `!`{.r} operator. In the code cell below, try evaluating both `!TRUE`{.r} and `!FALSE`{.r} below, then answer the questions that follow.
 
 ```{webr}
 #| caption: Experiment

@@ -7,8 +7,9 @@ kbd {
     display: inline-block;
     padding: 0 5px;
     border-radius: 0.25em;
-    min-width: 1.5em;
+    min-width: 3em;
     text-align: center;
+    vertical-align: middle;
     margin-right: .15em;
 }
 
@@ -16,6 +17,10 @@ kbd:hover {
     position: relative;
     top: 2px;
     left: 2px;
+}
+
+kbd > div {
+  font-size: x-small;
 }
 
 span.kbdcombo:hover > kbd {
