@@ -20,7 +20,7 @@ kbd:hover {
 }
 
 kbd > div {
-  font-size: x-small;
+  font-size: small;
 }
 
 span.kbdcombo:hover > kbd {
@@ -62,4 +62,17 @@ span.menu-text > img.img-fluid {
 
 a.canvas {
   font-size: x-small;
+}
+
+.btn.progress-continue {
+  border: 1px solid #000;
+  background-color: #e69f00;
+  border-radius: 0.25em;
+  padding: 0.5em 1em;
+  cursor: pointer;
+}
+
+.btn.progress-continue:hover {
+  color: #000;
+  background-color: #f0e442;
 }

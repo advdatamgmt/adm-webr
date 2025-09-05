@@ -3,6 +3,7 @@ project:
   post-render:
     - cp _static/canvas_start_assignment.png _site/_static/
     - cp _static/canvas_submission.png _site/_static/
+    - cp _static/progress-continue.js _site/_static/
 
 format:
   live-html:
@@ -12,6 +13,9 @@ format:
     toc: true
     resources:
       - _static/data
+    include-after-body:
+      - text: |
+          <script src="/_static/progress-continue.js"></script>
 
 author:
   name: Beau B. Bruce, MD, PhD

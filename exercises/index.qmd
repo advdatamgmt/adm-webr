@@ -11,5 +11,4 @@ course.
 2. [Atomic Data Types](02-Atomic-Data-Types.qmd): a deep dive into R's most important basic data types, i.e., numeric, character (strings), and logical (boolean) data types [[canvas]](`r .canvas_link("02-Atomic-Data-Types")`){.canvas} 
 3. [Rcel, Part 1](03-Rcel1.qmd): an introduction to two of R's composite data structures, i.e., `vector` and `factor` [[canvas]](`r .canvas_link("03-Rcel1")`){.canvas}
 4. [Rcel, Part 2](04-Rcel2.qmd): a continuation of our exploration of key R composite data structures, focusing on `list` and `data.frame` [[canvas]](`r .canvas_link("04-Rcel2")`){.canvas}
-
-
+5. [Functions](05-Functions.qmd): a deep dive into R functions, including function arguments and return values [[canvas]](`r .canvas_link("05-Functions")`){.canvas}
