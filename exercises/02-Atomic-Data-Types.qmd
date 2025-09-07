@@ -1,8 +1,10 @@
 ---
 title: "Atomic Data Types"
+sidebar: exercises
+order: 200
 ---
 
-{{< include _static/_shared.qmd >}}
+{{< include ../_static/_shared.qmd >}}
 
 ## Exposition
 

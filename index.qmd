@@ -2,11 +2,8 @@
 title: "MSCR 596 - Advanced Data Management with R"
 ---
 
-{{< include ./_extensions/r-wasm/live/_knitr.qmd >}}
-{{< include ./_extensions/r-wasm/live/_gradethis.qmd >}}
-
 This website accompanies the course **MSCR 596 - Advanced Data Management** at
 [Emory University](https://www.emory.edu) that aims to
 introduce the [R statistical programming language](https://www.r-project.org/) with a focus on data management
 tasks and reproducible statistical analysis.  Learn more in [About](about.html) 
-or jump right into the [Exercises](exercises.html).
+or jump right into the [Exercises](exercises).

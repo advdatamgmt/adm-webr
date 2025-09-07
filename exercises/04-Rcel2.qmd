@@ -1,8 +1,10 @@
 ---
 title: "Rcel, Part 2"
+sidebar: exercises
+order: 400
 ---
 
-{{< include _static/_shared.qmd >}}
+{{< include ../_static/_shared.qmd >}}
 
 ## Exposition
 
