@@ -1,8 +1,10 @@
 ---
 title: "Rithmatic"
+sidebar: exercises
+order: 100
 ---
 
-{{< include _static/_shared.qmd >}}
+{{< include ../_static/_shared.qmd >}}
 
 ## Exposition
 

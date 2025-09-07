@@ -10,13 +10,13 @@ website:
     left:
       - href: index.qmd
         text: Home
-      - href: exercises.qmd
+      - href: exercises/index.qmd
         text: Exercises
       - href: about.qmd
         text: About
     right:
       - href: https://canvas.emory.edu
-        text: "![](_static/Canvas_Bug_White_RGB.svg)"
+        text: "![](/_static/Canvas_Bug_White_RGB.svg)"
         aria-label: "Emory Canvas"
     tools:
       - icon: github
@@ -25,4 +25,11 @@ website:
             href:  https://github.com/advdatamgmt/adm-webr
           - text: Report an issue
             href:  https://github.com/advdatamgmt/adm-webr/issues
+  sidebar:
+    - contents:
+        - section: Exercises
+          id: exercises
+          contents:
+            - auto: "exercises/**.qmd"
+
 
