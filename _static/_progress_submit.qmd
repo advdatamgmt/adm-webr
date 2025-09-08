@@ -3,8 +3,8 @@
 #| output: false
 ###########################################################
 # if you edit this section note there is an `r` block below too
-.course_id <- readLines("../_static/data/course_id.txt")
-.assignment_ids <- dget("../_static/data/assignment_ids.txt")
+.course_id <- readLines("_static/data/course_id.txt")
+.assignment_ids <- dget("_static/data/assignment_ids.txt")
 .canvas_link <- function(a) glue::glue("https://canvas.emory.edu/courses/{.course_id}/assignments/{.assignment_ids[{a}]}")
 ############################################################
 .webr_progress <- data.frame(label = character(), user_code = character(), solution_code = character(), result = logical())
