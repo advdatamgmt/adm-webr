@@ -12,12 +12,17 @@ document.addEventListener("DOMContentLoaded", function() {
     outer:
     while(true) {
         while (next) {
-            next.setAttribute("pc-old-display", next.style.display);
+            next.setAttribute("data-pc-old-display", next.style.display);
             next.style.display = "none";
             next = next.nextElementSibling;
         }
         if (first.parentElement.tagName == "SECTION" && first.parentElement.nextElementSibling) {
             first = first.parentElement.nextElementSibling;
+            next = first.firstElementChild;
+        } else if (first.parentElement.tagName == "SECTION" 
+                     && first.parentElement.parentElement.tagName == "SECTION"
+                     && first.parentElement.parentElement.nextElementSibling) {
+            first = first.parentElement.parentElement.nextElementSibling;
             next = first.firstElementChild;
         } else {
             break outer;
@@ -41,16 +46,21 @@ document.addEventListener("DOMContentLoaded", function() {
             outer:
             while(true) {
                 while (next && !next.querySelector(".btn.progress-continue")) {
-                    next.style.display = next.getAttribute("pc-old-display");
+                    next.style.display = next.getAttribute("data-pc-old-display");
                     next = next.nextElementSibling;
                 }
                 // make sure the next button is also displayed
                 if (next && next.querySelector(".btn.progress-continue")) {
-                    next.style.display = next.getAttribute("pc-old-display");
+                    next.style.display = next.getAttribute("data-pc-old-display");
                     break outer;
                 }
                 if (first.parentElement.tagName == "SECTION" && first.parentElement.nextElementSibling) {
                     first = first.parentElement.nextElementSibling;
+                    next = first.firstElementChild;
+                } else if (first.parentElement.tagName == "SECTION" 
+                     && first.parentElement.parentElement.tagName == "SECTION"
+                     && first.parentElement.parentElement.nextElementSibling) {
+                    first = first.parentElement.parentElement.nextElementSibling;
                     next = first.firstElementChild;
                 } else {
                     break outer;

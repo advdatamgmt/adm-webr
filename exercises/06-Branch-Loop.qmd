@@ -1,0 +1,759 @@
+---
+title: "Branching Out & Feeling Loopy"
+order: 600
+---
+
+{{< include ../_static/_shared.qmd >}}
+
+## Exposition
+
+In the [last lesson](05-Functions.qmd) we had an introduction to functions, 
+a way to encapsulate pieces of R code such that we can substitute different
+values (arguments) into that code and apply that "recipe" to a set of
+arbitrary values. However, what if we need the program to "think",
+i.e., make decisions about what to do? What if we need to do
+something many, many times: ten times, one hundred times, a million
+times? 
+
+Yes, our function might be easier to write than the code it
+runs, but you still don’t want to write your function out that many
+times. This lesson begins to address both of these problems.
+
+Control structures guide the flow of your program. The first group of
+control structures we will consider are *branch* control structures.
+They are called branch structures because they place a "fork in the
+road" for your program and provide a way for your program to "think".
+
+### Branch structures
+
+#### If-else 
+
+The first control structure to look at is `if`{.r}. Start by assigning `5`{.r} to `x`{.r} so that we have something to work with.
+
+```{webr}
+#| caption: Exercise 1
+#| exercise: e1
+#| envir: env1
+```
+
+::: {.solution exercise="e1"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e1
+#| solution: true
+x <- 5
+```
+:::
+:::
+
+```{webr}
+#| exercise: e1
+#| check: true
+gradethis::grade_this_code()
+```
+
+Now, read the code carefully below and then run it to see what happens.
+
+```{webr}
+#| caption: Exercise 2
+#| exercise: e2
+#| envir: env1
+if (x > 3) { "x is greater than 3" }
+```
+
+::: {.solution exercise="e2"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e2
+#| solution: true
+if (x > 3) { "x is greater than 3" }
+```
+:::
+:::
+
+```{webr}
+#| exercise: e2
+#| check: true
+gradethis::grade_this_code()
+```
+
+```{adm}
+#| exercise: e2
+#| type: open-on-pass
+As you could see, R returns the `character`{.r} vector (length 1) that
+`"x is greater than 3"`{.r} because `x`{.r} is `5`{.r} which
+is greater than `3`{.r}.  Thus, R ran the code in the brackets.
+Just as with a function, R returned the last thing, in this case the
+only thing, executed inside the brackets.
+```
+
+Now look at this code; it is similar but not exactly the same as the code above.
+What do you think will happen when you run it?  Try it after you have thought 
+about it.
+
+```{webr}
+#| caption: Exercise 3
+#| exercise: e3
+#| envir: env1
+if (x > 10) { "x is greater than 10" }
+```
+
+::: {.solution exercise="e3"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e3
+#| solution: true
+if (x > 10) { "x is greater than 10" }
+```
+:::
+:::
+
+```{webr}
+#| exercise: e3
+#| check: true
+gradethis::grade_this_code()
+```
+
+Did R return anything?  No, because `x`{.r} is `5`{.r} which is not greater 
+than `10`{.r}, So, R just skipped the block of code in those curly braces.
+You can add an `else`{.r} to provide an alternative block of code to
+execute if the expression in the parentheses following the
+keyword `if` is not `TRUE`{.r} .
+
+Examine the following code, think about what it should do,
+and when you are done, run it to see if you are correct!
+
+
+```{webr}
+#| caption: Exercise 4
+#| exercise: e4
+#| envir: env1
+if (x > 10) {  
+    "x is greater than 10" 
+} else { 
+    "x is not greater than 10" 
+}
+```
+
+::: {.solution exercise="e4"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e4
+#| solution: true
+if (x > 10) {
+  "x is greater than 10"
+} else {
+  "x is not greater than 10"
+}
+```
+:::
+:::
+
+```{webr}
+#| exercise: e4
+#| check: true
+gradethis::grade_this_code()
+```
+
+The output should make sense I hope. You can also chain `if`{.r}-`else`{.r} 
+statements together. Examine the following code. 
+Think about what will happen, then run it:
+
+```{webr}
+#| caption: Exercise 5
+#| exercise: e5
+#| envir: env1
+if (x > 10) {
+  "x is greater than 10"
+} else if (x > 4) {
+  "x is greater than 4"
+} else {
+  "x is less than or equal to 4"
+}
+```
+
+::: {.solution exercise="e5"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e5
+#| solution: true
+if (x > 10) {
+  "x is greater than 10"
+} else if (x > 4) {
+  "x is greater than 4"
+} else {
+  "x is less than or equal to 4"
+}
+```
+:::
+:::
+
+```{webr}
+#| exercise: e5
+#| check: true
+gradethis::grade_this_code()
+```
+
+#### Switch 
+
+Now, let's try out a different branching structure, i.e., a `switch`{.r} statement 
+which I placed in a function called `center`{.r}.  As you can see the function
+`center`{.r} takes two arguments, `x`{.r} and `type`{.r}. The argument
+`x`{.r} is the `numeric`{.r} vector to be summarized and `type`{.r} is a
+`character`{.r} vector that indicates which summary statistic to compute with a
+default of `"mean"`{.r}.  Examine the code below and think about what it does.
+When you are ready, run it.
+
+```{webr}
+#| caption: Exercise 6
+#| exercise: e6
+#| envir: env2
+center <- function(x, type = "mean") {
+  switch(type,
+    mean = mean(x),
+    median = median(x),
+    trim = mean(x, trim = 0.1)
+  )
+}
+```
+
+::: {.solution exercise="e6"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e6
+#| solution: true
+center <- function(x, type = "mean") {
+  switch(type,
+    mean = mean(x),
+    median = median(x),
+    trim = mean(x, trim = 0.1)
+  )
+}
+```
+:::
+:::
+
+```{webr}
+#| exercise: e6
+#| check: true
+gradethis::grade_this_code()
+```
+
+Hopefully you aren't suprised that the code above doesn't produce any output as
+we were merely assigning a function to the name `center`{.r}.  Let's take
+the new function for a spin.
+
+I've defined `d` as follows:
+```{webr}
+#| autorun: true
+#| edit: false
+#| envir: global
+d <- c(-0.5, -0.6,  0.9,  0.2,  1.1,  1.5, -0.5,  0.3, -2.3,  0.7)
+```
+
+Try it using the following R code: `center(d, "mean")`{.r}
+
+```{webr}
+#| caption: Exercise 7
+#| exercise: e7
+#| envir: env2
+```
+
+::: {.solution exercise="e7"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e7
+#| solution: true
+center(d, "mean")
+```
+:::
+:::
+
+```{webr}
+#| exercise: e7
+#| check: true
+gradethis::grade_this_code()
+```
+
+Now `center(d, "median")`{.r}.
+
+```{webr}
+#| caption: Exercise 8
+#| exercise: e8
+#| envir: env2
+```
+
+::: {.solution exercise="e8"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e8
+#| solution: true
+center(d, "median")
+```
+:::
+:::
+
+```{webr}
+#| exercise: e8
+#| check: true
+gradethis::grade_this_code()
+```
+
+Next `center(d, "trim")`{.r}
+
+```{webr}
+#| caption: Exercise 9
+#| exercise: e9
+#| envir: env2
+```
+
+::: {.solution exercise="e9"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e9
+#| solution: true
+center(d, "trim")
+```
+:::
+:::
+
+```{webr}
+#| exercise: e9
+#| check: true
+gradethis::grade_this_code()
+```
+
+Finally, try your function on `d`{.r} without specifying the second 
+argument: `center(d)`{.r}
+
+```{webr}
+#| caption: Exercise 10
+#| exercise: e10
+#| envir: env2
+```
+
+::: {.solution exercise="e10"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e10
+#| solution: true
+center(d)
+```
+:::
+:::
+
+```{webr}
+#| exercise: e10
+#| check: true
+gradethis::grade_this_code()
+```
+
+Did you get the answer you expected, i.e., the same as `center(d, "mean")`{.r}?
+Hopefully so!
+
+### Loop structures
+
+#### For loops
+
+The `for`{.r} loop control structure allows you to iterate over a `vector`{.r} 
+or `list`{.r}. Type in and try this R code:
+
+```{.r}
+for (x in 10:1) { print(x) }
+```
+
+```{webr}
+#| caption: Exercise 11
+#| exercise: e11
+#| envir: env3
+```
+
+::: {.solution exercise="e11"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e11
+#| solution: true
+for (x in 10:1) { print(x) }
+```
+:::
+:::
+
+```{webr}
+#| exercise: e11
+#| check: true
+gradethis::grade_this_code()
+```
+
+The `print`{.r} function prints the value in `x`{.r} at that time.  In this case 
+of a loop, nothing is returned (unless you assign it somewhere 
+as we'll see later), so we need the `print`{.r} function to show us 
+what is going on.
+
+Read the `for` loop as "for each element in the vector `10:1`{.r} 
+call it `x`{.r} temporarily and do what is inside the curly brackets.
+Recall `10:1`{.r} is shorthand for `c(10, 9, 8, 7, 6, 5, 4, 3, 2, 1)`{.r}.
+
+Now, I've already defined the list `l`{.r} as:
+
+```{webr}
+#| autorun: true
+#| edit: false
+#| envir: global
+l <- list(a = c(3, 4, 5), b = c("dogs", "cats"))
+```
+
+See what happens when you iterate over the object `l` like this (be careful
+with the "ell" vs. "one" distinction!):
+```{.r}
+for (x in l) { print(x[1]) }
+```
+
+```{webr}
+#| caption: Exercise 12
+#| exercise: e12
+#| envir: env3
+```
+
+::: {.solution exercise="e12"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e12
+#| solution: true
+for (x in l) { print(x[1]) }
+```
+:::
+:::
+
+```{webr}
+#| exercise: e12
+#| check: true
+gradethis::grade_this_code()
+```
+
+As you see it took each element of `l`{.r}, i.e., `a`{.r} and then `b`{.r}, and 
+assigned it temporarily to `x`{.r} and printed the first value of each element.
+
+#### While loops
+
+A `while`{.r} loop keeps doing something while the condition is `TRUE`{.r}. 
+Study and run this code:
+
+```{webr}
+#| caption: Exercise 13
+#| exercise: e13
+i <- 10
+while (i > 0) {
+  print(i)
+  i <- i - 1
+}
+```
+
+::: {.solution exercise="e13"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e13
+#| solution: true
+i <- 10
+while (i > 0) {
+  print(i)
+  i <- i - 1
+}
+```
+:::
+:::
+
+```{webr}
+#| exercise: e13
+#| check: true
+gradethis::grade_this_code()
+```
+
+If you aren’t careful, you could write a loop that never ends. 
+Study and try this code to see what happens:
+
+```{webr}
+#| caption: Exercise 14
+#| exercise: e14
+#| timelimit: 0.1
+i <- 1
+while (i > 0) {
+  print(i)
+  i <- i + 1
+}
+```
+
+::: {.solution exercise="e14"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e14
+#| solution: true
+```
+
+```{.r}
+i <- 1
+while (i > 0) {
+  print(i)
+  i <- i + 1
+}
+```
+:::
+:::
+
+```{webr}
+#| exercise: e14
+#| check: true
+gradethis::grade_this(pass())
+```
+
+`<btn type="button" class="btn progress-continue">Continue</btn>`{=html}
+
+I stopped that code after about a tenth of a second because otherwise it 
+would have run forever!  (Computers count really fast!) 
+The condition `i > 0`{.r} is always `TRUE`{.r} when 
+I start from `1`{.r} and keep adding `1`{.r} to it!  When you are in RStudio
+you can stop the execution of code by clicking the red stop button in the upper
+right corner of the Console pane or by pressing the <kbd>Esc</kbd> key.
+
+Two reserved words permit further control of loops: `break`{.r} and `next`{.r}.
+When used within a loop (either a `for`{.r} or `while`{.r} loop), they allow 
+you to completely break out of the loop and continue further along your program 
+(i.e., `break`{.r}) or to skip the rest of the current loop and start the next 
+one (i.e., `next`{.r}). They can help with tricky situations.
+
+Try running this example using `break`{.r}:
+
+```{webr}
+#| caption: Exercise 15
+#| exercise: e15
+i <- 10
+while(TRUE) {
+  if(i == 0) break;
+  print(i)
+  i <- i - 1
+}
+```
+
+::: {.solution exercise="e15"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e15
+#| solution: true
+i <- 10
+while(TRUE) {
+  if(i == 0) break;
+  print(i)
+  i <- i - 1
+}
+```
+:::
+:::
+
+```{webr}
+#| exercise: e15
+#| check: true
+gradethis::grade_this_code()
+```
+
+Above is an trivial example of using `break`{.r}.  Here we just used `TRUE`{.r} 
+as the `while`{.r} condition.  Thus, it would be an infinite loop were it
+not for the use of `break`{.r}. 
+
+Now study  this example that also uses `next`{.r} in a trivial way
+just to illustrate the concepts we are learning. See if you can figure out
+what it will do.  Just go step by step; write down what `i`{.r} is as you go
+step by step and figure out what will be printed out.  Then, run the code
+and see if you were right! 
+
+```{webr}
+#| caption: Exercise 16
+#| exercise: e16
+i <- 20
+while(TRUE) {
+  if(i < 5) break;
+  if(i %% 2) {
+    i <- i - 1
+    next; # go to next iteration if odd
+  }
+  print(i)
+  i <- i - 1
+}
+```
+
+::: {.solution exercise="e16"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e16
+#| solution: true
+i <- 20
+while(TRUE) {
+  if(i < 5) break;
+  if(i %% 2) {
+    i <- i - 1
+    next; # go to next iteration if odd
+  }
+  print(i)
+  i <- i - 1
+}
+```
+:::
+:::
+
+```{webr}
+#| exercise: e16
+#| check: true
+gradethis::grade_this_code()
+```
+
+```{adm}
+#| exercise: e16
+#| type: open-on-pass
+Did you get it?  Review it more if not, also think about how to rewrite
+it so that the `while`{.r} loop works just the same without using either 
+`break`{.r} or `next`{.r}.  We will discuss in class.
+```
+
+### The ifelse function
+
+The `ifelse` function is a vectorized way of applying an `if`{.r}-`else`{.r} 
+logic.  It is technically not a control structure because it does not
+change the flow of your program, but it is very useful and
+similar in concept to `if`{.r}-`else`{.r}. 
+It is very useful for making decisions on each item in a vector or each row in 
+a `data.frame`{.r}.
+
+I've defined `y` as follows:
+```{webr}
+#| autorun: true
+#| edit: false
+#| envir: global
+y <- c(5, 0, 6, 8, 9, 7, 3, 4, 4, 7)
+```
+
+Now type and run this R code:
+
+```{.r}
+ifelse(y == 7, "seven", "not seven")
+```
+
+```{webr}
+#| caption: Exercise 17
+#| exercise: e17
+#| envir: env5
+```
+
+::: {.solution exercise="e17"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e17
+#| solution: true
+ifelse(y == 7, "seven", "not seven")
+```
+:::
+:::
+
+```{webr}
+#| exercise: e17
+#| check: true
+gradethis::grade_this_code()
+```
+
+Try this R code to check for even numbers:
+
+```{.r}
+ifelse(y %% 2 == 0, "even", "odd")
+```
+
+```{webr}
+#| caption: Exercise 18
+#| exercise: e18
+#| envir: env5
+```
+
+::: {.solution exercise="e18"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e18
+#| solution: true
+ifelse(y %% 2 == 0, "even", "odd")
+```
+:::
+:::
+
+```{webr}
+#| exercise: e18
+#| check: true
+gradethis::grade_this_code()
+```
+
+You don't have to return a `character`{.r} vector.  Try this R code to return
+`0`{.r} for even numbers and `1`{.r} for odd numbers:
+
+```{.r}
+ifelse(y %% 2 == 0, 0, 1)
+```
+
+```{webr}
+#| caption: Exercise 19
+#| exercise: e19
+#| envir: env5
+```
+
+::: {.solution exercise="e19"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e19
+#| solution: true
+ifelse(y %% 2 == 0, 0, 1)
+```
+:::
+:::
+
+```{webr}
+#| exercise: e19
+#| check: true
+gradethis::grade_this_code()
+```
+
+Here is a fun one using a new operator, the `%in%`{.r} operator.  You will find
+this operator is useful in many situations and can use it in other places
+than just inside an `ifelse`{.r} function call:
+
+```{.r}
+ifelse(y %in% c(7, 4, 0), "in", "out")
+```
+
+```{webr}
+#| caption: Exercise 20
+#| exercise: e20
+```
+
+::: {.solution exercise="e20"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e20
+#| solution: true
+ifelse(y %in% c(7, 4, 0), "in", "out")
+```
+:::
+:::
+
+```{webr}
+#| exercise: e20
+#| check: true
+gradethis::grade_this_code()
+```
+
+Hopefully, that made sense. If not, we can discuss more in class.
+You've learned a lot!  That's enough for now!  Take a break!
+
+## Evaluate
+
+```{adm}
+#| type: progress-submit
+```
+::: {#adm-progress-submit}
+```{webr}
+#| autorun: true
+.progress_submit("06-Branch-Loop", 20)
+```
+:::
