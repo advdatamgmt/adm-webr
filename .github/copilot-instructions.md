@@ -1,3 +1,27 @@
+# Robot-Mode Copilot Enforcement
+
+## Atomic Rule Structure
+
+1. All rules must be atomic, numbered, and unambiguous.
+2. For every edit, Copilot MUST:
+  - Extract a checklist of requirements from instructions and user prompt.
+  - Validate output against this checklist before responding.
+  - If any requirement is not met, halt and report the exact rule violated.
+3. For Quarto exercises:
+  - Didactic text must precede every exercise block and explicitly state the R code the user should type unless the exercise suggests the user is supposed to come up with it on their own.
+  - The defining block must have both `caption` and `exercise` labels.
+  - If shared objects are required, add the correct `envir` key.
+  - Solution block must be present and contain a code block.
+  - Hint block is optional but must be immediately followed by a solution block if present.
+  - Check block must only contain grading code.
+  - All fenced divs must use straight quotes and correct closing order.
+  - All blocks must be sequentially numbered.
+4. After every change, Copilot must run a validation sweep:
+  - Confirm all requirements are satisfied.
+  - If not, halt and report the first unmet requirement.
+5. No natural language explanations unless explicitly requested.
+6. If Copilot cannot comply, output: “ERROR: Unable to comply with rule [number]: [rule text]”.
+
 # Environment Key for Shared Objects
 
 - If an exercise requires R code execution that shares a common object (e.g., `l`), add an `envir` key to the defining block (e.g., `#| envir: env1`).
@@ -13,7 +37,7 @@
 - If the overall flow becomes more experimental and less direct, change to a `## Experiment` section.
 - Finally just before submission, start a `## Evaluate` section.
 
-# Repository-Specific Copilot Instructions for adm-webr
+# Repository-Specific Copilot Instructions for adm-webr (Robot Mode)
 
 These instructions are requirements for all Copilot-assisted editing in this repository. Please follow them strictly for all Quarto `.qmd` lesson files and related content.
 
@@ -30,6 +54,10 @@ These instructions are requirements for all Copilot-assisted editing in this rep
   3. Optional hint div (always in a fenced div: `::: {.hint exercise="eX"}`)
   4. Solution block (always in a fenced div: `::: {.solution exercise="eX"}`)
   5. Check block (always last, never containing hints or instructions)
+
+## Submission Block Requirement
+
+- The exercise count in `.progress_submit("lesson-name", N)` must always match the actual number of exercises in the lesson. Update this value whenever exercises are added or removed.
 
 
 When adding new exercises, always append them after the last existing content or exercise in the file, unless a specific insertion point is requested.

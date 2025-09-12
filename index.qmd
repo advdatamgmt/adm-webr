@@ -1,5 +1,6 @@
 ---
 title: "MSCR 596 - Advanced Data Management with R"
+sidebar: false
 ---
 
 This website accompanies the course **MSCR 596 - Advanced Data Management** at
