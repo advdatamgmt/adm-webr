@@ -1,0 +1,1960 @@
+---
+title: "Food Prep"
+---
+
+{{< include ../_static/_shared.qmd >}}
+
+## Exposition
+
+### Introduction
+
+This module focuses on several common data manipulation tasks: selecting, subsetting, concatenating, merging, and sorting. Some you have already seen before, but now is a good time for review and reinforcement. For example, recall that when you want to select a part of a vector, you use square brackets, `[]`{.r}, placing between them a numeric vector that lists the elements you want to extract.
+
+Let's get started!
+
+### Subsetting and combining vectors
+
+R has a built-in vector that contains the capital letters: `LETTERS`{.r}. Let’s try a few things with that vector. First just type, `LETTERS`{.r} to see what is inside.
+
+```{webr}
+#| caption: Exercise 1
+#| exercise: e1
+```
+
+::: {.solution exercise="e1"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e1
+#| solution: true
+LETTERS
+```
+:::
+:::
+
+```{webr}
+#| exercise: e1
+#| check: true
+gradethis::grade_this_code()
+```
+
+So, how would you get the 10th letter from `LETTERS`{.r}?
+
+```{webr}
+#| caption: Exercise 2
+#| exercise: e2
+```
+
+::: {.solution exercise="e2"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e2
+#| solution: true
+LETTERS[10]
+```
+:::
+:::
+
+```{webr}
+#| exercise: e2
+#| check: true
+gradethis::grade_this_code()
+```
+
+How about selecting the 15th through the 22nd letters? Don't forget about the `:`{.r} operator!
+
+```{webr}
+#| caption: Exercise 3
+#| exercise: e3
+```
+
+::: {.hint exercise="e3"}
+::: {.callout-note collapse="false"}
+15:22 is a part of the answer
+:::
+:::
+
+::: {.solution exercise="e3"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e3
+#| solution: true
+LETTERS[15:22]
+```
+:::
+:::
+
+```{webr}
+#| exercise: e3
+#| check: true
+gradethis::grade_this_code()
+```
+
+If I wanted the odd letters, I could do this:
+
+`LETTERS[c(1,3,5,7,9,11,13,15,17,19,21,23,25)]`{.r}
+
+But that's a lot of work. Anytime you see something like this in your code you should try to figure out a way to do it more automatically. There is a function called `seq`{.r} that creates sequences of numbers.
+
+Type:
+
+`seq(1, 26, by = 2)`{.r}
+
+to see what it does.
+
+```{webr}
+#| caption: Exercise 4
+#| exercise: e4
+```
+
+::: {.solution exercise="e4"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e4
+#| solution: true
+seq(1, 26, by = 2)
+```
+:::
+:::
+
+```{webr}
+#| exercise: e4
+#| check: true
+gradethis::grade_this_code()
+```
+
+Before proceeding, take a look at the help for `seq`{.r} since it is a very
+useful function.
+
+```{webr}
+#| edit: false
+#| autorun: true
+?seq
+```
+
+Now use `seq` to get the odd letters from `LETTERS`{.r}.
+
+```{webr}
+#| caption: Exercise 5
+#| exercise: e5
+```
+
+::: {.hint exercise="e5"}
+::: {.callout-note collapse="false"}
+Does LETTERS[seq(...)] as a suggestion help?
+:::
+:::
+
+::: {.solution exercise="e5"}
+::: {.callout-note collapse="false"}
+Any of the following will work:
+```{webr}
+#| exercise: e5
+#| solution: true
+LETTERS[seq(1, length.out = 13, by = 2)]
+LETTERS[seq(to = 25, by = 2)]
+LETTERS[seq(to = 26, by = 2)]
+LETTERS[seq(1, 25, by = 2)]
+LETTERS[seq(1, 26, by = 2)]
+```
+:::
+:::
+
+```{webr}
+#| exercise: e5
+#| check: true
+gradethis::grade_this({
+  # pass if the value is correct
+  pass_if_equal()
+
+  # or fallback to a failing grade
+  fail(hint = TRUE)
+})
+```
+
+Now get the even letters from `LETTERS`{.r} also using `seq`{.r}.
+
+```{webr}
+#| caption: Exercise 6
+#| exercise: e6
+```
+
+::: {.hint exercise="e6"}
+::: {.callout-note collapse="false"}
+With what number should you start?
+:::
+:::
+
+::: {.solution exercise="e6"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e6
+#| solution: true
+LETTERS[seq(2, length.out = 13)]
+LETTERS[seq(2, 26, by = 2)]
+```
+:::
+:::
+
+```{webr}
+#| exercise: e6
+#| check: true
+gradethis::grade_this({
+  # pass if the value is correct
+  pass_if_equal()
+
+  # or fallback to a failing grade
+  fail(hint = TRUE)
+})
+```
+
+Another good function named `rep`{.r}, which is technically a mnemonic for "replicate" but I typically remember it as "repeat". Try `rep(5, 10)`{.r}.
+
+```{webr}
+#| caption: Exercise 7
+#| exercise: e7
+```
+
+::: {.solution exercise="e7"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e7
+#| solution: true
+rep(5, 10)
+```
+:::
+:::
+
+```{webr}
+#| exercise: e7
+#| check: true
+gradethis::grade_this_code()
+```
+
+Again, such a useful function that you should take a look at the help for it.
+
+```{webr}
+#| edit: false
+#| autorun: true
+?rep
+```
+
+Now that you've looked through the help, let's see more of the flexibility of `rep`{.r}. Here are some examples.  Based on what you read in the help, see if you can figure out what each one will do before you run it.  If any do not make sense, make a note to ask about it in class.
+
+`rep(c(1, 2), 5)`{.r}
+
+```{webr}
+#| caption: Exercise 8
+#| exercise: e8
+```
+
+::: {.solution exercise="e8"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e8
+#| solution: true
+rep(c(1, 2), 5)
+```
+:::
+:::
+
+```{webr}
+#| exercise: e8
+#| check: true
+gradethis::grade_this_code()
+```
+
+Next try:
+
+`rep(c(1, 2), each = 5)`{.r}
+
+```{webr}
+#| caption: Exercise 9
+#| exercise: e9
+```
+
+::: {.solution exercise="e9"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e9
+#| solution: true
+rep(c(1, 2), each = 5)
+```
+:::
+:::
+
+```{webr}
+#| exercise: e9
+#| check: true
+gradethis::grade_this_code()
+```
+
+Next try:
+
+`rep(1:3, 3:1)`{.r}
+
+```{webr}
+#| caption: Exercise 10
+#| exercise: e10
+```
+
+::: {.solution exercise="e10"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e10
+#| solution: true
+rep(1:3, 3:1)
+```
+:::
+:::
+
+```{webr}
+#| exercise: e10
+#| check: true
+gradethis::grade_this_code()
+```
+
+And there is nothing to stop you from getting the same element of a vector more than once - try:
+
+`LETTERS[rep(1:3, 3:1)]`{.r}
+
+```{webr}
+#| caption: Exercise 11
+#| exercise: e11
+```
+
+::: {.solution exercise="e11"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e11
+#| solution: true
+LETTERS[rep(1:3, 3:1)]
+```
+:::
+:::
+
+```{webr}
+#| exercise: e11
+#| check: true
+gradethis::grade_this_code()
+```
+
+Want to get rid of something? Use negative numbers:
+
+`LETTERS[-26:-21]`{.r}
+
+```{webr}
+#| caption: Exercise 12
+#| exercise: e12
+```
+
+::: {.solution exercise="e12"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e12
+#| solution: true
+LETTERS[-26:-21]
+```
+:::
+:::
+
+```{webr}
+#| exercise: e12
+#| check: true
+gradethis::grade_this_code()
+```
+
+So this is another way to get the even numbers!
+
+`LETTERS[-seq(1, 26, by = 2)]`{.r}
+
+```{webr}
+#| caption: Exercise 13
+#| exercise: e13
+```
+
+::: {.solution exercise="e13"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e13
+#| solution: true
+LETTERS[-seq(1, 26, by = 2)]
+```
+:::
+:::
+
+```{webr}
+#| exercise: e13
+#| check: true
+gradethis::grade_this_code()
+```
+
+Remember that R returns the values where they are `TRUE`{.r} when you use a logical vector to subset a vector.
+
+If I've created a vector `n5`{.r} that contains the numbers 1 through 5 like this:
+
+```{webr}
+#| edit: false
+#| autorun: true
+n5 <- 1:5
+```
+
+Think about what you will get if you type:
+
+`n5[c(TRUE, FALSE, TRUE, TRUE, FALSE)]`{.r}
+
+And then try it to see if you get the result you expected.
+
+```{webr}
+#| caption: Exercise 14
+#| exercise: e14
+```
+
+::: {.solution exercise="e14"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e14
+#| solution: true
+n5[c(TRUE, FALSE, TRUE, TRUE, FALSE)]
+```
+:::
+:::
+
+```{webr}
+#| exercise: e14
+#| check: true
+gradethis::grade_this_code()
+```
+
+Because R "recycles" a vector used for subsetting until the length is the same as the longer vector (remember that from our early lessons?) you can get the even letters this way!
+
+`LETTERS[c(FALSE, TRUE)]`{.r}
+
+```{webr}
+#| caption: Exercise 15
+#| exercise: e15
+```
+
+::: {.solution exercise="e15"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e15
+#| solution: true
+LETTERS[c(FALSE, TRUE)]
+```
+:::
+:::
+
+```{webr}
+#| exercise: e15
+#| check: true
+gradethis::grade_this_code()
+```
+
+Now use the same technique for the odd letters! How?
+
+```{webr}
+#| caption: Exercise 16
+#| exercise: e16
+```
+
+::: {.solution exercise="e16"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e16
+#| solution: true
+LETTERS[c(TRUE, FALSE)]
+```
+:::
+:::
+
+```{webr}
+#| exercise: e16
+#| check: true
+gradethis::grade_this_code()
+```
+
+The vector `letsamp` contains a vector of 100 random letters. Type `letsamp`{.r} to take a look at it.
+
+```{webr}
+#| setup: true
+#| exercise: 
+#|   - e17
+#|   - e18
+#|   - e19
+#|   - e20
+#|   - e21
+set.seed(42)
+letsamp <- sample(LETTERS, 100, replace = TRUE)
+```
+
+```{webr}
+#| caption: Exercise 17
+#| exercise: e17
+```
+
+::: {.solution exercise="e17"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e17
+#| solution: true
+letsamp
+```
+:::
+:::
+
+```{webr}
+#| exercise: e17
+#| check: true
+gradethis::grade_this_code()
+```
+
+Use `==`{.r} to test which letters are P.
+
+```{webr}
+#| caption: Exercise 18
+#| exercise: e18
+```
+
+::: {.hint exercise="e18"}
+::: {.callout-note collapse="false"}
+Did you remember the quotes around "P"?
+:::
+:::
+
+::: {.solution exercise="e18"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e18
+#| solution: true
+letsamp == "P"
+```
+:::
+:::
+
+```{webr}
+#| exercise: e18
+#| check: true
+gradethis::grade_this_code()
+```
+
+Because R treats `TRUE`{.r} as equal to `1`{.r} when a logical vector is converted to a numeric vector you can use the `sum`{.r} function to count the P's like this:
+
+`sum(letsamp == "P")`{.r}
+
+```{webr}
+#| caption: Exercise 19
+#| exercise: e19
+```
+
+::: {.solution exercise="e19"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e19
+#| solution: true
+sum(letsamp == "P")
+```
+:::
+:::
+
+```{webr}
+#| exercise: e19
+#| check: true
+gradethis::grade_this_code()
+```
+
+A very useful operator is the `%in%`{.r} operator, which tests if something is "in" the vector, and which we saw in the [last module](06-Branch-Loop.qmd).
+
+Use it to "mind your Ps and Qs" like this:
+
+`letsamp[letsamp %in% c("P", "Q")]`{.r}
+
+```{webr}
+#| caption: Exercise 20
+#| exercise: e20
+```
+
+::: {.solution exercise="e20"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e20
+#| solution: true
+letsamp[letsamp %in% c("P", "Q")]
+```
+:::
+:::
+
+```{webr}
+#| exercise: e20
+#| check: true
+gradethis::grade_this_code()
+```
+
+Finally, don't forget that you can use `c`{.r} to concatenate multiple vectors together in very flexible ways. Try:
+
+`c(LETTERS[1:3], c("H", "I"), letsamp[letsamp %in% c("P", "Q")])`{.r}
+
+```{webr}
+#| caption: Exercise 21
+#| exercise: e21
+```
+
+::: {.solution exercise="e21"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e21
+#| solution: true
+c(LETTERS[1:3], c("H", "I"), letsamp[letsamp %in% c("P", "Q")])
+```
+:::
+:::
+
+```{webr}
+#| exercise: e21
+#| check: true
+gradethis::grade_this_code()
+```
+
+### Subsetting and merging data frames
+
+Ok, let's turn to the doing the same sort of tasks with `data.frame`{.r} as with did with various `vector`{.r} types.  I've pre-loaded a few `data.frame`{.r}'s for you. The first is called `cholera_merge`{.r}. Let's look at its first 6 rows:
+
+```{webr}
+#| setup: true
+#| exercise: 
+#|   - e22
+#|   - e23
+#|   - e24
+#|   - e25
+load("_static/data/cholera_merge.rda")
+```
+
+`cholera_merge[1:6, ]`{.r}
+
+```{webr}
+#| caption: Exercise 22
+#| exercise: e22
+```
+
+::: {.solution exercise="e22"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e22
+#| solution: true
+cholera_merge[1:6, ]
+```
+:::
+:::
+
+```{webr}
+#| exercise: e22
+#| check: true
+gradethis::grade_this_code()
+```
+
+Use a logical operator to get certain rows:
+
+`cholera_merge[cholera_merge$area == 4, ]`{.r}
+
+```{webr}
+#| caption: Exercise 23
+#| exercise: e23
+```
+
+::: {.solution exercise="e23"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e23
+#| solution: true
+cholera_merge[cholera_merge$area == 4, ]
+```
+:::
+:::
+
+```{webr}
+#| exercise: e23
+#| check: true
+gradethis::grade_this_code()
+```
+
+You can use `subset`{.r} to seemingly do the same thing:
+
+`subset(cholera_merge, area == 4)`{.r}
+
+```{webr}
+#| caption: Exercise 24
+#| exercise: e24
+```
+
+::: {.solution exercise="e24"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e24
+#| solution: true
+subset(cholera_merge, area == 4)
+```
+:::
+:::
+
+```{webr}
+#| exercise: e24
+#| check: true
+gradethis::grade_this_code()
+```
+
+::: {#e25}
+However, you will run into a problem if you try to do something like:
+
+`subset(cholera_merge, area == 4)$area <- 6`{.r}
+
+It won't work. So don't type it. Instead, you have to do this:
+
+`cholera_merge[cholera_merge$area == 4, ]$area <- 6`{.r}
+
+```{webr}
+#| caption: Exercise 25
+#| exercise: e25
+```
+:::
+
+::: {.solution exercise="e25"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e25
+#| solution: true
+cholera_merge[cholera_merge$area == 4, ]$area <- 6
+```
+:::
+:::
+
+```{webr}
+#| exercise: e25
+#| check: true
+gradethis::grade_this_code()
+```
+
+```{webr}
+#| setup: true
+#| exercise: 
+#|   - e26
+#|   - e27
+#|   - e28
+load("_static/data/cholera_merge.rda")
+cholera_merge[cholera_merge$area == 4, ]$area <- 6
+```
+
+Verify that all the area 4 are now area 6...
+
+`subset(cholera_merge, area == 4)`{.r}
+
+```{webr}
+#| caption: Exercise 26
+#| exercise: e26
+```
+
+::: {.solution exercise="e26"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e26
+#| solution: true
+subset(cholera_merge, area == 4)
+```
+:::
+:::
+
+```{webr}
+#| exercise: e26
+#| check: true
+gradethis::grade_this_code()
+```
+
+... and ...
+
+`subset(cholera_merge, area == 6)`{.r}
+
+```{webr}
+#| caption: Exercise 27
+#| exercise: e27
+```
+
+::: {.solution exercise="e27"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e27
+#| solution: true
+subset(cholera_merge, area == 6)
+```
+:::
+:::
+
+```{webr}
+#| exercise: e27
+#| check: true
+gradethis::grade_this_code()
+```
+
+Appears it worked. Now it is your turn to put `cholera_merge`{.r} back the way it was using the pattern of test and assignment I showed you [above](#e25).
+
+```{webr}
+#| caption: Exercise 28
+#| exercise: e28
+```
+
+::: {.solution exercise="e28"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e28
+#| solution: true
+cholera_merge[cholera_merge$area == 6, ]$area <- 4
+```
+:::
+:::
+
+```{webr}
+#| exercise: e28
+#| check: true
+gradethis::grade_this_code()
+```
+
+You can combine multiple conditions using `&`{.r} and `|`{.r}, for example, try:
+
+`cholera_merge[cholera_merge$sex == "F" & cholera_merge$area == 3, ]`{.r}
+
+```{webr}
+#| setup: true
+#| exercise: 
+#|   - e29
+#|   - e30
+#|   - e31
+#|   - e32
+load("_static/data/cholera_merge.rda")
+```
+
+```{webr}
+#| caption: Exercise 29
+#| exercise: e29
+```
+
+::: {.solution exercise="e29"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e29
+#| solution: true
+cholera_merge[cholera_merge$sex == "F" & cholera_merge$area == 3, ]
+```
+:::
+:::
+
+```{webr}
+#| exercise: e29
+#| check: true
+gradethis::grade_this_code()
+```
+
+Columns work the same as rows (I used both together to keep the output short). Try:
+
+`cholera_merge[1:3, 3:4]`{.r}
+
+```{webr}
+#| caption: Exercise 30
+#| exercise: e30
+```
+
+::: {.solution exercise="e30"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e30
+#| solution: true
+cholera_merge[1:3, 3:4]
+```
+:::
+:::
+
+```{webr}
+#| exercise: e30
+#| check: true
+gradethis::grade_this_code()
+```
+
+Another example:
+
+`cholera_merge[1:3, c("age", "sex")]`{.r}
+
+```{webr}
+#| caption: Exercise 31
+#| exercise: e31
+```
+
+::: {.solution exercise="e31"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e31
+#| solution: true
+cholera_merge[1:3, c("age", "sex")]
+```
+:::
+:::
+
+```{webr}
+#| exercise: e31
+#| check: true
+gradethis::grade_this_code()
+```
+
+And another:
+
+`cholera_merge[cholera_merge$area == 4, c("age", "sex")]`{.r}
+
+```{webr}
+#| caption: Exercise 32
+#| exercise: e32
+```
+
+::: {.solution exercise="e32"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e32
+#| solution: true
+cholera_merge[cholera_merge$area == 4, c("age", "sex")]
+```
+:::
+:::
+
+```{webr}
+#| exercise: e32
+#| check: true
+gradethis::grade_this_code()
+```
+
+The function `paste0`{.r} pastes together character vectors without any space between them. It'll come in handy in a moment. Try it:
+
+`paste0("a", "b", "c")`{.r}
+
+```{webr}
+#| caption: Exercise 33
+#| exercise: e33
+```
+
+::: {.hint exercise="e33"}
+::: {.callout-note collapse="false"}
+It is `0`{.r} (zero) not `O`{.r} (oh)
+:::
+:::
+
+::: {.solution exercise="e33"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e33
+#| solution: true
+paste0("a", "b", "c")
+```
+:::
+:::
+
+```{webr}
+#| exercise: e33
+#| check: true
+gradethis::grade_this_code()
+```
+
+Works with vectors as one of the arguments also. Try:
+
+`paste0("cholera", 1:5)`{.r}
+
+```{webr}
+#| caption: Exercise 34
+#| exercise: e34
+```
+
+::: {.solution exercise="e34"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e34
+#| solution: true
+paste0("cholera", 1:5)
+```
+:::
+:::
+
+```{webr}
+#| exercise: e34
+#| check: true
+gradethis::grade_this_code()
+```
+
+Another useful function is `assign`{.r} that has the same effect as `<-`{.r} but works as a function with a character vector. It allows us to programmatically specify the name using a character vector which is very helpful. Try:
+
+`assign("x", 1:3)`{.r}
+
+```{webr}
+#| caption: Exercise 35
+#| exercise: e35
+#| envir: env1
+```
+
+::: {.solution exercise="e35"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e35
+#| solution: true
+assign("x", 1:3)
+```
+:::
+:::
+
+```{webr}
+#| exercise: e35
+#| check: true
+gradethis::grade_this_code()
+```
+
+Check that `x`{.r} is what you think it should be.
+
+```{webr}
+#| caption: Exercise 36
+#| exercise: e36
+#| envir: env1
+```
+
+::: {.solution exercise="e36"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e36
+#| solution: true
+x
+```
+:::
+:::
+
+```{webr}
+#| exercise: e36
+#| check: true
+gradethis::grade_this_code()
+```
+
+Let’s divide up `cholera_merge`{.r} into smaller datasets by area. With `assign`{.r} and `paste0`{.r} and the subset methods we've been studying. We can do it with a loop like the following. Study it carefully, make sure you understand it, and then run it.
+
+```{webr}
+#| setup: true
+#| exercise: 
+#|   - e37
+load("_static/data/cholera_merge.rda")
+```
+
+```{webr}
+#| caption: Exercise 37
+#| exercise: e37
+for(i in 1:5) {
+  assign(paste0("cholera", i), cholera_merge[cholera_merge$area == i, ])
+}
+```
+
+::: {.solution exercise="e37"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e37
+#| solution: true
+for(i in 1:5) {
+  assign(paste0("cholera", i), cholera_merge[cholera_merge$area == i, ])
+}
+```
+:::
+:::
+
+```{webr}
+#| exercise: e37
+#| check: true
+gradethis::grade_this_code()
+```
+
+Now there are five datasets named `cholera1`{.r}, `cholera2`{.r}, $\dots$, `cholera5`{.r} each containing one area's data.
+
+See if `cholera1`{.r} is what you think it should be.
+
+```{webr}
+#| setup: true
+#| exercise: 
+#|   - e38
+#|   - e39
+load("_static/data/cholera_merge.rda")
+for(i in 1:5) {
+  assign(paste0("cholera", i), cholera_merge[cholera_merge$area == i, ])
+}
+```
+
+```{webr}
+#| caption: Exercise 38
+#| exercise: e38
+```
+
+::: {.solution exercise="e38"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e38
+#| solution: true
+cholera1
+```
+:::
+::: 
+
+```{webr}
+#| exercise: e38
+#| check: true
+gradethis::grade_this_code()
+```
+
+You can use the function
+`rbind`{.r} to put these five datasets back together as `c_m`{.r}
+like this:[^better]
+
+`c_m <- rbind(cholera1, cholera2, cholera3, cholera4, cholera5)`{.r}
+
+[^better]: A better way to do this exists if you have lots of datasets, but it is
+  tricky to understand at first and we should wait until later to try it.
+
+```{webr}
+#| caption: Exercise 39
+#| exercise: e39
+```
+
+::: {.solution exercise="e39"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e39
+#| solution: true
+c_m <- rbind(cholera1, cholera2, cholera3, cholera4, cholera5)
+```
+:::
+:::
+
+```{webr}
+#| exercise: e39
+#| check: true
+gradethis::grade_this_code()
+```
+
+```{webr}
+#| setup: true
+#| exercise: 
+#|   - e40
+#|   - e41
+#|   - e42
+load("_static/data/cholera_merge.rda")
+for(i in 1:5) {
+  assign(paste0("cholera", i), cholera_merge[cholera_merge$area == i, ])
+}
+c_m <- rbind(cholera1, cholera2, cholera3, cholera4, cholera5)
+```
+
+Check it looks put back together with `head(c_m)`{.r}.
+
+```{webr}
+#| caption: Exercise 40
+#| exercise: e40
+```
+
+::: {.solution exercise="e40"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e40
+#| solution: true
+head(c_m)
+```
+:::
+:::
+
+```{webr}
+#| exercise: e40
+#| check: true
+gradethis::grade_this_code()
+```
+
+`NROW`{.r} tells you how many rows a dataset has. Does `c_m`{.r} have the same number as `cholera_merge`{.r}?
+
+`NROW(c_m) == NROW(cholera_merge)`{.r}
+
+```{webr}
+#| caption: Exercise 41
+#| exercise: e41
+```
+
+::: {.solution exercise="e41"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e41
+#| solution: true
+NROW(c_m) == NROW(cholera_merge)
+```
+:::
+:::
+
+```{webr}
+#| exercise: e41
+#| check: true
+gradethis::grade_this_code()
+```
+
+Not a perfect check, but looks good enough to convince us that we've probably
+reconstructed the data correctly. Now, let's say we wanted our data in a different format. Try this:
+
+`(threecho <- cbind(cholera1, cholera2, cholera3))`{.r}
+
+```{webr}
+#| caption: Exercise 42
+#| exercise: e42
+#| envir: env2
+```
+
+::: {.solution exercise="e42"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e42
+#| solution: true
+(threecho <- cbind(cholera1, cholera2, cholera3))
+```
+:::
+:::
+
+```{webr}
+#| exercise: e42
+#| check: true
+gradethis::grade_this_code()
+```
+
+See a potential problem? The names of the columns are not unique. That's going to be an issue if you try to do some of the things we talked about because R won't know which one you want. You can examine the names of a dataset like this:
+
+`names(threecho)`{.r}
+
+```{webr}
+#| caption: Exercise 43
+#| exercise: e43
+#| envir: env2
+```
+
+::: {.solution exercise="e43"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e43
+#| solution: true
+names(threecho)
+```
+If you can't seem to get it to work, start again at Exercise 42.
+:::
+:::
+
+```{webr}
+#| exercise: e43
+#| check: true
+gradethis::grade_this_code()
+```
+
+And you can change them with an assignment like this:
+
+`names(threecho) <- paste0(c("area", "subject", "age", "sex"), rep(1:3, each = 4))`{.r}
+
+Try different parts from inside out before running it all if you can't immediately see what this does.
+
+```{webr}
+#| caption: Exercise 44
+#| exercise: e44
+#| envir: env2
+```
+
+::: {.solution exercise="e44"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e44
+#| solution: true
+names(threecho) <- paste0(c("area", "subject", "age", "sex"), rep(1:3, each = 4))
+```
+If you can't seem to get it to work, start again at Exercise 42.
+:::
+:::
+
+```{webr}
+#| exercise: e44
+#| check: true
+gradethis::grade_this_code()
+```
+
+Now take a look at `threecho`{.r} again.
+
+```{webr}
+#| caption: Exercise 45
+#| exercise: e45
+#| envir: env2
+```
+
+::: {.solution exercise="e45"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e45
+#| solution: true
+threecho
+```
+If you can't seem to get it to work, start again at Exercise 42.
+:::
+:::
+
+```{webr}
+#| exercise: e45
+#| check: true
+gradethis::grade_this_code()
+```
+
+Pretty spiffy, eh? Now let's turn to merging. This is usually what you want to do instead of `cbind`{.r} because order is not what matters, but making sure you
+are matching on the common variable(s) between the two datasets. Look at the head of another dataset you have available in this module: `cholera_disease`{.r}
+
+```{webr}
+#| setup: true
+#| exercise: 
+#|   - e46
+#|   - e47
+load("_static/data/cholera_merge.rda")
+load("_static/data/cholera_disease.rda")
+```
+
+```{webr}
+#| caption: Exercise 46
+#| exercise: e46
+```
+
+::: {.solution exercise="e46"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e46
+#| solution: true
+head(cholera_disease)
+```
+:::
+:::
+
+```{webr}
+#| exercise: e46
+#| check: true
+gradethis::grade_this_code()
+```
+
+Since `cholera_disease` shares the `subject` variable with `cholera_merge` you can put the two together like this:
+
+`cmer <- merge(cholera_merge, cholera_disease)`{.r}
+
+```{webr}
+#| caption: Exercise 47
+#| exercise: e47
+```
+
+::: {.solution exercise="e47"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e47
+#| solution: true
+cmer <- merge(cholera_merge, cholera_disease)
+```
+:::
+:::
+
+```{webr}
+#| exercise: e47
+#| check: true
+gradethis::grade_this_code()
+```
+
+```{webr}
+#| setup: true
+#| exercise: 
+#|   - e48
+#|   - e49
+#|   - e50
+load("_static/data/cholera_merge.rda")
+load("_static/data/cholera_disease.rda")
+cmer <- merge(cholera_merge, cholera_disease)
+```
+
+Now check out the first 10 rows of `cmer`{.r} like this (the second argument to head specifies how many rows you want):
+
+`head(cmer, 10)`{.r}
+
+```{webr}
+#| caption: Exercise 48
+#| exercise: e48
+```
+
+::: {.solution exercise="e48"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e48
+#| solution: true
+head(cmer, 10)
+```
+:::
+:::
+
+```{webr}
+#| exercise: e48
+#| check: true
+gradethis::grade_this_code()
+```
+
+R automatically determines the common columns by finding the columns with the 
+same name in each `data.frame`{.r}, but what if no columns have the same name? Let's change the names of `cholera_disease`{.r} so none match `cholera_merge`{.r}. 
+
+`names(cholera_disease) <- c("id", "disease")`{.r}
+
+```{webr}
+#| caption: Exercise 49
+#| exercise: e49
+```
+
+::: {.solution exercise="e49"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e49
+#| solution: true
+names(cholera_disease) <- c("id", "disease")
+```
+:::
+:::
+
+```{webr}
+#| exercise: e49
+#| check: true
+gradethis::grade_this_code()
+```
+
+And merge:
+
+`cmer2 <- merge(cholera_merge, cholera_disease)`{.r}
+
+```{webr}
+#| caption: Exercise 50
+#| exercise: e50
+```
+
+::: {.solution exercise="e50"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e50
+#| solution: true
+cmer2 <- merge(cholera_merge, cholera_disease)
+```
+:::
+:::
+
+```{webr}
+#| exercise: e50
+#| check: true
+gradethis::grade_this_code()
+```
+
+How many rows does `cmer`{.r} have? (Not `cmer2`{.r}, but cmer{.r}.)
+
+```{webr}
+#| setup: true
+#| exercise: 
+#|   - e51
+#|   - e52
+#|   - e53
+#|   - e54
+load("_static/data/cholera_merge.rda")
+load("_static/data/cholera_disease.rda")
+cmer <- merge(cholera_merge, cholera_disease)
+names(cholera_disease) <- c("id", "disease")
+cmer2 <- merge(cholera_merge, cholera_disease)
+```
+
+```{webr}
+#| caption: Exercise 51
+#| exercise: e51
+```
+
+::: {.hint exercise="e51"}
+::: {.callout-note collapse="false"}
+`NROW`{.r} is the function you need.
+:::
+:::
+
+::: {.solution exercise="e51"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e51
+#| solution: true
+NROW(cmer)
+```
+:::
+:::
+
+```{webr}
+#| exercise: e51
+#| check: true
+gradethis::grade_this_code()
+```
+
+That should make sense because `cholera_merge`{.r} had 25 rows and each one matched up with one in `cholera_disease`{.r}. But how many rows does `cmer2`{.r} have?
+
+```{webr}
+#| caption: Exercise 52
+#| exercise: e52
+```
+
+::: {.solution exercise="e52"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e52
+#| solution: true
+NROW(cmer2)
+```
+:::
+:::
+
+```{webr}
+#| exercise: e52
+#| check: true
+gradethis::grade_this_code()
+```
+
+So what happened? What is the square root of 625?
+(remember the `sqrt`{.r} function?)
+
+```{webr}
+#| caption: Exercise 53
+#| exercise: e53
+```
+
+::: {.solution exercise="e53"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e53
+#| solution: true
+sqrt(625)
+```
+:::
+:::
+
+```{webr}
+#| exercise: e53
+#| check: true
+gradethis::grade_this_code()
+```
+
+What happened? Since there were no common columns R created the merge by combining every observation in the first `data.frame`{.r} with each observation in the second: $25 \times 25 = 625$. Let's inform R what columns we want to match on by using some optional arguments of `merge`{.r} (definitely take a look at `merge`{.r}'s help at some point). The `by.x` argument refers to the first `data.frame`'s variables and the `by.y` argument refers to the second `data.frame`'s variables in `merge`{.r}'s arguments (when you look at the help you'll see that the first argument is named `x` and the second is `y`).
+
+Now merge again like this instead:
+
+`NROW(merge(cholera_merge, cholera_disease, by.x = "subject", by.y = "id"))`{.r}
+
+```{webr}
+#| caption: Exercise 54
+#| exercise: e54
+```
+
+::: {.solution exercise="e54"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e54
+#| solution: true
+NROW(merge(cholera_merge, cholera_disease, by.x = "subject", by.y = "id"))
+```
+:::
+:::
+
+```{webr}
+#| exercise: e54
+#| check: true
+gradethis::grade_this_code()
+```
+
+Looks like we have an expected, correct merge again; indeed you do, and I'll let you convince yourself later if you need to. What if, instead, all the rows are not in both datasets? Let's create a small sample (only 5 rows) from the original `cholera_disease`{.r} dataset. 
+
+```{webr}
+#| setup: true
+#| exercise: 
+#|   - e55
+load("_static/data/cholera_disease.rda")
+```
+
+In the code below, the `set.seed`{.r} function makes sure you get the same random sample each time you run the code. Let's talk more in class about how random sampling works in computers.  Then, we use `sample`{.r} to randomly select 5 row numbers from one to the number of rows in `cholera_disease`{.r} obtained by the `NROW`{.r} function. Finally we use those row numbers to subset `cholera_disease`{.r} to create `cdsamp`{.r}.
+
+```{webr}
+#| caption: Exercise 55
+#| exercise: e55
+set.seed(596) 
+cdsamp <- cholera_disease[sample(NROW(cholera_disease), 5), ]
+```
+
+::: {.solution exercise="e55"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e55
+#| solution: true
+set.seed(596) 
+cdsamp <- cholera_disease[sample(NROW(cholera_disease), 5), ]
+```
+:::
+:::
+
+```{webr}
+#| exercise: e55
+#| check: true
+gradethis::grade_this_code()
+```
+
+Merge it with cholera_merge like this:
+
+`merge(cholera_merge, cdsamp)`{.r}
+
+```{webr}
+#| setup: true
+#| exercise: 
+#|   - e56
+#|   - e57
+load("_static/data/cholera_disease.rda")
+load("_static/data/cholera_merge.rda")
+set.seed(596) 
+cdsamp <- cholera_disease[sample(NROW(cholera_disease), 5), ]
+```
+
+```{webr}
+#| caption: Exercise 56
+#| exercise: e56
+```
+
+::: {.solution exercise="e56"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e56
+#| solution: true
+merge(cholera_merge, cdsamp)
+```
+:::
+:::
+
+```{webr}
+#| exercise: e56
+#| check: true
+gradethis::grade_this_code()
+```
+
+Holy disappearing rows, Batman! Looks like `merge`{.r} only keeps the matches. 
+By default, that's true, so be careful and be sure to specify another option if you want to keep all the rows of one of the two datasets (or both). Use the `all.x = TRUE`{.r} argument to keep all the rows of the first `data.frame`{.r}, `all.y = TRUE`{.r} to keep all the rows of the second `data.frame`{.r}, or `all = TRUE`{.r} to keep all rows of both. As an example, try this:
+
+`(merall <- merge(cholera_merge, cdsamp, all.x = TRUE))`{.r}
+
+```{webr}
+#| caption: Exercise 57
+#| exercise: e57
+```
+
+::: {.solution exercise="e57"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e57
+#| solution: true
+(merall <- merge(cholera_merge, cdsamp, all.x = TRUE))
+```
+:::
+:::
+
+```{webr}
+#| exercise: e57
+#| check: true
+gradethis::grade_this_code()
+```
+
+All the rows from the first `data.frame`, i.e., `x`, are there with missing data from the second `data.frame`, i.e., `y`, represented by `NA`{.r}. 
+
+Until you gain more familiarity you should probably merge with `all = TRUE`{.r} because those `NA`'s will save you a lot of heartache when you are merging datasets that you do not realize are incompatible somehow.
+
+### Sorting vectors and data frames
+
+OK, next topic for this exercise, i.e., sorting. Sort a `vector`{.r} like this:
+
+`sort(merall$age)`{.r}
+
+```{webr}
+#| setup: true
+#| exercise: 
+#|   - e58
+#|   - e59
+#|   - e60
+#|   - e61
+#|   - e62
+#|   - e63
+#|   - e64
+#|   - e65
+#|   - e66
+#|   - e67
+load("_static/data/cholera_disease.rda")
+load("_static/data/cholera_merge.rda")
+set.seed(596) 
+cdsamp <- cholera_disease[sample(NROW(cholera_disease), 5), ]
+merall <- merge(cholera_merge, cdsamp, all.x = TRUE)
+```
+
+```{webr}
+#| caption: Exercise 58
+#| exercise: e58
+```
+
+::: {.solution exercise="e58"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e58
+#| solution: true
+sort(merall$age)
+```
+:::
+:::
+
+```{webr}
+#| exercise: e58
+#| check: true
+gradethis::grade_this_code()
+```
+
+It is a little trickier if you want to reorder a `data.frame`{.r} by one of its variables. For that you need the order function, try it:
+
+`order(merall$age)`{.r}
+
+```{webr}
+#| caption: Exercise 59
+#| exercise: e59
+```
+
+::: {.solution exercise="e59"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e59
+#| solution: true
+order(merall$age)
+```
+:::
+:::
+
+```{webr}
+#| exercise: e59
+#| check: true
+gradethis::grade_this_code()
+```
+
+What in the world is going on here? Look at `merall$age`{.r} and compare to the output you just got.
+
+```{webr}
+#| caption: Exercise 60
+#| exercise: e60
+```
+
+::: {.solution exercise="e60"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e60
+#| solution: true
+merall$age
+```
+:::
+:::
+
+```{webr}
+#| exercise: e60
+#| check: true
+gradethis::grade_this_code()
+```
+
+OK, what is the 2nd value of `merall$age`{.r}? The 11th? The 18th? The 6th? Maybe you should write them down. Do you see how order tells you which values to take to sort `merall$age`{.r}?
+
+If fact, you can sort `merall$age`{.r} like this:
+
+`merall$age[order(merall$age)]`{.r}
+
+```{webr}
+#| caption: Exercise 61
+#| exercise: e61
+```
+
+::: {.solution exercise="e61"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e61
+#| solution: true
+merall$age[order(merall$age)]
+```
+:::
+:::
+
+```{webr}
+#| exercise: e61
+#| check: true
+gradethis::grade_this_code()
+```
+
+The `order`{.r} function is more useful for a `data.frame`{.r} where it can be used to sort the data.frame by one of its variables. Sort `merall`{.r} by age:
+
+`merall[order(merall$age), ]`{.r}
+
+```{webr}
+#| caption: Exercise 62
+#| exercise: e62
+```
+
+::: {.solution exercise="e62"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e62
+#| solution: true
+merall[order(merall$age), ]
+```
+:::
+:::
+
+```{webr}
+#| exercise: e62
+#| check: true
+gradethis::grade_this_code()
+```
+
+### Can you make heads or tails of it?
+
+OK, last new topic - getting the first and last items of a vector or data.frame. You've seen `head`{.r} which gets the first values of a vector or the first rows of a `data.frame`{.r}. It is 6 values or rows by default:
+
+`head(merall)`{.r}
+
+```{webr}
+#| caption: Exercise 63
+#| exercise: e63
+```
+
+::: {.solution exercise="e63"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e63
+#| solution: true
+head(merall)
+```
+:::
+:::
+
+```{webr}
+#| exercise: e63
+#| check: true
+gradethis::grade_this_code()
+```
+
+Want more or less? Use the second argument:
+
+`head(merall, 10)`{.r}
+
+```{webr}
+#| caption: Exercise 64
+#| exercise: e64
+```
+
+::: {.solution exercise="e64"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e64
+#| solution: true
+head(merall, 10)
+```
+:::
+:::
+
+```{webr}
+#| exercise: e64
+#| check: true
+gradethis::grade_this_code()
+```
+
+The `tail`{.r} function works just like `head`{.r} but gives you the end rather than the top.
+
+`tail(merall, 10)`{.r}
+
+```{webr}
+#| caption: Exercise 65
+#| exercise: e65
+```
+
+::: {.solution exercise="e65"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e65
+#| solution: true
+tail(merall, 10)
+```
+:::
+:::
+
+```{webr}
+#| exercise: e65
+#| check: true
+gradethis::grade_this_code()
+```
+
+You can use negative numbers to get "all but" from the relevant end. So with `head`{.r} you get all the rows at the top minus that number of rows.
+
+This will give you all but the last five rows:
+
+`head(merall, -5)`{.r}
+
+```{webr}
+#| caption: Exercise 66
+#| exercise: e66
+```
+
+::: {.solution exercise="e66"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e66
+#| solution: true
+head(merall, -5)
+```
+:::
+:::
+
+```{webr}
+#| exercise: e66
+#| check: true
+gradethis::grade_this_code()
+```
+
+And `tail`{.r} again works like `head`{.r} - so this is all but the first 15 rows
+
+`tail(merall, -15)`{.r}
+
+```{webr}
+#| caption: Exercise 67
+#| exercise: e67
+```
+
+::: {.solution exercise="e67"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e67
+#| solution: true
+tail(merall, -15)
+```
+:::
+:::
+
+```{webr}
+#| exercise: e67
+#| check: true
+gradethis::grade_this_code()
+```
+
+```{adm}
+#| type: open-on-pass
+#| exercise: 67
+OK, that's a lot of review and new material!  You've done great!  Time for a break!!!
+```
+
+## Evaluation
+
+```{adm}
+#| type: progress-submit
+```
+::: {#adm-progress-submit}
+```{webr}
+#| autorun: true
+.progress_submit("07-Food-Prep", 67)
+```
+:::
+

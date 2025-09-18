@@ -13,3 +13,4 @@ course.
 4. [Rcel, Part 2](04-Rcel2.qmd): a continuation of our exploration of key R composite data structures, focusing on `list` and `data.frame` [[canvas]](`r .canvas_link("04-Rcel2")`){.canvas}
 5. [Functions](05-Functions.qmd): a deep dive into R functions, including function arguments and return values [[canvas]](`r .canvas_link("05-Functions")`){.canvas}
 6. [Branching Out & Feeling Loopy](06-Branch-Loop.qmd): an introduction to control structures in R, including `if`{.r} statements and `for`{.r} loops [[canvas]](`r .canvas_link("06-Branch-Loop")`){.canvas}
+7. [Food Prep](07-Food-Prep.qmd): review of many concepts around data selection and indexing with some new techniques to help you transform, merge, and sort data [[canvas]](`r .canvas_link("07-Food-Prep")`){.canvas}

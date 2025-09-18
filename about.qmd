@@ -1,5 +1,6 @@
 ---
 title: "About"
+sidebar: false
 ---
 
 {{< include ./_extensions/r-wasm/live/_knitr.qmd >}}
