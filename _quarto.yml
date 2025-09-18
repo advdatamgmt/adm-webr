@@ -1,9 +1,7 @@
 project:
   type: website
   post-render:
-    - cp _static/canvas_start_assignment.png _site/_static/
-    - cp _static/canvas_submission.png _site/_static/
-    - cp _static/progress-continue.js _site/_static/
+    - cp -r _static _site
 
 format:
   live-html:
