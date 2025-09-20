@@ -1,5 +1,6 @@
 ---
 title: "Exercises"
+sidebar: false
 ---
 
 {{< include ../_static/_shared.qmd >}}

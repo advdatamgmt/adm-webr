@@ -1,6 +1,5 @@
 ---
 title: "Rcel, Part 2"
-sidebar: exercises
 order: 400
 ---
 

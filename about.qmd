@@ -3,7 +3,7 @@ title: "About"
 sidebar: false
 ---
 
-{{< include ./_extensions/r-wasm/live/_knitr.qmd >}}
+{{< include /_extensions/r-wasm/live/_knitr.qmd >}}
 
 This website accompanies the course **MSCR 596 - Advanced Data Management** at
 [Emory University](https://www.emory.edu). It provides resources
