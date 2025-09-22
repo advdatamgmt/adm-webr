@@ -1,0 +1,179 @@
+---
+title: "Input and Output Files"
+order: 750
+---
+
+{{< include ../_static/_shared.qmd >}}
+
+### Introduction
+
+This is not a typical module.  Just a brief tutorial on getting datasets 
+in and out of R as well as some file system related commands.  No grading
+just run each of the code chunks in order after you study each of them.
+
+### Excel files
+
+To read Excel files you need to install the `readxl` package.
+
+```{webr}
+install.packages('readxl')  # only need to do this once per installed version of R
+```
+
+To read an Excel file into R, you load the `readxl` library once per R session,
+usually at the top of your R script.
+```{webr}
+library(readxl)  # only once per session
+```
+
+If the library loads without error, you will not see any response and are now 
+ready to read Excel files. The Excel file we are going to use is a version 
+of the `esoph` dataset named
+`esoph.xlsx` that lives in the `data` directory on this website.
+
+To open that file, we use the `read_excel` function from the `readxl` package:
+```{webr}
+xesoph <- read_excel("data/esoph.xlsx")
+```
+
+Now we take a look at it:
+```{webr}
+head(xesoph)
+```
+
+### Comma Delimited Text Files
+
+Comma delimited text or comma separated values (CSV) are a common text file 
+format for representing data.  You can use the 
+builtin `read.csv` to read CSV files.  Let's read in the `iih.csv` file from 
+the same `data` directory:
+
+```{webr}
+iih <- read.csv("data/iih.csv")
+head(iih)
+```
+
+Your Excel program can open and write CSV too.
+
+### File system commands
+
+R is always working in a specific directory of your file system.  
+You can figure out which one using `getwd` which means "get working directory":
+
+```{webr}
+getwd()
+```
+
+You can change this directory using `setwd`. Let's move into the `data` directory
+for a moment.
+```{webr}
+setwd("data")
+```
+
+R will not reply if it works, but we can check that we are in the `data` directory
+by looking at `getwd` again:
+```{webr}
+getwd()
+```
+
+Now if we want to read in the `iih.csv` file we would do it like this:
+```{webr}
+iih <- read.csv("iih.csv")
+head(iih)
+```
+
+Note that we did not need to specify the `data/` part of the path 
+because we were already in that directory. Now, let's go back to the parent 
+directory of `data`:
+```{webr}
+setwd("..")
+```
+
+`..` means the parent directory of the current directory while `.` means the 
+current directory.  This is standard across many operating systems.
+
+Now, look at `getwd` one more time:
+
+```{webr}
+getwd()
+```
+
+Ideally, we do not use these commands in our scripts because they can make
+our scripts less portable.  Ideally, we use projects in RStudio so that our working
+directory is always the project directory.  We will discuss that further
+in class, and you can read about it here too:
+
+<https://r4ds.hadley.nz/workflow-scripts.html#projects>
+
+However, when R cannot find something, it is often because you are not in the
+directory you think you are.  So, if you get an error reading a file,
+you need make sure to check what directory you were working in using `getwd`{.r}.
+
+Likewise, if you write anything out, it will be in the working directory unless
+you direct R otherwise.
+
+### Writing data files
+
+There are write functions for CSV (which you can open in Excel easily).  Let's 
+try writing out the `iih` dataset we just read in and put it in the 
+`data` directory:
+
+```{webr}
+write.csv(iih, "data/iih2.csv")
+```
+
+Be careful, if a file exists of that name, it will be written over.
+
+Well, is it there?
+
+```{webr}
+list.files("data")
+```
+
+You can also directly save R objects directly which can be read back into R 
+later. This is done using the `saveRDS`{.r} function
+```{webr}
+saveRDS(xesoph, file = "data/xesoph.rds")   
+saveRDS(iih, file = "data/iih.rds")  
+```
+
+You can see what objects are in your R session with the `ls`{.r} function:
+```{webr}
+ls()  
+```
+
+You can remove objects from your R session using `rm`{.r}:
+
+```{webr}
+rm(xesoph)
+rm(iih)
+```
+
+Check that they are gone with `ls`{.r}:
+```{webr}
+ls()  
+```
+
+And then read them back in using `readRDS`:
+```{webr}       
+xesoph <- readRDS("data/xesoph.rds")      
+iih <- readRDS("data/iih.rds")  
+```
+
+Ok, are they back?
+```{webr}
+ls()
+```
+
+I often use these functions in conjunction with `file.exists` to cache long 
+operations so that I don't have to wait for them to finish every time I run my 
+code. Here's an example of that pattern:
+
+```{webr}
+if(!file.exists("data/iih.rds")) {
+  print("doing a time consuming task...")
+  saveRDS(iih, file = "data/iih.rds") 
+} else {
+  print("loading cached data...")
+  iih <- readRDS("data/iih.rds")
+}
+```
