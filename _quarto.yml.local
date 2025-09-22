@@ -1,3 +1,6 @@
 project:
   preview:
     port: 8000
+    serve:
+      cmd: "python3 ../serve.py"
+      ready: "Starting server on"

@@ -98,7 +98,7 @@ options(webr.exercise.checker = function(
         "On the page that just opened find and click on a button",
         "that looks like this in the upper right corner:",
         htmltools::tags$img(
-            src = "/_static/canvas_start_assignment.png",
+            src = "../_static/canvas_start_assignment.png",
             alt = "Start Assignment Button",
             style = "max-width: 200px; border: 1px solid black; margin-left: 1em;"
         )
@@ -106,7 +106,7 @@ options(webr.exercise.checker = function(
         htmltools::tags$li(
         htmltools::p("After you click you should see the following:"),
         htmltools::tags$img(
-            src = "/_static/canvas_submission.png",
+            src = "../_static/canvas_submission.png",
             alt = "Submit Assignment Image",
             style = "max-width: 400px; border: 1px solid black; margin-left: 5em;"
         ),
