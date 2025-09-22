@@ -2,6 +2,7 @@ project:
   type: website
   post-render:
     - cp -r _static _site
+    - cp -r data _site
 
 format:
   live-html:
@@ -11,6 +12,7 @@ format:
     toc: true
     resources:
       - _static/data
+      - data
     include-after-body:
       - text: |
           <script src="/_static/progress-continue.js"></script>
