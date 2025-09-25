@@ -746,7 +746,9 @@ gradethis::grade_this_code()
 Hopefully, that made sense. If not, we can discuss more in class.
 You've learned a lot!  That's enough for now!  Take a break!
 
-## Evaluate
+## Evaluation
+
+### Submit Your Assignment
 
 ```{adm}
 #| type: progress-submit

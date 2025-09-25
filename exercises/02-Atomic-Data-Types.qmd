@@ -700,7 +700,9 @@ gradethis::grade_this({
 #| type: open-solution-on-pass
 ```
 
-## Submit Your Assignment
+## Evaluation
+
+### Submit Your Assignment
 
 ```{adm}
 #| type: progress-submit

@@ -1235,7 +1235,7 @@ gradethis::grade_this(
 )
 ```
 
-## Evaluate
+## Evaluation
 
 ### Submit Your Assignment
 

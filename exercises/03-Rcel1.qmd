@@ -1073,7 +1073,7 @@ R's response.
 What is R doing? Why does this always work? Come to class prepared to discuss.
 Now submit your assignment!
 
-## Evaluate
+## Evaluation
 
 ### Submit Your Assignment
 
