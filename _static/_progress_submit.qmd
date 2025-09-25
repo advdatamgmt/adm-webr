@@ -63,6 +63,34 @@ options(webr.exercise.checker = function(
   )
   glue::glue("data:text/csv;base64,{enc_csv}")
 }
+.save_restore_progress <- function(assignment_name, df = .webr_progress) {
+  now <- strftime(Sys.time(), "%Y%m%d-%H%M%S")
+  htmltools::div(
+    htmltools::tags$a(
+      download = glue::glue('adm-{.assignment_ids[assignment_name]}-{now}.csv'),
+      href = .csv_data_uri(df),
+      htmltools::tags$button(
+          #onClick = "this.classList.add('clicked');",
+          class = "btn progress-submit",
+          "Save progress"
+      )
+    ),
+    htmltools::tags$label(
+      `for` = "restore-file-input",
+      type = "button",
+      id = "restore-progress-button",
+      class = "btn progress-submit btn-quarto",
+      onClick = "restore_listener();",
+      "Restore progress"
+    ),
+    htmltools::tags$input(
+      type = "file",
+      id = "restore-file-input",
+      style = "display: none",
+      accept = ".csv"
+    )
+  )
+}
 .steps_to_submit <- function(assignment_name, df = .webr_progress) {
   now <- strftime(Sys.time(), "%Y%m%d-%H%M%S")
   htmltools::div(
@@ -163,14 +191,17 @@ options(webr.exercise.checker = function(
     }
   }
   if (length(todo) > 0) {
-    htmltools::tags$p(
-      glue::glue(
-        "Before you can submit you still need correctly complete exercises ",
-        collapse_nums(todo),
-        "."
-        ),
-        style = "color: red; font-weight: bold;"
-      )
+    htmltools::div(
+      htmltools::tags$p(
+        glue::glue(
+          "Before you can submit you still need correctly complete exercises ",
+          collapse_nums(todo),
+          "."
+          ),
+          style = "color: red; font-weight: bold;"
+      ),
+      .save_restore_progress(assignment_name)
+    )
   } else {
     htmltools::div(
       htmltools::p(
