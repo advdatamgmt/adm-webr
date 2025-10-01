@@ -1,0 +1,346 @@
+---
+title: "Base Graphics"
+order: 800
+---
+{{< include ../_static/_shared.qmd >}}
+
+## Evaluation
+
+The goal of this assignment is to recreate the following plot **exactly** 
+(e.g., pay particular attention to the type and color of points and lines 
+and the axis labels, etc.) using the provided data described below.  
+
+```{webr}
+#| autorun: true
+#| echo: false
+load("_static/data/onhlong.rda")
+load("_static/data/onhfit.rda")
+plot(mean ~ age, data = onhlong, type = "n", xlab = "Age (years)", ylab = "Mean optic nerve size (mm)")
+with(subset(onhlong, clinhypo == "No" & case == 1), points(age, mean, col = "blue", pch = 19))
+with(subset(onhlong, clinhypo == "Yes" & case == 1), points(age, mean, col = "red", pch = 19))
+with(subset(onhlong, clinhypo == "No" & case == 0), points(age, mean, pch = 19))
+with(onhfit, lines(age, mean))
+with(onhfit, lines(age, upr95, lty = 2))
+with(onhfit, lines(age, lwr95, lty = 2))
+``` 
+
+The figure of the caption of the figure should also help you recreate it.
+
+``**Figure. Mean optic nerve size vs. age in patients with optic nerve hypoplasia (ONH) and controls.**  Linear regression of the mean optic nerve size of controls (black points: individual control optic nerve measurements, black line: mean optic nerve size of controls, dashed black lines: 95% prediction intervals of mean optic nerve size of controls).   Red points are measurements of optic nerves with clinical ONH.  Blue points represent the clinically unaffected eye of patients with clinically unilateral ONH.  The contralateral optic nerve of ONH patients was generally smaller than control optic nerves.''
+
+There are two datasets.  Dataset `onhlong`{.r} contains the individual
+measurements on each row.  `case`{.r} tells us whether the patient was a
+case or not (factor: 1 vs. 0), `clinhypo`{.r} if the nerve was clinically hypoplastic
+(factor: Yes vs. No), `age`{.r} of the subject, and `mean`{.r} the
+mean optic nerve measurement. 
+
+Take a look at the first few rows of `onhlong`{.r} below.
+
+```{webr}
+#| autorun: true
+head(onhlong) 
+``` 
+
+Dataset `onhfit`{.r} contains predicted
+values for the regression line `mean`{.r} and the upper (`upr95`{.r}) and lower
+(`lwr95`{.r}).  Each would be plotted by `onhfit`{.r}'s `age`{.r} variable to 
+create the lines.
+
+Take a look at all of `onhfit`{.r} below.
+
+```{webr}
+#| autorun: true
+onhfit
+```
+
+Here are some hints to get you started (replace the `...`{.r}'s with your code):
+```{webr}
+#| eval: FALSE
+with(subset(onhlong, clinhypo == "No" & case == 1), points(...))
+```
+
+```{webr}
+#| eval: FALSE
+with(onhfit, lines(...))
+``` 
+
+Finally, if you are struggling with the plot window x and y limits, remember
+that they can be set automatically by R based on the data you provide if you 
+remember to set `type = "n"` in the right place (see the notes we
+went over in class).
+
+```{webr}
+#| caption: Exercise 1
+#| exercise: e1
+plot(______)
+with(subset(______), points(______))
+# additional similar lines to above
+with(onhfit, lines(______))
+# additional similar lines to above
+```
+
+::: {.solution exercise="e1"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e1
+#| solution: true
+#| echo: false
+```
+I'm not going to provide the full solution here. But hopefuly the hints above, the
+feedback from the autograder, and the class resources will help you get there!
+:::
+:::
+
+```{webr}
+#| exercise: e1
+#| check: true
+gradethis::grade_this({
+    eval(parse(text = .user_code), env = .envir_prep)
+# get rid of pairlists
+pl <- purrr::modify_tree(
+    recordPlot(),
+    is_node = is.list,
+    post = as.list
+)[[1]]
+
+find_data <- function(x, where_within, data_to_match) {
+    z <- function(x) {
+        where_within[[".x"]] <- x
+        isTRUE(all.equal(do.call(purrr::pluck, where_within), data_to_match))
+    }
+    purrr::detect_index(x, z)
+}
+
+check_it <- function(msg = "", test, add_to = list(msg = "", test = TRUE)) {
+    msg = glue::glue("{add_to$msg}<br>{msg}: ", if (test) "✅" else "❌")
+    list(msg = msg, test = test && add_to$test)
+}
+
+check_plot_window <- function(
+    add_to = list(msg = "", test = TRUE),
+    plot_list = pl
+) {
+    line_number <- find_data(plot_list, list(2, 1, "name"), "C_plot_window")
+    out <- check_it(
+        paste0("plot window found"),
+        line_number != 0,
+        add_to
+    )
+    if (line_number == 0) {
+        return(out)
+    }
+    plot_window <- purrr::pluck(plot_list, line_number, 2)
+    out <- check_it(
+        "-- x limits correct",
+        isTRUE(all.equal(
+            purrr::pluck(plot_window, 2),
+            c(0.125, 17.000)
+        )),
+        out
+    )
+    out <- check_it(
+        "-- y limits correct",
+        isTRUE(all.equal(
+            purrr::pluck(plot_window, 3),
+            c(0.62, 3.82)
+        )),
+        out
+    )
+    out <- check_it(
+        "-- log not set",
+        purrr::pluck(plot_window, 4) == "",
+        out
+    )
+    out <- check_it(
+        "-- aspect ratio correct",
+        is.na(purrr::pluck(plot_window, 5)),
+        out
+    )
+    out
+}
+
+check_axis_labels <- function(
+    add_to = list(msg = "", test = TRUE),
+    plot_list = pl
+) {
+    line_number <- find_data(plot_list, list(2, 1, "name"), "C_title")
+    out <- check_it(
+        paste0("axis labels found"),
+        line_number != 0,
+        add_to
+    )
+    if (line_number == 0) {
+        return(out)
+    }
+    plot_window <- purrr::pluck(plot_list, line_number, 2)
+    out <- check_it(
+        "-- x label correct",
+        purrr::pluck(plot_window, 4) == "Age (years)",
+        out
+    )
+    out <- check_it(
+        "-- y label correct",
+        purrr::pluck(plot_window, 5) == "Mean optic nerve size (mm)",
+        out
+    )
+    out
+}
+
+check_xy <- function(
+    add_to = list(msg = "", test = TRUE),
+    index = 0,
+    desc = "",
+    x = numeric(0),
+    y = numeric(0),
+    type = "p",
+    pch = 1,
+    lty = list(1, "solid"),
+    col = "black",
+    bg = NA,
+    cex = 1,
+    lwd = 1,
+    plot_list = pl
+) {
+    out <- check_it(
+        desc,
+        index != 0,
+        add_to
+    )
+    if (index == 0) {
+        return(out)
+    }
+    point_obj <- purrr::pluck(plot_list, index, 2)
+    purrr::pmap(
+        list(
+            name = c("x", "y", "type", "pch", "lty", "col", "bg", "cex", "lwd"),
+            str = c(
+                "x values correct",
+                "y values correct",
+                "type (e.g., points vs. line) correct",
+                "point type (pch) correct",
+                "line type (lty) correct",
+                "color (col) correct",
+                "background color (bg) correct",
+                "size/magnification (cex) correct",
+                "line width (lwd) correct"
+            ),
+            loc = list(list(2, "x"), list(2, "y"), 3, 4, 5, 6, 7, 8, 9),
+            test = list(
+                function(x, y) isTRUE(all.equal(x, y)),
+                function(x, y) isTRUE(all.equal(x, y)),
+                `==`,
+                `==`,
+                `%in%`,
+                function(x, y) {
+                    isTRUE(all.equal(
+                        col2rgb(x),
+                        col2rgb(y)
+                    ))
+                },
+                function(x, y) {
+                    isTRUE(all.equal(
+                        col2rgb(x),
+                        col2rgb(y)
+                    ))
+                },
+                `==`,
+                `==`
+            )
+        ),
+        function(name, str, loc, test) {
+            x = do.call(purrr::pluck, c(list(point_obj), loc))
+            y = get(name)
+            out <<- check_it(
+                paste0("-- ", str),
+                do.call(test, list(x, y)),
+                out
+            )
+        }
+    )
+    out
+}
+
+check_line <- function(
+    add_to = list(msg = "", test = TRUE),
+    ..., plot_list = pl
+) {
+    dots <- list(...)
+    dots$add_to <- add_to
+    dots$type = "l"
+    dots$index <- find_data(plot_list, list(2, 2, "y"), dots$y)
+    dots$desc <- paste0("line for ", dots$desc, " found")
+    do.call(check_xy, dots)
+}
+
+check_points <- function(
+    add_to = list(msg = "", test = TRUE),
+    ..., plot_list = pl
+) {
+    dots <- list(...)
+    dots$add_to <- add_to
+    dots$index <- find_data(plot_list, list(2, 2, "y"), dots$y)
+    dots$desc <- paste0("points for ", dots$desc, " found")
+    point_number <- find_data(plot_list, list(2, 2, "y"), dots$y)
+    do.call(check_xy, dots)
+}
+
+check_plot_window() %>%
+    check_points(
+        desc = "points for normal optic nerves",
+        x = subset(onhlong, clinhypo == "No" & case == 0)$age,
+        y = subset(onhlong, clinhypo == "No" & case == 0)$mean,
+        pch = 19,
+        col = "black"
+    ) %>%
+    check_points(
+        desc = "points for clinically unaffected optic nerves among patients with ONH",
+        x = subset(onhlong, clinhypo == "No" & case == 1)$age,
+        y = subset(onhlong, clinhypo == "No" & case == 1)$mean,
+        pch = 19,
+        col = "blue"
+    ) %>%
+    check_points(
+        desc = "points for clinically affected optic nerves with clinical ONH",
+        x = subset(onhlong, clinhypo == "Yes" & case == 1)$age,
+        y = subset(onhlong, clinhypo == "Yes" & case == 1)$mean,
+        pch = 19,
+        col = "red"
+    ) %>%
+    check_line(
+        desc = "mean",
+        x = onhfit$age,
+        y = onhfit$mean
+    ) %>%
+    check_line(
+        desc = "upper 95% prediction interval",
+        x = onhfit$age,
+        y = onhfit$upr95,
+        lty = list(2, "dashed")
+    ) %>%
+    check_line(
+        desc = "lower 95% prediction interval",
+        x = onhfit$age,
+        y = onhfit$lwr95,
+        lty = list(2, "dashed")
+    ) %>%
+    check_axis_labels() -> out
+
+if (out$test) {
+    gradethis::pass(out$msg)
+} else {
+    gradethis::fail(out$msg)
+}
+})
+```
+
+### Submit Your Assignment
+
+```{adm}
+#| type: progress-submit
+```
+::: {#adm-progress-submit}
+```{webr}
+#| autorun: true
+.progress_submit("08-Base-Graphics", 1)
+```
+:::

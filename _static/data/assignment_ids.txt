@@ -5,4 +5,5 @@ list(
     `04-Rcel2` = "1129578",
     "05-Functions" = "1129576",
     "06-Branch-Loop" = "1129573",
-    "07-Food-Prep" = "1129574")
+    "07-Food-Prep" = "1129574",
+    "08-Base-Graphics" = "1129563")
