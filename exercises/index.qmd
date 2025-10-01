@@ -16,3 +16,4 @@ course.
 6. [Branching Out & Feeling Loopy](06-Branch-Loop.qmd): an introduction to control structures in R, including `if`{.r} statements and `for`{.r} loops [[canvas]](`r .canvas_link("06-Branch-Loop")`){.canvas}
 7. [Food Prep](07-Food-Prep.qmd): review of many concepts around data selection and indexing with some new techniques to help you transform, merge, and sort data [[canvas]](`r .canvas_link("07-Food-Prep")`){.canvas}
 8. [Reading & Writing Files](07a-Read-Write-Files.qmd): an introduction to reading and writing files in R, including CSV, Excel, and RDS files
+9. [Base Graphics](08-Base-Graphics.qmd): an introduction to R's base graphics system [[canvas]](`r .canvas_link("08-Base-Graphics")`){.canvas}
