@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+  <!-- background -->
+  <rect width="64" height="64" rx="10" fill="#3b6ea5"/>
+
+  <!-- bigger cylinder -->
+  <ellipse cx="32" cy="16" rx="22" ry="9" fill="#24496d"/>
+  <rect x="10" y="16" width="44" height="32" fill="#5ba4e5"/>
+  <ellipse cx="32" cy="48" rx="22" ry="9" fill="#7fbdf2"/>
+  <ellipse cx="32" cy="16" rx="22" ry="9" fill="#24496d"/>
+
+  <!-- large R, intentionally overlapping bottom ellipse -->
+  <text x="32" y="48" text-anchor="middle"
+        font-family="system-ui, sans-serif"
+        font-weight="800" font-size="28"
+        fill="#ffffff">R</text>
+</svg>

@@ -7,6 +7,7 @@ website:
   issue-url: https://github.com/advdatamgmt/adm-webr/issues
   repo-actions: [issue]
   navbar:
+    logo: /_static/favicon.svg
     left:
       - href: index.qmd
         text: Home

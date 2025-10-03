@@ -13,6 +13,9 @@ format:
     resources:
       - _static/data
       - data
+    include-in-header: 
+      - text: |
+          <link rel="shortcut icon" href="/_static/favicon.svg" type="image/x-icon">
     include-after-body:
       - text: |
           <script src="/_static/papaparse.min.js"></script>

@@ -58,3 +58,5 @@ _site/
 /.luarc.json
 
 /_*.local
+
+**/*.quarto_ipynb
