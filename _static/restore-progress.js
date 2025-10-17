@@ -30,11 +30,8 @@ function restore_exercise(ee) {
       const code_editor = document.querySelector(`${e_sel} div.cm-content`);
       code_editor.innerHTML = e.user_code;
       waitForElement(`${e_sel} div.cm-activeLine`).then(() => {
-         console.log("see code styling");
          document.querySelector(`${e_sel} a.exercise-editor-btn-run-code`).click()
-         console.log("clicked run");
          waitForElement(`${e_sel} div.alert-success`).then(() => {
-            console.log("see success");
             restore_exercise(ee);
          });
       });

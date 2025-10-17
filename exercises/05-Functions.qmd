@@ -656,7 +656,7 @@ a number to `y`{.r}, then R can find it and will use it in the function.
 Avoiding this behavior isusually best; instead pass `y`{.r} as another argument.
 However, occasionally this approach is the best solution to a problem.
 
-# Experimentation
+## Experimentation
 
 OK, now it is your turn to write a function from scratch. 
 Your function must be named `add5`{.r} for the grading code to find it.
