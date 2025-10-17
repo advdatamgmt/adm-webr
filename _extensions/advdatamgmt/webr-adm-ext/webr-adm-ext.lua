@@ -80,13 +80,14 @@ function AdmCodeBlock(block)
 
   local out = {}
   if (pblock.attr.type == 'open-on-pass') then
-    out = pandoc.Div(
-      pandoc.read(pblock.code).blocks,
-      pandoc.Attr(
-        "open-on-pass-" .. pblock.attr.exercise,
-        { 'webr-adm-ext' }
-      )
+  out = pandoc.Div(
+    pandoc.read(pblock.code).blocks,
+    pandoc.Attr(
+      "open-on-pass-" .. pblock.attr.exercise,
+      { "webr-adm-ext" },
+      { style = "display: none;" }
     )
+  )
   end
   return out
 end

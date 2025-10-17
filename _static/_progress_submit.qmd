@@ -72,7 +72,8 @@ options(webr.exercise.checker = function(
       htmltools::tags$button(
           #onClick = "this.classList.add('clicked');",
           class = "btn progress-submit",
-          "Save progress"
+          "Save progress",
+          .noWS = "outside"
       )
     ),
     htmltools::tags$label(
