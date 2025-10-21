@@ -17,3 +17,7 @@ course.
 7. [Food Prep](07-Food-Prep.qmd): review of many concepts around data selection and indexing with some new techniques to help you transform, merge, and sort data [[canvas]](`r .canvas_link("07-Food-Prep")`){.canvas}
 8. [Reading & Writing Files](07a-Read-Write-Files.qmd): an introduction to reading and writing files in R, including CSV, Excel, and RDS files
 9. [Base Graphics](08-Base-Graphics.qmd): an introduction to R's base graphics system [[canvas]](`r .canvas_link("08-Base-Graphics")`){.canvas}
+10. [Reproducible Research](09-Reproducible-Research.qmd): learn to make reproducible research documents including
+formatted tables using Quarto [[canvas]](`r .canvas_link("09-Reproducible-Research")`){.canvas}
+    * [Basic Table Example](09a-Basic-Table-Example.qmd)
+    * [Advanced Table Example](09b-Advanced-Table-Example.qmd)
