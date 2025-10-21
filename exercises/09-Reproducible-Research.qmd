@@ -161,7 +161,7 @@ Harold Abelson and Gerald Jay Sussman with Julie Sussman — MIT Press, CC BY-
   together with the help of knitr with [Quarto](https://quarto.org).
 - These slides have been made with Quarto!
 
-![Quarto Logo](https://quarto.org/quarto.png){.r-stretch}\
+![Quarto Logo](../_static/quarto.png){.r-stretch}\
 
 ## Literate programming in R
 
