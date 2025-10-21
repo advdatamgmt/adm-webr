@@ -1,0 +1,15 @@
+{
+  "hash": "4f5ef5c2d90e01ff68b09bc5532d637e",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"About\"\nsidebar: false\n---\n\n\n::: {.cell}\n\n:::\n\n\n\nThis website accompanies the course **MSCR 596 - Advanced Data Management** at\n[Emory University](https://www.emory.edu). It provides resources\nand information for students enrolled in this elective course that aims to\nintroduce the [R statistical programming language](https://www.r-project.org/) with a focus on data management\ntasks (importing, cleaning, reshaping, transforming, and exploring data) and\nreproducible statistical analysis. R packages for the creation of\npublication-quality figures and tables will be introduced further extending the\nstudent's capabilities to create complete and reproducible data-processing\npipelines from raw data to presentation and publication. \n\nWhile the course introduces some of the statistical methods available in R along\nwith packages for logistic and time-to-event modeling, little of the course is\ndevoted to how to perform a given statistical analysis in R nor is the underlying\nstatistical theory of analyses covered. Nevertheless, anyone who successfully\ncompletes the course will have acquired the skills to find and run any common\nstatistical analysis available in R while gaining the much more valuable skills\nof creatively solving challenging data management problems.\n\n# General disclaimer\n\nThe statements contained throughout this course are solely those of the \ninstructor and do not necessarily reflect the views or policies of the Centers \nfor Disease Control and Prevention.\n\n# Generative artificial intelligence disclaimer\n\nThe instructor uses generative artificial intelligence (GenAI) to help create \ninstructional content including that found on this website. In every case, results\nare reviewed carefully in an effort to ensure accuracy and quality before use. \n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

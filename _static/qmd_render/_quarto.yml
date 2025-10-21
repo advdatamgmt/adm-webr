@@ -1,0 +1,6 @@
+execute:
+  freeze: auto
+format:                                  
+    html:                                
+        embed-resources: true            
+engine: knitr   

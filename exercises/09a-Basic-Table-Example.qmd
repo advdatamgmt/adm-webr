@@ -1,0 +1,150 @@
+---
+title: "Basic Table Example"
+order: 925
+webr:
+  packages:
+    - tidyverse
+  cell-options:
+    autorun: true
+---
+
+{{< include ../_static/_shared.qmd >}}
+
+## Introduction
+
+Herein a table is presented that would be suitable for inclusion in the
+final project or to be used in a manuscript.
+
+The table creation process involves some data manipulation, but most importantly
+the data is formatted for presentation in a document, e.g., with a reasonable
+number of decimal places.  
+
+I will demonstrate using the builtin `iris` dataset which hase data on iris
+flower measurements (sepal length, sepal width, petal length, petal width) for
+three species of iris flowers.
+
+I'll create a summary table with means and standard deviations for each
+of the four measurement variables, stratified by species, using the 
+techniques we used in the [earlier exercise](07-Food-Prep.qmd).
+But I will also show you how to do the same thing using `tidyverse` functions.
+
+Ok, let's load the `tidyverse` package and the `iris` dataset.
+
+```{webr}
+library(tidyverse)
+data(iris)
+```
+
+Take a look at what `iris` looks like before we summarize it.
+
+```{webr}
+head(iris)
+summary(iris)
+```
+
+Now, let's create two helper functions to format means and standard deviations 
+for our tables.
+
+```{webr}
+fmt_mean <- function(x) sprintf("%.2f", mean(x, na.rm = TRUE))
+fmt_stddev <- function(x) sprintf("(%.2f)", sd(x, na.rm = TRUE))
+```
+
+## Create the summary table without tidyverse
+
+Now let's create the summary table without using `tidyverse` functions and 
+without some more advanced base R programming techniques we will learn later.
+
+Let's split the `data.frame` into three `data.frame`s, one per species using
+a `for` loop.
+
+```{webr}
+species_names <- unique(iris$Species)
+for (sp in species_names) {
+  assign(paste0("iris_", sp), subset(iris, Species == sp))
+}
+```
+
+Use our helper functions to create summary tables for each species and using
+some loops to simplify our work a bit (and make it less error prone)
+
+```{webr}
+flower_features <- c("Sepal.Length", "Sepal.Width", "Petal.Length", "Petal.Width")
+
+for (sp in species_names) {
+  df <- get(paste0("iris_", sp))
+  fmt_df <- data.frame(feature = character(), mean = character(), sd = character())
+
+  for (feat in flower_features) {
+    mean_val <- fmt_mean(df[[feat]])
+    sd_val <- fmt_stddev(df[[feat]])
+    fmt_df <- rbind(fmt_df, data.frame(feature = feat, mean = mean_val, sd = sd_val))
+  }
+
+  assign(paste0("fmt_", sp), fmt_df)
+}
+fmt_setosa
+fmt_versicolor
+fmt_virginica
+```
+
+Let's `cbind` these three summary tables together to create one big table.
+Although `cbind` is usually not recommended, it works fine here because we know
+that the rows are in the same order and we just want to present them side by side
+so that we can construct our table vs. use this data for subsequent analysis.
+
+```{webr}
+
+
+fmt_table <- data.frame(feature = flower_features)
+
+for (sp in species_names) {
+  fmt_table <- cbind(fmt_table,
+                     get(paste0("fmt_", sp))[ , c("mean", "sd")])
+}
+fmt_table
+```
+
+Perfect!  Now, let's make it into HTML without the first column, so it's easy to 
+copy and paste into our [Word table shell](../_static/iris_table.docx). 
+
+```{webr}
+knitr::kable(fmt_table[ , -1])
+``` 
+
+## Create the summary table with tidyverse
+
+```{webr}
+iris %>%
+  group_by(Species) %>%
+  summarize(across(everything(), c(m = fmt_mean, sd = fmt_stddev))) %>%
+  pivot_longer(-Species) %>%
+  separate(name, c("feature", "stat"), sep = "_") %>%
+  pivot_wider(names_from=c(Species, stat)) %>%
+  select(-feature)
+```
+
+Is it easier to make?  Not necessarily. I needed to experiment quite a bit
+to get what I wanted and had to rely on help files considerably even though I
+have substantial familiarity with the `tidyverse` ecosystem.  Instead of a core
+set of base functions that you can mix and match, you need to be familiar with 
+the spectrum of `tidyverse` verbs and their usage and default parameters, 
+including functions like `across`, `separate`, and `pivot_wider` that are quite 
+tricky to get right. Once you have it right though, it is quite easy to read and 
+understand.
+
+To create the table "meat" as we did above, we can just feed that directly into
+`knitr::kable`.
+
+
+```{webr}
+iris %>%
+  group_by(Species) %>%
+  summarize(across(everything(), c(m = fmt_mean, sd = fmt_stddev))) %>%
+  pivot_longer(-Species) %>%
+  separate(name, c("feature", "stat"), sep = "_") %>%
+  pivot_wider(names_from=c(Species, stat)) %>%
+  select(-feature) %>%
+  knitr::kable()
+```
+

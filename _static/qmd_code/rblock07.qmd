@@ -1,0 +1,8 @@
+# Motor Trend Car Road Tests
+
+Miles per gallon *vs* number of cylinders.
+
+```{r plot}
+data(mtcars)
+plot(mpg ~ cyl, mtcars)
+```

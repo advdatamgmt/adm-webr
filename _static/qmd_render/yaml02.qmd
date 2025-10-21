@@ -1,0 +1,13 @@
+---
+title: |                                                       
+       | This is a long title with                             
+       | just the line breaks                                  
+       | that I want                                           
+author: "[Beau B. Bruce, MD, PhD](mailto:lue7@cdc.gov)"        
+abstract: This report details a few key things.
+date: May 28, 2017
+format: 
+    html: 
+        embed-resources: true
+engine: knitr
+---

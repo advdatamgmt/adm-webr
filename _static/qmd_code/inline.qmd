@@ -1,0 +1,6 @@
+---
+engine: knitr
+---
+
+The cars had an average miles 
+per gallon of `{r} mean(mtcars$mpg)`.

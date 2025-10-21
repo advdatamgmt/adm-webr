@@ -4,6 +4,11 @@ project:
     - cp -r _static _site
     - cp -r data _site
 
+code-annotations: hover
+
+execute: 
+  freeze: auto
+
 format:
   live-html:
     theme:
@@ -21,6 +26,7 @@ format:
           <script src="/_static/papaparse.min.js"></script>
           <script src="/_static/progress-continue.js"></script>
           <script src="/_static/restore-progress.js"></script>
+    embed-resources: true
 
 author:
   name: Beau B. Bruce, MD, PhD
@@ -31,6 +37,7 @@ engine: knitr
 
 filters:
   - webr-adm-ext
+  - qmd-demo.lua
 
 metadata-files:
   - _website.yml

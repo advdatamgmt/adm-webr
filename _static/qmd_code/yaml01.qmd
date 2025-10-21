@@ -1,0 +1,8 @@
+---
+title: "Quarto documents (finally!)"
+author: "Beau B. Bruce"
+format:                                  # <1>
+    html:                                # <1>
+        embed-resources: true            # <1>
+engine: knitr                            # <2>
+---

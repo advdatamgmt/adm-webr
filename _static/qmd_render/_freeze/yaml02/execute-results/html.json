@@ -1,0 +1,15 @@
+{
+  "hash": "07c7189be1d3000d4a35c8fc53c382f9",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: |                                                       \n       | This is a long title with                             \n       | just the line breaks                                  \n       | that I want                                           \nauthor: \"[Beau B. Bruce, MD, PhD](mailto:lue7@cdc.gov)\"        \nabstract: This report details a few key things.\ndate: May 28, 2017\nformat: \n    html: \n        embed-resources: true\nengine: knitr\n---\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

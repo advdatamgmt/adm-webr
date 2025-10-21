@@ -1,0 +1,896 @@
+---
+title: "Reproducible Research"
+order: 900
+execute: 
+  echo: true
+format: 
+    live-revealjs:
+        theme: dracula
+        css: ../styles.css
+include-in-header: 
+  - text: <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+include-after-body:
+  - text: <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  - text: <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  - text: <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+---
+
+# Objectives
+
+{{< include ../_static/_shared.qmd >}}
+
+## Learning Objectives
+
+#. Talk about our motivation, i.e, "reproducible research"
+#. Learn the basics of Markdown and Quarto
+#. Learn how to make a basic reproducible report
+#. Learn how to make the "meat" of a table that can be used for publication
+#. Learn how to make R inline and table output look better
+
+# Part 1. <br> Reproducible Research
+
+## What is "reproducible" research?
+
+- I put it in quotes because it would be better called *repeatable* or *replicable* research
+- However, the term that has been generally used *reproducible* so we are "stuck with it"
+- Why make the distinction?
+
+## The 4 R's
+
+![The 4 R's: repeat, replicate, reproduce, reuse](http://image.slidesharecdn.com/ismb2013keynotecleangoble-130726152010-phpapp01/95/ismbeccb-2013-keynote-goble-results-may-vary-what-is-reproducible-why-do-open-science-and-who-gets-the-credit-17-638.jpg)\
+
+## Is repeatability and replicability worth having?
+
+- The authors distinctions are correct, but...
+- I disagree with the premise of the paper, i.e., "replicability is not worth having"
+- Instead, I suggest replicability, and especially repeatability of your own results *is* the foundation of reproducibility
+- Without being able to at least repeat exactly the results of your own analyses or replicate that of another group, why should you trust the results in order so that you can begin to try to reproduce them?
+
+## Why is reproducible research needed?
+
+- Data and their analysis are increasingly complex
+- Analysis is part of the methods!  
+- Generally, methods should be reported at the level that another group can *replicate* the results
+
+## Why is reproducible research needed?
+
+:::: {.columns}
+::: {.column width="66%"}
+- Many experiments can not be reproduced
+    - Most large clinical trials
+    - Recent worries in the field of psychology
+- But replication is at least a step in the right direction
+:::
+::: {.column width="33%"}
+![First page of Ioannidis' "Why Most Published Research Findings Are False"](../_static/ioannidis.png)\
+:::
+::::
+
+:::aside
+Ioannidis JPA (2005) Why Most Published Research Findings Are False. PLOS Medicine 2(8): e124. <https://doi.org/10.1371/journal.pmed.0020124>
+:::
+    
+## Because the IOM says so in [Evolution of Translational Omics](https://nap.nationalacademies.org/catalog/13297/evolution-of-translational-omics-lessons-learned-and-the-path-forward)
+
+:::: {.columns}
+::: {.column width="66%"}
+- Data & metadata used should be made publicly available
+- The fully specified computational procedures and exact computer code used for the development 
+  of the candidate omics-based test should be made *sustainably available*
+:::
+::: {.column width="33%"}
+![IOM Report Cover](../_static/13297-0309224187-450.jpg)\
+:::
+::::
+
+:::aside
+IOM = Institute of Medicine
+
+Cover image: National Academies Press, Public Domain
+:::
+
+## Because the IOM says so in [Evolution of Translational Omics](https://nap.nationalacademies.org/catalog/13297/evolution-of-translational-omics-lessons-learned-and-the-path-forward)
+
+:::: {.columns}
+::: {.column width="66%"}
+"Ideally, the computer code that is released will encompass all the steps of computational analysis, *including all data
+preprocessing steps*$....$ 
+
+All aspects of the analysis need to transparently reported.''
+:::
+::: {.column width="33%"}
+![IOM Report Cover](../_static/13297-0309224187-450.jpg)\
+:::
+::::
+
+:::aside
+IOM = Institute of Medicine
+
+Cover image: National Academies Press, Public Domain
+:::
+
+       
+## Sounds good, but how?
+
+:::: {.columns}
+
+::: {.column width="66%"}
++ One technique is "literate programming"
+
+    + Concept introduced by Donald Knuth (he's kinda a big deal)
+
+    + Write your reports/articles as a stream of code and text
+
+    + Needs the human/documentation language + a machine/programming language
+:::
+
+::: {.column width="33%"}
+![Donald Knuth](https://upload.wikimedia.org/wikipedia/commons/4/4f/KnuthAtOpenContentAlliance.jpg){.r-stretch}\
+:::
+
+::::
+
+::: aside 
+By Flickr user Jacob Appelbaum, uploaded to en.wikipedia by users BeSherman, Duozmo (Flickr.com (via en.wikipedia)) [CC BY-SA 2.5 (http://creativecommons.org/licenses/by-sa/2.5)], via Wikimedia Commons</span>
+:::
+    
+    
+## Keep the program easy to read
+
+:::: {.columns}
+
+::: {.column width="66%"}
+> Programs are meant to be read by humans, and only incidentally for computers to execute.
+
+--- Harold Abelson and Gerald Jay Sussman
+:::
+
+::: {.column width="33%"}
+![SICP Book Cover](https://upload.wikimedia.org/wikipedia/commons/9/9d/SICP_cover.jpg)\
+:::
+
+::::
+
+:::aside
+Harold Abelson and Gerald Jay Sussman with Julie Sussman — MIT Press, CC BY-SA 4.0 <https://creativecommons.org/licenses/by-sa/4.0>, via Wikimedia Commons
+:::
+
+## Literate programming in R
+
+- In R, probably the best literate programming environment is Markdown (the human language) + R (the computer language) knit   
+  together with the help of knitr with [Quarto](https://quarto.org).
+- These slides have been made with Quarto!
+
+![Quarto Logo](https://quarto.org/quarto.png){.r-stretch}\
+
+## Literate programming in R
+
+Each time you build a Quarto document it starts from scratch and
+executes in order preventing you from making mistakes such as:
+
+- executing something you didn't intend to make permanent
+- changing an object in the middle while you are working in the console 
+  that changes your results
+
+## A (tiny) challenge
+
+Need to know a little about 3-ish computer languages, i.e.,
+
+- R,
+- markdown, and
+- YAML.
+
+If you know some HTML/CSS or {{< latex >}}, you can get even fancier.
+
+Good news! You don't need to know much of each, and all are fairly simple for the basics. 
+So you will be able to build a great foundation today!
+
+# Part 2. <br> Markdown and Quarto
+
+## Markdown
+
+- Markdown is the human readable language in Quarto
+- A way to represent rich text (formatting, etc.) as plain text
+   - [Official Markdown Site](http://daringfireball.net/projects/markdown/)
+   - [Pandoc (Quarto) Markdown Basics](https://quarto.org/docs/authoring/markdown-basics.html)
+   - [Pandoc (Quarto) Markdown Details](https://pandoc.org/MANUAL.html#pandocs-markdown)
+
+## Philosophy
+
+:::: {.columns}
+
+::: {.column width="50%"}
+> "A Markdown-formatted document should be publishable as-is, as plain 
+> text, without looking like it's been marked up with tags or formatting 
+> instructions." 
+
+--- John Gruber (inventor of Markdown)
+:::
+::: {.column width="50%"}
+![John Gruber B/W Photo](../_static/addison-bw.jpg)\
+:::
+::::
+
+:::aside
+George Del Barrio CC BY-SA 3.0 http://john.gruber.usesthis.com/
+:::
+
+## Inline formatting
+
+You can create emphasis (italics), strong emphasis (bold), super-/subscripts.
+
+```{md-demo}
+*Emphasized* and **strongly emphasized**.
+
+Water's molecular formula is H~2~O and Avogadro's 
+constant is 6.022 x 10^23^ mol^-1^.
+```
+
+## Math
+
+Beautifully typesetting math is relatively easy too 
+if you know a little {{< latex >}}
+
+```{md-demo}
+The series $a + ar + ar^2 + \dots + ar^{n - 1}$ equals
+$$ \sum_{k = 0}^{n - 1} ar^k = a \frac{1 - r^n}{1 - r}$$
+```
+
+## Code
+
+And you can include blocks of code/algorithms by placing 4 spaces or one tab in
+front of each line:
+
+```{md-demo}
+    # Step 1
+    printf("Hello world!")
+    # Step 2
+    exit()
+```
+
+
+## Code
+
+But most often you can put code in fenced blocks using triple backticks
+(```)
+
+::: {.md-code}
+````{.markdown}
+```
+# Step 1
+printf("Hello world!")
+# Step 2
+exit()
+```
+````
+:::
+
+::: {.md-render}
+```
+# Step 1
+printf("Hello world!")
+# Step 2
+exit()
+```
+:::
+
+## Headers
+
+Two styles - style 1
+
+::: {.md-code}
+````{.markdown}
+```
+Level1
+======
+
+Hello
+
+Level2
+------
+
+Hi!
+```
+````
+:::
+
+::: {.md-render}
+`<h1>Level 1</h1>`{=html}
+
+Hello!
+
+`<h2>Level 2</h2>`{=html}
+
+Hi!
+:::
+
+## Headers
+
+Two styles - style 2
+
+::: {.md-code}
+````{.markdown}
+```
+# Level1
+A
+## Level2
+### Level3
+B
+#### Level4
+```
+````
+:::
+
+::: {.md-render}
+`<h1>Level 1</h1>`{=html}
+A
+`<h2>Level 2</h2>`{=html}
+`<h3>Level 3</h3>`{=html}
+B
+`<h4>Level 4</h4>`{=html}
+:::
+
+## Paragraphs
+
+Separate by one or more blank lines.  Newlines are otherwise treated as spaces allowing you
+to wrap your text as you like.
+
+```{md-demo}
+Paragraph 1 text. Ipsum dolor sit amet, consectetur adipiscing elit.
+
+Paragraph 
+2
+text. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+```
+
+## Block quotes and smart punctuation
+
+```{md-demo}
+> "Snakes. Why did it
+> have to be snakes?" 
+
+---Indiana Jones
+
+An en-dash is used for ranges of numbers: 2--5 pages.
+```
+
+## Line breaks {#sec-line-breaks}
+
+Preserves line breaks like this.
+
+```{md-demo}
+| The limerick packs laughs anatomical
+| In space that is quite economical.
+|     But the good ones I've seen
+|     So seldom are clean
+| And the clean ones so seldom are comical
+```
+
+## Unordered Lists 
+
+Four space or one tab rule to nest.
+
+```{md-demo}
+* first item
+* second item
+    * nested item
+    + doesn't matter what you start with
+- third item
+```
+
+## Ordered list
+
+The numbers don't matter (except the first tells it where to start).  Nest by
+indenting four spaces.
+
+```{md-demo}
+25.  Twenty-fifth
+8.  Twenty-sixth
+    1.  First nested
+    85.  Second nested
+3.  Twenty-seventh
+```
+
+## Ordered list {.scrollable}
+
+But try to be friendly to those reading it in text form or 
+use this alternate form, i.e., `#.`{=markdown}
+
+```{md-demo}
+#. First item
+#. Second item
+    #. Nested first
+    #. Nested second
+```
+
+## Definition list
+```{md-demo}
+Attribution
+ ~  *n.*, The act of attributing, especially the act of establishing a particular person as the creator of a work of art.
+ ~  *n.*, Something, such as a quality or characteristic, that is related to a particular possessor; an attribute.
+
+Definition
+ ~ *n.*, A statement conveying fundamental character.
+ ~ *n.*, A statement of the meaning of a word, phrase, or term, as in a dictionary entry.
+ ~ *n.*, The act or process of stating a precise meaning or significance; formulation of a meaning.
+```
+
+## Horizontal rules
+
+A line containing a row of three or more *, -, or _ characters (optionally separated by spaces) produces a horizontal rule:
+
+```{md-demo}
+*  *  *  *
+
+---------------
+```
+
+## External links
+
+To external sites are generally autoconverted but can also be done more
+explicitly and with custom text.
+
+```{md-demo}
+http://www.google.com
+
+<http://www.google.com>
+
+[Google](http://www.google.com)
+```
+
+## Cross-references
+
+Various items can be [cross-referenced](https://quarto.org/docs/authoring/cross-references.html)
+including headers, figures, tables, equations, and code blocks.
+
+```{md-demo}
+### The main section {#sec-main}
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+
+### A later section 
+
+Varius congue suscipit placerat enim ante id sollicitudin. Enim congue vulputate nisi aptent rhoncus nec.
+```
+
+## Cross-references
+
+Various items can be [cross-referenced](https://quarto.org/docs/authoring/cross-references.html)
+including headers, figures, tables, equations, and code blocks.
+
+
+```{md-demo}
+### An even later section
+
+Felis praesent sollicitudin vulputate tellus finibus praesent varius quis diam erat litora phasellus. 
+
+### The final section?
+
+Yes, good stuff is here too, but maybe you want to go back to
+[the main section](#sec-main) and review.
+```
+
+## Images 
+
+```{md-demo}
+![The R Logo](https://www.r-project.org/logo/Rlogo.svg)
+```
+
+## Images 
+
+Size it with a little help from CSS (no space around equals sign!)
+
+```{md-demo}
+![The R Logo](https://www.r-project.org/logo/Rlogo.svg){width=25%}
+```
+
+## Footnotes {.scrollable}
+
+```{md-demo}
+Here is a footnote reference,[^1] and another.[^longnote]
+
+[^1]: Here is the footnote.
+
+[^longnote]: Here's one with multiple blocks.
+
+    Subsequent paragraphs are indented to show that they belong to the previous footnote.
+
+    The whole paragraph can be indented, or just the first line.
+
+This paragraph won't be part of the note, because it isn't indented.
+```
+
+## Inline notes
+
+```{md-demo}
+Here is an inline note.^[Inlines notes are easier to write, since
+you don't have to pick an identifier and move down to type the
+note.]
+```
+
+## Tables
+
+Several [formats available](https://quarto.org/docs/authoring/tables.html). 
+Painful to type yourself (so don't! - see the knitr part later!)
+
+```{md-demo}
++---------------+---------------+--------------------+
+| Fruit         | Price         | Advantages         |
++===============+===============+====================+
+| Bananas       | $1.34         | - bright color     |
++---------------+---------------+--------------------+
+| Oranges       | $2.10         | - cures scurvy     |
++---------------+---------------+--------------------+
+```
+
+## Tables
+
+Several [formats available](https://quarto.org/docs/authoring/tables.html). 
+Painful to type yourself (so don't! - see the knitr part later!)
+
+```{md-demo}
+| Right | Left | Default | Center |
+|------:|:-----|---------|:------:|
+|   12  |  12  |    12   |    12  |
+|  123  |  123 |   123   |   123  |
+|    1  |    1 |     1   |     1  |
+```
+
+## And a lot, lot more!
+
++ Bibliographic citations using {{< bibtex >}}, EndNote, etc.
++ Special markup for slides
+    + Incremental lists
+    + Pauses
+    + Speaker notes
++ Raw HTML, {{< tex >}}, {{< latex >}} can be included depending on the target document
++ Additional features and subtlety to many things we covered
+
+# Part 3. <br> A basic reproducible report in Quarto
+
+## Quarto document (.qmd)
+
+A Quarto document has 
+
+- A YAML header,
+- markdown text for the narrative with code blocks embedded containing
+- R code to display and execute.
+
+## The YAML header
+
+Contains metadata that becomes titles, headings, etc. and controls output
+formatting. (Hover over the circled numbers for more detail.)
+
+:::: { .qmd-demo file="yaml01" }
+::: { .after-col1 }
+1. This nested structure in `format:` specifies that we want to produce an 
+   HTML document with embedded resources which means that you can send the file 
+   to someone else, e.g., by e-mail, and it will still work.
+2. `engine: knitr` specifies the use of the knitr engine for code chunks.
+:::
+::::
+
+## The YAML header
+
+Some formatting flexibility is available, but generally you have to live
+with what it produces unless you want to get into HTML/CSS customization 
+writing special formatters in yet another programming language.
+
+:::: { .qmd-demo file="yaml02" }
+::: { .after-col1 }
+1. Do these [line breaks look familiar](#sec-line-breaks)?
+2. You can include links.
+:::
+::::
+
+## The YAML header
+
+:::: { .qmd-demo file="yaml03"}
+::: { .after-col1 }
+1. Add a [theme](https://bootswatch.com/), `united` here.
+2. Add a [table of contents](https://quarto.org/docs/output-formats/html-basics.html#table-of-contents) that by
+   default floats alongside the document.
+:::
+::::
+
+## R code blocks
+
+Now, start to combine text and R code. (No YAML header this time just to
+help us focus on the R code blocks.)
+
+:::: { .qmd-demo file="rblock01"}
+::: { .after-col1 }
+1. The R code block starts with ````{r}`.  The `r` indicates the language.
+2. Write R code as you normally would here.
+:::
+::::
+
+## Chunk attributes: `echo`
+
+Chunk attributes control many features of the display. 
+For example, you can control whether the code is shown or not.
+
+:::: { .qmd-demo file="rblock02"}
+::: { .after-col1 }
+1. `echo: false` makes the code invisible in the output.
+:::
+::::
+
+## Chunk attributes: `comment`
+
+Or what is used to comment the results or if it is commented at all.
+
+:::: { .qmd-demo file="rblock03"}
+::: { .after-col1 }
+1. `comment = "#"` adds these characters before each line of output.
+:::
+::::
+
+## Chunk attributes: `eval`
+
+Show the code, but do not run it.
+
+:::: { .qmd-demo file="rblock04"}
+::: { .after-col1 }
+1. `eval: false` prevents the code from being run.
+:::
+::::
+
+## Chunk attributes: `include`
+
+You can also do neither, but still run the code which is very useful for
+setup/configuration.
+
+:::: { .qmd-demo file="rblock05"}
+::: { .after-col1 }
+1. `include: false` runs the code, but shows neither the code nor its output.
+:::
+::::
+
+## Chunk attributes: `name`
+
+Blocks can be named and this is most useful for locating where errors occur.
+
+:::: { .qmd-demo file="rblock06"}
+::::
+
+## R code blocks
+
+Plotting just works... most of the time, but there are chunk attributes
+for when it doesn't (e.g., figure height/width, format, etc.).  Note that if we
+had already used `mtcars` as we did in the blocks above, 
+we would not have to call `data(mtcars)`.  The
+document works as a single code file, which is one way that it creates
+reproducible results.
+
+:::: { .qmd-demo file="rblock07"}
+::::
+
+## Global options
+
+You can set global options in the YAML header for the most common way
+that you want each R code block run.  You can override those global options
+just by changing any at the relevant block as we were doing before.
+
+```{.markdown}
+---
+execute:
+  echo: false
+  warning: false
+  message: false
+  fig-width: 12
+  fig-height: 8
+format:
+  html:
+    embed-resources: true
+engine: knitr
+---
+```
+
+Read more about chunk options at 
+<https://quarto.org/docs/output-formats/html-code.html>.
+
+## Inline R code
+
+Many times you do not want to have raw R output in your files especially if they
+are for public consumption.  One way to deal with that is inline R code.
+
+:::: { .qmd-demo file="inline"}
+::::
+
+However, this output is not really ideal either and in a bit we will see how to
+make it better. Before we do that, let's see how to create tables too.
+
+# Part 4. <br> Automatically building tables for publication
+
+## Tables
+
+There are several ways to make tables.  One of the easiest is `knitr::kable` because
+you already have `knitr` available.  
+
+:::: { .qmd-demo file="tab"}
+::::
+
+## Tables
+
+If `knitr::kable` does not meet your needs, you can explore other packages,
+such as [`gt`](https://gt.rstudio.com/), [`dt`](https://rstudio.github.io/DT/),
+or [`htmlTable`](https://github.com/gforge/htmlTable).  
+
+Most often use their output options to produce HTML tables in `output: asis` 
+blocks just like we did with `knitr::kable`.
+
+## The final product
+
+- Unlike most webpages, everything is included in your final file: images, 
+  special formatting, etc. if you use the `embed-resources: true` option.
+- You can e-mail them to others and they should work with nothing else! 
+  (old Internet Explorer sometimes excluded...)
+
+# Part 5. <br> Making output look better with `sprintf`
+
+## What is sprintf?
+
+- `sprintf` is an R function for text formatting  
+- Name and format specifications used are based on the C programming language conventions 
+- However, these formats are widely used in many programming languages, e.g., Python, etc.
+- `sprintf` is useful for making your R output more user friendly for inline text and tables.
+
+## Example
+
+```{r}
+nums <- 1:10
+srts <- sqrt(nums)
+sprintf("%.2f", srts)
+sprintf("%.1f", srts)
+```
+
+## The structure of a format
+
+Starts with a percent sign `%` and ends with a letter (case sensitive)
+
+- The most useful ending letters are
+    - `d`: integer,
+    - `f`: fixed point decimal notation,
+    - `e` or `E`: scientific notation,
+        - [-]m.ddd**e**[+-]xx or          
+        - [-]m.ddd**E**[+-]xx, and 
+    - `s`: character string
+- Note that you can still use `s` with integers (R will convert)
+
+## Example 2
+
+```{r}
+sprintf("%d: (%.2f)", nums, srts)
+sprintf("%2s: (%.2f)", nums, srts)
+```
+
+## Inside the `%` and letter
+
+No space between the `%` and letter means the default
+ - strings as is
+ - 6 decimal places for numbers
+
+```{r}
+sprintf("%s", "supercalifragilisticexpialidocious")
+sprintf("%f", 2.3)
+```
+
+## Inside the `%` and letter
+
+Place a number for the field width in characters, only pads with spaces;
+if things exceed width, they will will not be truncated.
+
+```{r}
+sprintf("%5s", c("adamant", "list", "do"))
+sprintf("%10f", c(2.3, 1231.459898001)) # default 6 decimal places
+sprintf("%2f", c(2.3, 1231.459898001))
+```
+
+
+## Inside the `%` and letter
+
+If `f` then use `.<num>` to specify the number of decimal places.
+
+```{r}
+sprintf("%10.2f", c(2.3, 1231.459898001)) # default 6 decimal places
+sprintf("%2.2f", c(2.3, 1231.459898001))
+```
+
+## Inside the `%` and letter
+
+Use `-` to left justify within the width. Any order is ok.
+
+```{r}
+sprintf("%-5s", c("adamant", "list", "do"))
+sprintf("%10.2-f", c(2.3, 1231.459898001)) # default 6 decimal places
+sprintf("%-2.2f", c(2.3, 1231.459898001))
+```
+
+## Inside the `%` and letter
+
+Use `+` to always add signs to numbers
+
+```{r}
+sprintf("%+10.2-f", c(-2.3, 1231.459898001)) # default 6 decimal places
+sprintf("%+.2f", c(2.3, -1231.459898001))
+sprintf("%+.2e", c(2.3, -1231.459898001))
+```
+
+## Inside the `%` and letter
+
+Use `0` (zero) to zero pad. Note however this may not work on all platforms, but
+has on all that I have tried (Windows, Mac, Linux).
+
+```{r}
+sprintf("%010.2f", c(-2.3, 1231.459898001)) # default 6 decimal places
+sprintf("%05.2f", c(2.3, -1231.459898001))
+sprintf("%08d", 1:5)
+```
+
+## How to get a percent sign and getting fancier
+
+Use `%%` to get a literal percent sign
+
+```{r}
+sprintf("%d/%d (%.2f%%)", 2, 3, 2/3 * 100)
+x <- 1:10
+y <- x + 2
+sprintf("%d/%d (%.0f%%)", x, y, x/y * 100)
+```
+
+# *r*printf
+
+![But wait there's more!](../_static/butwait.jpg)\
+
+If you buy *s*printf in the next 10 minutes,
+I'll throw in *r*printf for free!
+
+## *r*printf - works just like *s*printf BUT...
+
+```{r, warning=FALSE}
+# install.packages("rprintf")
+library(rprintf)
+rprintf("%d/%d (%.0f%%)", x, y, x/y * 100)
+```
+
+## *r*printf - gives you named formats
+
+```{r}
+rprintf('$a, $b:.1f, $c:+.2f, $b, $a:.0f',a=1.56,b=2.34,c=3.78)
+
+data(esoph)
+head(esoph)
+rprintf("$agegp, $ncontrols:02d", head(esoph))
+```
+
+## *r*printf - gives you a numbering mechanism
+
+```{r}
+rprintf("{2:.1f}, {1:.2f}", 1.56, 2.34)
+```
+
+## *r*printf - mix and match
+
+```{r}
+rprintf(c(a='%s:%d',b='$name:$age',c='{1}:{2}'),name='Ken',age=24)
+```
+
+## Putting it all together
+
+Check out the [Basic Table Example](09a-Basic-Table-Example.qmd)
+
+## Advanced example
+
+![Bam!!!](../_static/emiral.jpg)\
+
+
+Check out the [Advanced Table Example](09b-Advanced-Table-Example.qmd)
+
+## For more information
+
+- [Official Markdown Site](http://daringfireball.net/projects/markdown/)
+- [Pandoc (Quarto) Markdown Basics](https://quarto.org/docs/authoring/markdown-basics.html)
+- [Pandoc (Quarto) Markdown Details](https://pandoc.org/MANUAL.html#pandocs-markdown)
+- [Code block options](https://quarto.org/docs/output-formats/html-code.html)
+- [Inline code](https://quarto.org/docs/computations/inline-code.html)

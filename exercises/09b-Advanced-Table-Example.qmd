@@ -1,0 +1,303 @@
+---
+title: "Advanced Table Example"
+order: 950
+webr:
+  cell-options:
+    autorun: true
+  packages:
+    - htmltools
+---
+
+{{< include ../_static/_shared.qmd >}}
+
+## Introduction
+
+Herein we create a more advanced table that would be suitable 
+for inclusion a final report or manuscript.  The table is formatted completely 
+in a way that you would expect to see in a published manuscript or official 
+report using [HTML, the main language that creates webpages](https://www.w3schools.com/html/).
+
+The amount of work that generally goes into creating a table like this is 
+substantial, so I would only suggest you use this approach for a report that
+you expect to be publishing on a regular basis or for a report or manuscript
+in development which has frequent changes to the underlying data or analysis.
+
+We will use the `lbw` dataset which is included in this dataset. This dataset
+contains data on low birth weight (lbw) babies and various maternal risk factors 
+and was used in the book *Applied Logistic Regression* by Hosmer and
+Lemeshow.  Take a look at the dataset.
+
+```{webr}
+#| echo: false
+load("_static/data/lbw.rda")
+```
+
+```{webr}
+head(lbw)
+summary(lbw)
+```
+
+We need to create some derived variables for the table.  
+
+```{webr}
+lbw <- within(lbw, {
+  age.lte20 <- factor(ifelse(age <= 20, 1, 0))
+  lwt.lt110 <- factor(ifelse(lwt < 110 ,1, 0))
+  ptl.ge1 <- factor(ifelse(ptl != "0", 1, 0))
+  ftv.ge1 <- factor(ifelse(ftv != "0", 1, 0))
+  race.black <- factor(ifelse(race == "black", 1, 0))
+  race.white <- factor(ifelse(race == "white", 1, 0))
+  race.other <- factor(ifelse(race == "other", 1, 0))
+})
+```
+
+## Create the formatted table data
+
+I've determined that I'm going to need eight columns in my table, and I'll 
+therefore start building by creating a `data.frame` with eight character columns.
+Beacause I'm going to be creating the entire table instead of using a table 
+shell in Word, I'll just go ahead and put my column headers in, noting that
+some are blank.
+
+```{webr}
+sum_table <- data.frame(
+  varname = "Variable",
+  lbw_n = "n", 
+  lbw_pct = "%",
+  div = "",
+  non_lbw_n = "n",
+  non_lbw_pct = "%",
+  chisq = "𝜒²",
+  pval = "p†"
+)
+
+sum_table
+```
+
+Add in the table rows one at a time, but first add a couple of helper functions.
+
+A function to format p-values with appropriate number of decimal places. You'll
+definitely want to keep this function handy for future use!  The special comments
+are a way to document your functions in your R code in a standard way that can
+create help files later if you wish using [roxygen2](https://roxygen2.r-lib.org/).
+```{webr}
+#' Format a p-value
+#'
+#' Formats a p-value with `usual.places` number of digits unless 
+#' it is smaller, then displays up to `max.places`.  Uses 
+#  `sig.level` to add a digit when the value is borderline 
+#' (i.e., rounds up to `sig.level`).
+#'
+#' @param p.value p-value to be formatted
+#' @param usual.places number of decimal places to usually display
+#' @param max.places the most decimal places to display
+#' @param sig.level the significance level
+#' @param print.p print "p = "?
+fmt_pval <- function(p.value, usual.places = 2, max.places = 3, 
+                     sig.level = 0.05, print.p = FALSE) {
+  if(is.nan(p.value)) return(NaN)
+  comp <- if (print.p) "=" else ""
+  spfstr <- "%f"
+  if (round(p.value, usual.places) < 10^(-usual.places)) {
+    if(p.value < 10^(-max.places)) {
+      comp <- "<"
+      p.value <- 10^(-max.places)
+      spfstr <- paste0("%.", max.places, "f")
+    } else {
+      spfstr <- paste0("%.",max.places,"f")
+    }
+  } else {
+    if(round(p.value, usual.places) == sig.level) {
+      spfstr <- paste0("%.", usual.places + 1 ,"f")
+    } else {
+      spfstr <- paste0("%.", usual.places, "f")
+    }
+  }
+  paste0(if(print.p) "p " else "", comp, sprintf(spfstr, p.value))
+}
+```
+
+A function to figure out autmomatically if the chi-square test is appropriate or if
+we need to use Fisher's exact test, reporting he correctly formatted result for
+our table.  Note how we use the internals of the `summary` function's results to 
+decide how to proceed.
+
+```{webr}
+cat_test <- function(tab) {
+  stats <- summary(tab)
+  if(stats$approx.ok) {
+    chisq <- sprintf("%.2f", stats$statistic)
+    pval <- stats$p.value
+    twotail <- ""
+  } else {
+    chisq <- "‡"
+    pval <- fisher.test(tab)$p.value
+    twotail <- "§"
+  }
+
+  list(chisq = chisq, pval = paste0(fmt_pval(pval), twotail))
+}
+```
+
+Now the main rows.  Start with a vector that holds the formatted variable names
+and associate units as appropriate. Use `row_names` so you don't clash with 
+the built-in `rownames` function.
+
+```{webr}
+row_names <- list(
+  age.lte20 = "Age of mother, ≤20 years", 
+  race = "Race", 
+  race.black = list(HTML("&nbsp;"), "-", HTML("&nbsp;"), "Black"), 
+  race.white = list(HTML("&nbsp;"), "-", HTML("&nbsp;"), "White"), 
+  race.other = list(HTML("&nbsp;"), "-", HTML("&nbsp;"), "Other"), 
+  lwt.lt110 = "Weight at last menstrual period <110 lbs", 
+  ptl.ge1 = "History of premature labor", 
+  smoke = "Smoked during pregnancy", 
+  ht = "History of hypertension", 
+  ui = "History of uterine irritability", 
+  ftv.ge1 = "At least one physician visit during first trimester"
+)
+```
+
+Create a function to make each formatted row.
+
+```{webr}
+row_builder <- function(varname) {
+  if(varname == "race") return(c(row_names[varname], rep("", 7)))
+  tab <- table(lbw[, varname], lbw$low)
+  props <- sprintf("%.1f", prop.table(tab, 2)[2, ]*100)
+  stats <- cat_test(tab)
+  c(row_names[varname], tab[2, 2], props[2], "", tab[2, 1], props[1], stats$chisq, stats$pval)
+}
+```
+
+Now put this together with some fancy footwork.
+
+```{webr}
+rows <- lapply(names(row_names), row_builder)
+rows <- as.data.frame(do.call(rbind, rows))
+names(rows) <- names(sum_table)
+sum_table <- rbind(sum_table, rows)
+```
+
+That looks great!  We just need to put in the headers that span across the
+low birth weight and non-low birth weight columns.  To make those, we need to
+get the sample sizes for each group.  See how I get pull them from the data
+vs. hard coding them.
+
+```{webr}
+n <- summary(lbw$low)
+n0str <- paste0("n=", n["0"])
+n1str <- paste0("n=", n["1"])
+
+n0str
+n1str
+```
+
+## Create the HTML table
+
+Now, we have all the formatted data we need to create the HTML table.
+Let's load a package that will help us create HTML elements, `htmltools`.
+
+```{webr}
+library(htmltools)
+```
+
+In HTML, the `<table>`{.html} element is made up of rows (`<tr>`{.html} elements) which
+are made up of cells.  There are two types of cells, header cells (`<th>`{.html})
+and data cells (`<td>`{.html}).  These have different default formatting in HTML, and
+allows us to independenly change the look of the header cells vs. the data cells 
+if we wish.  We will also specify some formatting attributes in the cells using
+[CSS (i.e., cascading style sheets)](https://www.w3schools.com/css/) which is the 
+language used to format HTML elements.
+
+We will apply make `<th>`{.html} elements for the first row and put a border on the bottom
+of that row `<tr>`{.html} using CSS.  For the remaining rows, we will use `<td>`{.html} elements,
+but will put a border on the last `<tr>`{.html}.  We will use a `for`{.r} loop to
+create the rows because we want to apply something different to different rows and
+`lapply`{.r} works best when we want to do the same thing to each element.
+
+However, we will use `lapply`{.r} in the `for`{.r} loop to apply the `<th>`{.html} and the `<td>`{.html} 
+to the individual cells within each row since there we are doing the same thing to each
+cell.
+
+```{webr}
+sum_html <- list()
+for (i in 1:NROW(sum_table)) {
+  if (i == 1) {  # first row
+    cell_func <- tags$th
+    row_style <- "border-bottom: black solid"
+  } else if (i == NROW(sum_table)) { # last row 
+    cell_func <- tags$td
+    row_style <- "border-bottom: black solid"
+  } else {
+    cell_func <- tags$td
+    row_style <- NULL
+  }
+  sum_html[[i]] <- tags$tr(
+    lapply(sum_table[i, ], cell_func),
+    style = row_style
+  )
+}
+```
+
+Build our fixed spanning headers. The `&nbsp;`{.html} below are something that are likely new to you.  It represents a
+[non-breaking space](https://www.geeksforgeeks.org/html/how-to-add-a-non-breaking-space-using-nbsp-in-html/) 
+in HTML.  If we don't use them, HTML will collapse multiple spaces into a single space
+when it renders the table.  Their use here is simply to add some padding to the
+empty column in the middle of the table for readability.  We only have to do it 
+in one place because it will expand the rest of that column overall. 
+
+One could cut-and-paste the [Unicode character for the non-breaking space](https://unicode-explorer.com/c/00A0), but
+because it looks like a space (here's one now in the quotes " ") using them
+that way is a bit opaque.
+
+```{webr}
+span_header <- list(
+  tags$tr(
+    tags$th(),
+    tags$th("Low birth weight", colspan = 2, style = "text-align: center;"),
+    tags$th(HTML("&nbsp;&nbsp;&nbsp;")),
+    tags$th("Non-low birth weight", colspan = 2, style = "text-align: center;"),
+    tags$th(),
+    tags$th()
+  ),
+  tags$tr(
+    tags$th(),
+    tags$th(n1str, colspan = 2, style = "text-align: center; border-bottom: black solid;"),
+    tags$th(),
+    tags$th(n0str, colspan = 2, style = "text-align: center; border-bottom: black solid;"),
+    tags$th(),
+    tags$th()
+  )  
+)
+```
+
+Finally, some footnotes.
+
+```{webr}
+footnotes <- c(
+  "† α=0.05. Significant p-values are marked with an asterisk (*).", 
+  "‡ Fisher's Exact Test", 
+  "§ Two-tailed p-value"
+)
+```
+
+And all together now plus a caption!  Line break tags `<br>`{.html} go *between* we don't 
+apply the function to each footnote. 
+
+```{webr}
+tags$caption(
+  style = "caption-side: top; text-align: left; font-weight: bold;",
+"<b>Table 1.</b> Frequency of exposures in cases of low birth \
+         weight (&lt;2500 g) vs. non-low birth weight.", "p")
+
+
+tags$table(
+  span_header,
+  sum_html)
+tags$p(
+  lapply(footnotes, function(x) list(x, tags$br())),
+  style = "small"
+)
+```

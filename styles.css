@@ -1,5 +1,4 @@
-/* css styles */
-
+/****** Cool keyboard key styling ******/
 /* thanks @yihui! https://yihui.org/en/2023/02/key-buttons/ */
 kbd {
     border: 2px solid #ccc;
@@ -29,13 +28,6 @@ span.kbdcombo:hover > kbd {
     left: 2px;
 }
 
-code.sourceCode.default {
-  color: black;
-  background-color: transparent;
-  font-family: SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
-  font-weight: semibold;
-}
-
 span.menu-text > img.img-fluid {
   max-width: 100%;
   height: auto;
@@ -60,10 +52,6 @@ span.menu-text > img.img-fluid {
   background-color: #359b73;
 }
 
-a.canvas {
-  font-size: x-small;
-}
-
 .btn.progress-continue {
   border: 1px solid #000;
   background-color: #e69f00;
@@ -78,10 +66,80 @@ a.canvas {
 }
 
 .navbar-logo {
-    max-height: 48px;
-    padding: 0px;
-    width: auto;
-    border: 2px solid, white;
-    border-radius: 10px;
-    margin-right: 5px;
+  max-height: 48px;
+  padding: 0px;
+  width: auto;
+  border: 2px solid, white;
+  border-radius: 10px;
+  margin-right: 5px;
+}
+
+a.canvas {
+  font-size: x-small;
+}
+
+code.sourceCode.default {
+  color: black;
+  background-color: transparent;
+  font-family: SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+  font-weight: semibold;
+}
+
+.reveal .slide aside {
+  font-size: small;
+}
+
+.md-code {
+  margin: 0.25em;
+}
+
+.md-code code {
+  padding: 0.25em;
+}
+
+.md-render {
+  font-size: 50%;
+  margin-top: 1em;
+  margin-left: 2em;
+  margin-right: 2em;
+}
+
+.reveal code.sourceCode.markdown {
+  font-size: 75%;
+}
+
+.qmd-demo-render {
+  width: 100%;
+  height: 100%;
+  border: 1px solid #ccc;
+  border-radius: 0.25em;
+  box-shadow: 2px 2px #999;
+  zoom: 0.75;
+}
+
+.reveal .aside-footnotes {
+	margin-top: 5em;
+	font-size: smaller;
+}
+
+.qmd-demo .before-col1,
+.qmd-demo .after-col1,
+.qmd-demo .before-col2,
+.qmd-demo .after-col2 {
+    font-size: 50%;
+}
+
+.code-annotation-container-grid {
+  font-size: 50%;
+}
+
+/****** Specific slide tweaks ******/
+#the-yaml-header-2 .qmd-demo-render {
+  height: 150px;
+  zoom: 0.5;
+}
+
+#the-structure-of-a-format ul li { 
+  margin-bottom: 0.1em; 
+  margin-top: 0.1em; 
 }

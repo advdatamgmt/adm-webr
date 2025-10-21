@@ -1,0 +1,10 @@
+# Motor Trend Car Road Tests
+
+The following is a list of the miles per gallon for
+each of the vehicles included in the dataset.
+
+```{r}
+#| include: false          # <1>
+data(mtcars)
+mtcars$mpg
+```

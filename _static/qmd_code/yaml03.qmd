@@ -1,0 +1,18 @@
+---
+title: "R markdown / knitr (finally!)"
+author: "Beau B. Bruce"
+format:
+  html:
+    theme: united                             # <1>
+    toc: true                                 # <2>      
+    embed-resources: true
+engine: knitr
+---
+
+# Section 1
+
+Some text
+
+# Section 2
+
+Some more text

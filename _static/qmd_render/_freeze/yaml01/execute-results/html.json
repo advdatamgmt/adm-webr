@@ -1,0 +1,15 @@
+{
+  "hash": "e96f3cc9cba9ec610912d34b601c40b8",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"Quarto documents (finally!)\"\nauthor: \"Beau B. Bruce\"\nformat:                                  \n    html:                                \n        embed-resources: true            \nengine: knitr                            \n---\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

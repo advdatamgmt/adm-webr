@@ -1,0 +1,15 @@
+{
+  "hash": "619b40c7449aad10203f8099ea16d4c7",
+  "result": {
+    "engine": "knitr",
+    "markdown": "# Motor Trend Car Road Tests\n\nThe following is a list of the miles per gallon for\neach of the vehicles included in the dataset.\n\n\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

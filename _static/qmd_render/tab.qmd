@@ -1,0 +1,13 @@
+---
+engine: knitr
+format:                                  
+    html:                                
+        embed-resources: true
+execute: 
+  echo: false
+---
+
+```{r}
+#| results: asis
+knitr::kable(mtcars)
+```

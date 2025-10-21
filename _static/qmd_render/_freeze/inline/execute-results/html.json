@@ -1,0 +1,15 @@
+{
+  "hash": "18ac4f44e7da362578edc77e895b331a",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\nengine: knitr\n---\n\nThe cars had an average miles \nper gallon of 20.090625.\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "hash": "7be54fccc95c51ce5a21022f45b715c8",
+  "result": {
+    "engine": "knitr",
+    "markdown": "# Motor Trend Car Road Tests\n\nThe following is a list of the miles per gallon for\neach of the vehicles included in the dataset.\n\n\n::: {.cell}\n\n```{.r .cell-code}\ndata(mtcars)\nmtcars$mpg\n```\n:::\n\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}
