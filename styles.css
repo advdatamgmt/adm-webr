@@ -143,3 +143,7 @@ code.sourceCode.default {
   margin-bottom: 0.1em; 
   margin-top: 0.1em; 
 }
+
+.reveal #horizontal-rules hr {
+  border-color: white;
+}

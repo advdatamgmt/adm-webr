@@ -1,0 +1,204 @@
+---
+title: "Reproducible Research Exercise"
+order: 975
+packages:
+  - litedown
+  - codetools
+  - rvest
+---
+
+
+{{< include ../_static/_shared.qmd >}}
+
+## Evaluation
+
+The goal is to use the built in dataset `mtcars` to produce a an HTML 
+table in a reproducible research Quarto document. The table should show the mean and
+standard deviation of the average miles per gallon (`mpg`) and vehicle weight (`wt`) 
+for each number of cylinders (`cyl`) in the dataset.  The mean should be formatted
+to one decimal place and the standard deviation to two decimal places and the
+standard deviation should be shown in parentheses next to the mean.
+
+Make sure that it is self-contained by setting the YAML options correctly and at 
+a mininmum include a title and an author in the YAML header.
+
+If you've done it correctly your output should look something like this.
+
+
+```{=html}
+<iframe src="/_static/qmd_render/exercise.html" 
+style="width:100%; height:450px; border: 2px solid black;"></iframe>
+```
+
+It is absolutely ok if your title, author, column names, etc. are different 
+than the ones shown here as long as the necessary elements are there and
+the body of the table is the same. It is also ok if you show your R
+code, but I did not for, I hope, obvious reasons 😉.
+
+On your own, also make sure you can create an HTML file in RStudio 
+(or your IDE of choice) and that you can find and open that file in the web 
+browser on your computer.  Maybe e-mail it to yourself to prove it is 
+completely self-contained.
+
+Now it's your turn!
+
+::: {.callout-caution}
+### Limited Quarto support
+
+Quarto support in browser is not yet available so I have only mocked some parts
+of it for this exercise.  Don't try anything too fancy here and expect it to 
+work!
+:::
+
+```{webr}
+#| exercise: e1
+#| setup: true
+library(codetools)
+library(rvest)
+{{< include ../mock_quarto.R >}}
+```
+
+
+::: {.cell data-caption="Exercise" data-exercise="e1"}
+```{ojs}
+//| echo: false
+viewof _webr_editor_quarto_exercise = {
+  const { WebRExerciseEditor, b64Decode } = window._exercise_ojs_runtime;
+
+  // Default exercise configuration
+  const options = {
+      exercise: "e1",
+      id: "webr-e1-contents",
+      envir: `exercise-env-e1`,
+      error: false,
+      caption: 'Exercise',
+  }
+
+  const editor = new WebRExerciseEditor(webROjs.webRPromise, "---\nformat: html\n---\n\n```{r}\n\n```", options);
+
+  editor.onInput = (ev) => {
+    // When using run button, prevent firing of reactive ojs updates until `manual: true`.
+    if (editor.options.runbutton && !ev.detail.commit) {
+      ev.preventDefault();
+      ev.stopImmediatePropagation();
+      return;
+    }
+
+    // Update reactive value for code contents
+    editor.container.value.code = editor.view.state.doc.toString();
+    if ('code' in ev.detail) {
+      editor.container.value.code = ev.detail.code;
+    }
+    editor.container.value.code = "mock_quarto('".concat(editor.container.value.code.replace(/'/g, "\\'"), "')");
+
+    // Store latest updates to editor content to local browser storage
+    if (editor.options.persist) {
+      window.localStorage.setItem(editor.storageKey, editor.container.value.code);
+    }
+  }
+  return editor.container;
+}
+viewof _webr_value_quarto_exercise = webROjs.process(_webr_editor_quarto_exercise, "");
+_webr_feedback_quarto_exercise = {
+  const { WebRGrader, Indicator } = window._exercise_ojs_runtime;
+  const { isRNull, isRList } = window._exercise_ojs_runtime.WebR;
+  const emptyFeedback = document.createElement('div');
+
+  const grader = new WebRGrader(_webr_value_quarto_exercise.evaluator);
+
+  grader.gradeExercise = async function() {
+
+    const user_code = grader.context.code;
+
+    // If there's no code to be evaluated yet, return blank feedback
+    if (!user_code) {
+      return null;
+    }
+  
+    // Check for a parse error before evaluating user code
+    let checkResult = await grader.parseCheck(user_code);
+    if (!isRNull(checkResult)) {
+      return await grader.feedbackAsHtmlAlert(checkResult);
+    }
+
+    // Evaluate user code and check with provided `check`
+    let ind = grader.context.indicator;
+    if (!grader.context.indicator) {
+      ind = new Indicator();
+    }
+    ind.running();
+
+    try {
+      checkResult = await grader.evaluateExercise();
+      if (isRNull(checkResult)) {
+        return null;
+      }
+      const container = await grader.evaluator.asHtml(checkResult, grader.options);
+      const result = await container.value.result;
+      const classList = await (await result.class()).toArray();
+
+      // Is this a feedback from gradethis
+      if (classList.includes("gradethis_graded") || classList.includes("gradethis_feedback")) {
+        return await grader.feedbackAsHtmlAlert(result);
+      }
+
+      // This is feedback contained in an R list object
+      if (isRList(result)) {
+        const message = await result.get("message");
+        const correct = await result.get("correct");
+        if (!isRNull(message) && !isRNull(correct)) {
+          return await grader.feedbackAsHtmlAlert(result);
+        }
+      }
+
+      return container;
+    } finally {
+      ind.finished();
+      if (!grader.context.indicator) ind.destroy();
+    }
+  }
+
+  const feedback = await grader.gradeExercise();
+  if (!feedback) return emptyFeedback; 
+  return feedback;
+}
+```
+:::
+
+::: {.solution exercise="e1"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e1
+#| solution: true
+#| echo: false
+```
+I'm not going to provide the full solution here. But hopefully feedback from the autograder and the class resources will help you get there!
+:::
+:::
+
+```{webr}
+#| exercise: e1
+#| check: true
+gradethis::grade_this({
+  res <- mock_quarto(.user_code, html = FALSE)
+  if(res$test) {
+    pass(res$msg)
+  } else {
+    fail(res$msg)
+  }
+})
+```
+
+
+### Submit Your Assignment
+
+```{adm}
+#| type: progress-submit
+```
+::: {#adm-progress-submit}
+```{webr}
+#| autorun: true
+.progress_submit("09-Reproducible-Research", 1)
+```
+:::
+

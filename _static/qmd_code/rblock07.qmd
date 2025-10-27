@@ -2,7 +2,8 @@
 
 Miles per gallon *vs* number of cylinders.
 
-```{r plot}
+```{r}
+#| name: plot
 data(mtcars)
 plot(mpg ~ cyl, mtcars)
 ```

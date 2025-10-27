@@ -1,0 +1,25 @@
+---
+title: "Exercise: Reproducible Research"
+author: Beau B. Bruce
+execute:
+  freeze: auto
+format:                                  
+    html:                                
+        embed-resources: true            
+engine: knitr   
+---
+
+```{r}
+#| include: false
+library(tidyverse)
+```
+
+```{r}
+#| echo: false
+#| output: asis
+mtcars %>% 
+  group_by(cyl) %>% 
+  summarize(across(c(mpg, wt), c(mean = ~ sprintf("%.1f", mean(.)), 
+                                 sd = ~ sprintf("(%.2f)", sd(.))))) %>% 
+  knitr::kable()
+```

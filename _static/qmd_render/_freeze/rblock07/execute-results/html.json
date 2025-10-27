@@ -1,8 +1,8 @@
 {
-  "hash": "fe26da1e0a145b5604ad11f1e4c0dc22",
+  "hash": "dede13ac04fded75b4dcbb6bdaf5f720",
   "result": {
     "engine": "knitr",
-    "markdown": "# Motor Trend Car Road Tests\n\nMiles per gallon *vs* number of cylinders.\n\n\n::: {.cell}\n\n```{.r .cell-code}\ndata(mtcars)\nplot(mpg ~ cyl, mtcars)\n```\n\n::: {.cell-output-display}\n![](rblock07_files/figure-html/plot-1.png){width=672}\n:::\n:::\n\n",
+    "markdown": "# Motor Trend Car Road Tests\n\nMiles per gallon *vs* number of cylinders.\n\n\n::: {.cell name='plot'}\n\n```{.r .cell-code}\ndata(mtcars)\nplot(mpg ~ cyl, mtcars)\n```\n\n::: {.cell-output-display}\n![](rblock07_files/figure-html/unnamed-chunk-1-1.png){width=672}\n:::\n:::\n\n",
     "supporting": [
       "rblock07_files"
     ],

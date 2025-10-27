@@ -94,8 +94,6 @@ that the rows are in the same order and we just want to present them side by sid
 so that we can construct our table vs. use this data for subsequent analysis.
 
 ```{webr}
-
-
 fmt_table <- data.frame(feature = flower_features)
 
 for (sp in species_names) {

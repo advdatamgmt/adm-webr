@@ -21,3 +21,4 @@ course.
 formatted tables using Quarto [[canvas]](`r .canvas_link("09-Reproducible-Research")`){.canvas}
     * [Basic Table Example](09a-Basic-Table-Example.qmd)
     * [Advanced Table Example](09b-Advanced-Table-Example.qmd)
+    * [Reproducible Research Exercise](09c-Reproducible-Research-Exercise.qmd) [[canvas]](`r .canvas_link("09-Reproducible-Research")`){.canvas}

@@ -7,6 +7,7 @@ format:
     live-revealjs:
         theme: dracula
         css: ../styles.css
+        code-copy: false
 include-in-header: 
   - text: <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 include-after-body:
@@ -26,6 +27,12 @@ include-after-body:
 #. Learn how to make a basic reproducible report
 #. Learn how to make the "meat" of a table that can be used for publication
 #. Learn how to make R inline and table output look better
+
+## Links to other related course materials
+
+- [Basic Table Example](/exercises/09a-Basic-Table-Example.qmd)
+- [Advanced Table Example](/exercises/09b-Advanced-Table-Example.qmd) 
+- [Reproducible Research Exercise](/exercises/09c-Reproducible-Research-Exercise.qmd)
 
 # Part 1. <br> Reproducible Research
 
@@ -228,7 +235,7 @@ constant is 6.022 x 10^23^ mol^-1^.
 
 ## Math
 
-Beautifully typesetting math is relatively easy too 
+Beautifully [typesetting math](https://en.wikibooks.org/wiki/LaTeX/Mathematics) is relatively easy too 
 if you know a little {{< latex >}}
 
 ```{md-demo}
@@ -356,7 +363,19 @@ An en-dash is used for ranges of numbers: 2--5 pages.
 
 ## Line breaks {#sec-line-breaks}
 
-Preserves line breaks like this.
+Preserves line breaks by putting a pipe character, `|`, at the start of each line.
+
+```{=html}
+<div>You usually find the pipe, <code class="sourceCode r"><span class="sc">|</span></code>,
+above the backslash, <code class="sourceCode r"><span class="sc">\</span></code>, on a key at the right edge 
+of your keyboard, i.e., 
+<kbd><div>|</div><div>\</div></kbd>, which means you need to press 
+<span class="kbdcombo">
+  <kbd>Shift</kbd> + <kbd><div>|</div><div>\</div></kbd>
+  </span> to get the 
+<code class="sourceCode r"><span class="sc">|</span></code> character. 
+</div><br/>
+```
 
 ```{md-demo}
 | The limerick packs laughs anatomical
@@ -421,6 +440,8 @@ A line containing a row of three or more *, -, or _ characters (optionally separ
 
 ```{md-demo}
 *  *  *  *
+
+I have a horizontal rule both above and below me.
 
 ---------------
 ```
@@ -716,9 +737,6 @@ you already have `knitr` available.
 If `knitr::kable` does not meet your needs, you can explore other packages,
 such as [`gt`](https://gt.rstudio.com/), [`dt`](https://rstudio.github.io/DT/),
 or [`htmlTable`](https://github.com/gforge/htmlTable).  
-
-Most often use their output options to produce HTML tables in `output: asis` 
-blocks just like we did with `knitr::kable`.
 
 ## The final product
 

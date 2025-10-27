@@ -8,6 +8,5 @@ execute:
 ---
 
 ```{r}
-#| results: asis
 knitr::kable(mtcars)
 ```
