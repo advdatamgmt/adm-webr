@@ -1,0 +1,453 @@
+---
+title: "Grammar of Graphics"
+order: 1000
+webr:
+  packages:
+    - ggplot2
+  cell-options:
+    autorun: true
+---
+
+{{< include ../_static/_shared.qmd >}}
+
+## Exposition
+
+### Install ggplot2
+
+Grammar of graphics is found in the package `ggplot2`.  
+
+To install it for the first time, run the following code.
+
+```{webr}
+#| autorun: false
+#| edit: false
+install.packages("ggplot2")
+```
+
+To load the package so you can use it, run this code every time you start R or 
+at the start of your script or Quarto document.
+
+```{webr}
+library(ggplot2)
+``` 
+
+### Using ggplot2
+
+The function is called `ggplot`. Note that there is no number `2` on the end of the
+function name like the package name. 
+
+You will need to refer frequently to the [`ggplot2` documentation](https://ggplot2.tidyverse.org/).  
+
+The plotting functions list "aesthetics" that connect data to visual
+properties of the graph, e.g., x and y positions, colors, shapes, sizes,
+etc.  This list of aesthetics for each function is displayed in addition to the 
+usual "arguments"  that all R functions have.  
+
+Aesthetics are placed within a function
+called `aes` that you put within various `ggplot2` function calls as an argument.
+Watch for that pattern below as we work to recreate a version of our optic nerve
+head figure and for which I've already loaded the data.
+
+```{webr}
+#| autorun: true
+#| echo: false
+load("_static/data/onhlong.rda")
+load("_static/data/onhfit.rda")
+load("_static/data/rop.rda")
+```
+
+```{webr}
+ggplot(onhlong, aes(x = age, y = mean))
+``` 
+
+An example of using `aes` already! Here we are creating a `ggplot`{.r} object
+using the `onhlong`{.r} dataset and telling ggplot that the `age`{.r} variable
+represents the x-axis position and the `mean`{.r} variable represents the 
+y-axis position for any of the functions that are applied to this `ggplot`{.r}
+object, and it produces a blank plot with the axes set up correctly for our data
+and its ranges. 
+
+Next, we add a layer that plots the points:
+
+```{webr}
+ggplot(onhlong, aes(x = age, y = mean)) + 
+  geom_point()
+``` 
+
+Most layers that draw things are prefixed with `geom_`  There are many, many
+kinds; see that documentation we linked above for details. How does `geom_point`{.r}
+know where to put the points? It uses the aesthetics we defined in the original
+`ggplot`{.r} call.
+
+#### More aesthetics
+
+But we want the different points to have different colors depending on the
+groups right?  This is a another aesthetic ([see the documentation for
+`geom_point`{.r}](https://ggplot2.tidyverse.org/reference/geom_point.html#aesthetics) 
+for more details on this and other aesthetics you can control).
+
+```{webr}
+ggplot(onhlong, aes(x = age, y = mean)) + 
+  geom_point(aes(color = case))
+``` 
+
+We could put the `color = case`{.r} aesthetic in the original `ggplot`{.r} call, but
+putting it here means it only applies to this layer vs. all layers we might plot.  
+
+However, we really want three groups right?  To do that we need a little
+trick to combine the two variables into a new one.  Ideas how to easily make
+a new variable that is a combination of two existing variables?  Take a moment
+to think about a way before continuing.
+
+`<btn type="button" class="btn progress-continue">Continue</btn>`{=html}
+
+One way is to use `paste()`{.r} to combine the two variables and create a `factor`{.r}
+
+```{webr}
+(onhlong$group <- factor(with(onhlong, paste(case, clinhypo, sep = "-"))))
+```
+
+
+```{webr}
+ggplot(onhlong, aes(x = age, y = mean)) + 
+  geom_point(aes(color = group))
+``` 
+
+#### Regression Lines
+
+Good start!  Now let's add a regression line with a 95% *confidence* limit
+based on the data itself:
+
+```{webr}
+ggplot(onhlong, aes(x = age, y = mean)) + 
+    geom_point(aes(color = group)) + 
+    stat_smooth(method = "lm", data = subset(onhlong, group == "0-No"))
+``` 
+
+But remember that we wanted the 95% *prediction* interval in this case. 
+To date, `ggplot2` does not have an automatic way to create the prediction band,
+so we'll use our `onhfit`{.r} dataset.
+
+```{webr}
+ggplot(onhlong, aes(x = age, y = mean)) +
+  geom_point(aes(color = group)) +
+  stat_smooth(method = "lm", data = subset(onhlong, group == "0-No"), se = FALSE) +
+  geom_ribbon(data = onhfit, aes(ymax = upr95, ymin = lwr95))
+``` 
+
+The `se = FALSE`{.r} argument just draws the line without the standard error band,
+and we add a `geom_ribbon()`{.r} to add the shaded area representing the prediction 
+interval based on our `onhfit`{.r} dataset.  Note, that we specify a different
+dataset with the `data`{.r} argument, but remarkably, even though `geom_ribbon`{.r}
+requires a `x` aesthetic it can use the one we specified in our original
+`ggplot`{.r} command.
+
+But... we have a problem that demostrates a key feature of `ggplot2`{.r}: the order
+in which layers are added matters!  The ribbon is on top of the points and
+obscures them.  We need to add the ribbon first so it is drawn first and
+then the points and line are drawn on top of it.  Let's switch it.
+
+```{webr}
+ggplot(onhlong, aes(x = age, y = mean)) +
+  geom_ribbon(data = onhfit, aes(x = age, ymax = upr95, ymin = lwr95)) +
+  geom_point(aes(color = group)) +
+  stat_smooth(method = "lm", data = subset(onhlong, group == "0-No"), se = FALSE)
+``` 
+
+Now make it a little lighter by specifying an `alpha`{.r} (transparency) 
+aesthetic.
+
+```{webr}
+ggplot(onhlong, aes(x = age, y = mean)) +
+  geom_ribbon(data = onhfit, aes(x = age, ymax = upr95, ymin = lwr95, alpha = 0.01)) +
+  geom_point(aes(color = group)) +
+  stat_smooth(method = "lm", data = subset(onhlong, group == "0-No"), se = FALSE) 
+``` 
+
+#### Legends
+
+Control the legends with `guides()`.  Here we want to get rid of the
+legends/guides for the color and the transparency so with the `guides`{.r} 
+function we will set them to `"none"`{.r}.
+
+```{webr}
+ggplot(onhlong, aes(x = age, y = mean)) +
+  geom_ribbon(data = onhfit, aes(x = age, ymax = upr95, ymin = lwr95, alpha = 0.01)) +
+  geom_point(aes(color = group)) +
+  stat_smooth(method = "lm", data = subset(onhlong, group == "0-No"), se = FALSE) +
+  # just get rid of them for now; use the term that created the legend to get rid of it
+  guides(color = "none", alpha = "none")
+``` 
+
+
+#### Axes
+
+Control the axes with `scale_...` functions. They are named in a consistent way
+`scale_<aesthetic>_<type>` where `<aesthetic>` is the aesthetic you are controlling
+and `<type>` is the type of variable (e.g., continuous vs. discrete).  
+
+```{webr}
+ggplot(onhlong, aes(x = age, y = mean)) + 
+  geom_ribbon(data = onhfit, aes(x = age, ymax = upr95, ymin = lwr95, alpha = 0.01)) +
+  geom_point(aes(color = group)) +
+  stat_smooth(method = "lm", data = subset(onhlong, group == "0-No"), se = FALSE) +
+  scale_y_continuous(name = "Mean optic nerve size, mm") + 
+  guides(color = "none", alpha = "none") 
+``` 
+
+Now, the same for the x-axis and add back the color legend only changing the labels of the color "axis":
+
+```{webr}
+ggplot(onhlong, aes(x = age, y = mean)) +
+  geom_ribbon(data = onhfit, aes(x = age, ymax = upr95, ymin = lwr95, alpha = 0.01)) +
+  geom_point(aes(color = group)) +
+  stat_smooth(method = "lm", data = subset(onhlong, group == "0-No"), se = FALSE) +
+  scale_x_continuous(name = "Age, years") +
+  scale_y_continuous(name = "Mean optic nerve size, mm") +     
+  scale_color_discrete(labels = c("Control", "Case, Non-ONH eye", "Case, ONH eye")) + 
+  guides(color = guide_legend(aes(title = "Eye type")), alpha = "none") 
+``` 
+
+#### Themes
+
+Make it look "cleaner" overall for publications, etc., by applying a theme:
+
+```{webr}
+ggplot(onhlong, aes(x = age, y = mean)) +
+  geom_ribbon(data = onhfit, aes(x = age, ymax = upr95, ymin = lwr95, alpha = 0.01)) +
+  geom_point(aes(color = group)) +
+  stat_smooth(method = "lm", data = subset(onhlong, group == "0-No"), se = FALSE) +
+  scale_x_continuous(name = "Age, years") +
+  scale_y_continuous(name = "Mean optic nerve size, mm") +     
+  scale_color_discrete(labels = c("Control", "Case, Non-ONH eye", "Case, ONH eye")) + 
+  guides(color = guide_legend(aes(title = "Eye type")), alpha = "none") +
+  theme_bw()
+``` 
+
+
+#### Pure exploration
+
+`ggplot2`{.r} is great for exploration too.  For example, let's apply a
+non-parametric smoother to the data with a 95% confindence interval.  
+The big green band is because there is not a lot of data in that particular
+group.
+
+```{webr}
+ggplot(onhlong, aes(x = age, y = mean)) + 
+    geom_point(aes(color = group)) + 
+    geom_smooth(aes(color = group, fill = group))
+``` 
+
+Separate plots, but same axis, are easy to make and help make things easier to see.
+
+```{webr}
+ggplot(onhlong, aes(x = age, y = mean)) + 
+    geom_point(aes(color = group)) + 
+    geom_smooth(aes(color = group, fill = group)) + 
+    facet_grid(~ group)
+```
+
+
+## Experimentation
+
+The `rop` dataset, which I've already loaded, contains data on where three
+types of physicians (variable `type`) thought the macula position
+was (variables `x` and `y`) on 30 photographs (variable `picture`).  
+
+```{webr}
+summary(rop)
+``` 
+
+Can you create the following picture that uses only commands and aesthetics
+that you used above? That is with one exception: instead of `facet_grid`{.r} you should use
+`facet_wrap`{.r} to create the multiple panels.  
+
+::: {.callout-note}
+If you run this in R directly, you will get some warnings because there are some 
+missing data points.  I have suppressed those warnings here, and if you experimenting
+in R, you can safely ignore those.
+:::
+
+```{webr}
+#| echo: false
+#| warning: false
+ggplot(rop, aes(x, y, color = type)) + 
+  geom_point() +
+  facet_wrap(~ picture) + 
+  theme_bw()
+``` 
+
+Your turn - good luck!
+
+```{webr}
+#| exercise: e0
+#| warning: false
+#| caption: Experiment
+```
+
+::: {.solution exercise="e0"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e0
+#| solution: true
+#| echo: false
+#| warning: false
+```
+We will discuss challenges in class!
+:::
+:::
+
+```{webr}
+#| exercise: e0
+#| check: true
+#| warning: false
+gradethis::grade_this({
+    user_plot <- eval(parse(text = .user_code), env = .envir_prep)
+    check_it <- function(msg = "", test, add_to = list(msg = "", test = TRUE)) {
+        msg = glue::glue("{add_to$msg}<br>{msg}: ", if (test) "✅" else "❌")
+        list(msg = msg, test = test && add_to$test)
+    }
+    check_plot <- function(user_plot) {
+        browser()
+        out <- list(msg = "", test = TRUE)
+        out <- check_it("Correct data used (i.e., rop)", identical(rop, user_plot@data), out)
+        out <- check_it("Points are plotted", 
+            "geom_point" %in% names(user_plot@layers), out)
+        out <- check_it("And no other layers used", 
+            length(user_plot@layers) == 1, out)
+        test_mapping <- function(aesthetic, expected) {
+            q1 <- rlang::quo_squash(user_plot@mapping[[aesthetic]]) 
+            q1 <- is.name(q1) && q1 == expected
+            q2 <- rlang::quo_squash(user_plot@layers$geom_point$mapping[[aesthetic]]) 
+            q2 <- is.name(q2) && q2 == expected
+            if (length(q1) == 0) q1 <- FALSE
+            if (length(q2) == 0) q2 <- FALSE
+            q1 || q2
+        }
+        out <- check_it("Correct aesthetics used (i.e., x, y, color)", 
+            test_mapping("x", "x") && test_mapping("y", "y") && test_mapping("colour", "type"), 
+            out)
+        out <- check_it("Faceting used (i.e., facet_wrap)", 
+            inherits(user_plot@facet, "FacetWrap"), out)
+        out <- check_it("Correct faceting variable used",
+            length(user_plot@facet$vars()) != 0 &&
+            user_plot@facet$vars() == "picture", 
+            out)
+        out <- check_it("Correct theme applied", 
+            identical(user_plot@theme, ggplot2::theme_bw()), out)
+        return(out)
+    }
+    out <- check_plot(user_plot)
+    if (out$test) {
+        pass(out$msg)
+    } else {
+        fail(out$msg)
+    }
+})
+```
+
+## Evaluation
+
+Modify the figure you created above to display only the data from the retina 
+physicians (`type == "ret"`) and add a regression line to each graph within 
+your figure even though it doesn't make much sense here from a scientific 
+perspective.  It should look something like this, but your lines can either
+be the same or a different color.
+
+```{webr}
+#| echo: false
+#| warning: false
+ggplot(subset(rop, type == "ret"), aes(x, y, color = type)) + 
+  geom_point() + 
+  stat_smooth(method="lm") + 
+  facet_wrap(~ picture) + 
+  theme_bw()
+``` 
+
+Go for it!
+
+```{webr}
+#| exercise: e1
+#| warning: false
+```
+
+::: {.solution exercise="e1"}
+::: {.callout-note collapse="false"}
+```{webr}
+#| exercise: e1
+#| solution: true
+#| warning: false
+```
+I'm not going to provide the full solution here. But hopefully  
+feedback from the autograder and the class resources will help you get there!
+
+But don't forget about `subset`{.r} and be sure to use bare names of variables
+(i.e., don't quote them) for example.
+:::
+:::
+
+```{webr}
+#| exercise: e1
+#| check: true
+#| warning: false
+gradethis::grade_this({
+    user_plot <- eval(parse(text = .user_code), env = .envir_prep)
+    check_it <- function(msg = "", test, add_to = list(msg = "", test = TRUE)) {
+        msg = glue::glue("{add_to$msg}<br>{msg}: ", if (test) "✅" else "❌")
+        list(msg = msg, test = test && add_to$test)
+    }
+    check_plot <- function(user_plot) {
+        out <- list(msg = "", test = TRUE)
+        out <- check_it("Correct data used", identical(subset(rop, type == "ret"), user_plot@data), out)
+        out <- check_it("Points are plotted", 
+            "geom_point" %in% names(user_plot@layers), out)
+        out <- check_it("Linear regression layer is added",
+            !is.null(user_plot@layers$stat_smooth) &&
+            user_plot@layers$stat_smooth$stat_params$method == "lm" &&
+            user_plot@layers$stat_smooth$stat_params$se &&
+            identical(user_plot@layers$stat_smooth$stat_params$level, 0.95),
+            out)
+        out <- check_it("And no other layers used", 
+            length(user_plot@layers) == 2, out)
+        test_mapping <- function(aesthetic, expected) {
+            q1 <- rlang::quo_squash(user_plot@mapping[[aesthetic]]) 
+            q1 <- is.name(q1) && q1 == expected
+            q2 <- rlang::quo_squash(user_plot@layers$geom_point$mapping[[aesthetic]]) 
+            q2 <- is.name(q2) && q2 == expected
+            if (length(q1) == 0) q1 <- FALSE
+            if (length(q2) == 0) q2 <- FALSE
+            q1 || q2
+        }
+        out <- check_it("Correct aesthetics used (i.e., x, y, color)", 
+            test_mapping("x", "x") && test_mapping("y", "y"), 
+            out)
+        out <- check_it("Faceting used (i.e., facet_wrap)", 
+            inherits(user_plot@facet, "FacetWrap"), out)
+        out <- check_it("Correct faceting variable used",
+            length(user_plot@facet$vars()) != 0 &&
+            user_plot@facet$vars() == "picture", 
+            out)
+        out <- check_it("Correct theme applied", 
+            identical(user_plot@theme, ggplot2::theme_bw()), out)
+        return(out)
+    }
+    out <- check_plot(user_plot)
+    if (out$test) {
+        pass(out$msg)
+    } else {
+        fail(out$msg)
+    }
+})
+```
+
+### Submit Your Assignment
+
+```{adm}
+#| type: progress-submit
+```
+::: {#adm-progress-submit}
+```{webr}
+#| autorun: true
+.progress_submit("10-Grammar-of-Graphics", 1)
+```
+:::

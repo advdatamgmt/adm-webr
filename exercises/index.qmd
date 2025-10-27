@@ -22,3 +22,4 @@ formatted tables using Quarto [[canvas]](`r .canvas_link("09-Reproducible-Resear
     * [Basic Table Example](09a-Basic-Table-Example.qmd)
     * [Advanced Table Example](09b-Advanced-Table-Example.qmd)
     * [Reproducible Research Exercise](09c-Reproducible-Research-Exercise.qmd) [[canvas]](`r .canvas_link("09-Reproducible-Research")`){.canvas}
+11. [Grammar of Graphics](10-Grammar-of-Graphics.qmd): an introduction to data visualization in R using the `ggplot2` package and the grammar of graphics framework [[canvas]](`r .canvas_link("10-Grammar-of-Graphics")`){.canvas}
