@@ -24,3 +24,4 @@ formatted tables using Quarto [[canvas]](`r .canvas_link("09-Reproducible-Resear
     * [Reproducible Research Exercise](09c-Reproducible-Research-Exercise.qmd) [[canvas]](`r .canvas_link("09-Reproducible-Research")`){.canvas}
 11. [Grammar of Graphics](10-Grammar-of-Graphics.qmd): an introduction to data visualization in R using the `ggplot2` package and the grammar of graphics framework [[canvas]](`r .canvas_link("10-Grammar-of-Graphics")`){.canvas}
 12. [Delicacies: Missing Data, Text, and Dates](11-Delicacies.qmd): a deeper dive into handling missing data, text data, and date data in R using base R and the `lubridate` packages [[canvas]](`r .canvas_link("11-Delicacies")`){.canvas}
+13. [Applying Yourself](12-Applying-Yourself.qmd): the `apply` family of functions in R [[canvas]](`r .canvas_link("12-Applying-Yourself")`){.canvas}
