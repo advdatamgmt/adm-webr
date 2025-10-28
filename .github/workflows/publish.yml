@@ -33,6 +33,7 @@ jobs:
           extra-packages: |
             any::knitr
             any::rmarkdown
+            github::daranzolin/rcanvas
       - name: Install Quarto
         uses: quarto-dev/quarto-actions/setup@v2
       - name: Setup Pages
