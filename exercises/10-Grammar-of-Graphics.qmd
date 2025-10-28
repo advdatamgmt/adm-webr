@@ -140,7 +140,7 @@ and we add a `geom_ribbon()`{.r} to add the shaded area representing the predict
 interval based on our `onhfit`{.r} dataset.  Note, that we specify a different
 dataset with the `data`{.r} argument, but remarkably, even though `geom_ribbon`{.r}
 requires a `x` aesthetic it can use the one we specified in our original
-`ggplot`{.r} command.
+`ggplot`{.r} command but now it applies to the variable in the `onhfit`{.r} dataset!
 
 But... we have a problem that demostrates a key feature of `ggplot2`{.r}: the order
 in which layers are added matters!  The ribbon is on top of the points and
@@ -149,20 +149,32 @@ then the points and line are drawn on top of it.  Let's switch it.
 
 ```{webr}
 ggplot(onhlong, aes(x = age, y = mean)) +
-  geom_ribbon(data = onhfit, aes(x = age, ymax = upr95, ymin = lwr95)) +
+  geom_ribbon(data = onhfit, 
+    aes(ymax = upr95, ymin = lwr95)) +
   geom_point(aes(color = group)) +
-  stat_smooth(method = "lm", data = subset(onhlong, group == "0-No"), se = FALSE)
+  stat_smooth(method = "lm", 
+    data = subset(onhlong, group == "0-No"), 
+    se = FALSE)
 ``` 
 
 Now make it a little lighter by specifying an `alpha`{.r} (transparency) 
-aesthetic.
+aesthetic.  Here we put the `alpha`{.r} aesthetic outside the `aes`{.r} function
+bceause we want it to apply to the entire layer and not map to a variable.
+
+If there is any variation with data, it needs to be inside `aes`{.r} and you can
+use the `scale_...` functions to control how aesthetics are mapped to data values
+(see more [below](#sec-axes)).
 
 ```{webr}
 ggplot(onhlong, aes(x = age, y = mean)) +
-  geom_ribbon(data = onhfit, aes(x = age, ymax = upr95, ymin = lwr95, alpha = 0.01)) +
+  geom_ribbon(data = onhfit, 
+    aes(ymax = upr95, ymin = lwr95), 
+    alpha = 0.10) +
   geom_point(aes(color = group)) +
-  stat_smooth(method = "lm", data = subset(onhlong, group == "0-No"), se = FALSE) 
-``` 
+  stat_smooth(method = "lm", 
+    data = subset(onhlong, group == "0-No"), 
+    se = FALSE) 
+```
 
 #### Legends
 
@@ -172,15 +184,18 @@ function we will set them to `"none"`{.r}.
 
 ```{webr}
 ggplot(onhlong, aes(x = age, y = mean)) +
-  geom_ribbon(data = onhfit, aes(x = age, ymax = upr95, ymin = lwr95, alpha = 0.01)) +
+  geom_ribbon(data = onhfit, 
+    aes(ymax = upr95, ymin = lwr95), 
+    alpha = 0.10) +
   geom_point(aes(color = group)) +
-  stat_smooth(method = "lm", data = subset(onhlong, group == "0-No"), se = FALSE) +
-  # just get rid of them for now; use the term that created the legend to get rid of it
+  stat_smooth(method = "lm", 
+    data = subset(onhlong, group == "0-No"), 
+    se = FALSE) +
   guides(color = "none", alpha = "none")
 ``` 
 
 
-#### Axes
+#### Axes {#sec-axes}
 
 Control the axes with `scale_...` functions. They are named in a consistent way
 `scale_<aesthetic>_<type>` where `<aesthetic>` is the aesthetic you are controlling
@@ -188,9 +203,13 @@ and `<type>` is the type of variable (e.g., continuous vs. discrete).
 
 ```{webr}
 ggplot(onhlong, aes(x = age, y = mean)) + 
-  geom_ribbon(data = onhfit, aes(x = age, ymax = upr95, ymin = lwr95, alpha = 0.01)) +
+  geom_ribbon(data = onhfit, 
+    aes(ymax = upr95, ymin = lwr95), 
+    alpha = 0.10) +
   geom_point(aes(color = group)) +
-  stat_smooth(method = "lm", data = subset(onhlong, group == "0-No"), se = FALSE) +
+  stat_smooth(method = "lm", 
+    data = subset(onhlong, group == "0-No"), 
+    se = FALSE)  +
   scale_y_continuous(name = "Mean optic nerve size, mm") + 
   guides(color = "none", alpha = "none") 
 ``` 
@@ -199,13 +218,19 @@ Now, the same for the x-axis and add back the color legend only changing the lab
 
 ```{webr}
 ggplot(onhlong, aes(x = age, y = mean)) +
-  geom_ribbon(data = onhfit, aes(x = age, ymax = upr95, ymin = lwr95, alpha = 0.01)) +
+  geom_ribbon(data = onhfit, 
+    aes(ymax = upr95, ymin = lwr95), 
+    alpha = 0.10) +
   geom_point(aes(color = group)) +
-  stat_smooth(method = "lm", data = subset(onhlong, group == "0-No"), se = FALSE) +
+  stat_smooth(method = "lm", 
+    data = subset(onhlong, group == "0-No"), 
+    se = FALSE)  +
   scale_x_continuous(name = "Age, years") +
   scale_y_continuous(name = "Mean optic nerve size, mm") +     
-  scale_color_discrete(labels = c("Control", "Case, Non-ONH eye", "Case, ONH eye")) + 
-  guides(color = guide_legend(aes(title = "Eye type")), alpha = "none") 
+  scale_color_discrete(
+    labels = c("Control", "Case, Non-ONH eye", "Case, ONH eye")) + 
+  guides(color = guide_legend(aes(title = "Eye type")), 
+  alpha = "none") 
 ``` 
 
 #### Themes
@@ -214,13 +239,19 @@ Make it look "cleaner" overall for publications, etc., by applying a theme:
 
 ```{webr}
 ggplot(onhlong, aes(x = age, y = mean)) +
-  geom_ribbon(data = onhfit, aes(x = age, ymax = upr95, ymin = lwr95, alpha = 0.01)) +
+  geom_ribbon(data = onhfit, 
+    aes(ymax = upr95, ymin = lwr95), 
+    alpha = 0.10) +
   geom_point(aes(color = group)) +
-  stat_smooth(method = "lm", data = subset(onhlong, group == "0-No"), se = FALSE) +
+  stat_smooth(method = "lm", 
+    data = subset(onhlong, group == "0-No"), 
+    se = FALSE) +
   scale_x_continuous(name = "Age, years") +
   scale_y_continuous(name = "Mean optic nerve size, mm") +     
-  scale_color_discrete(labels = c("Control", "Case, Non-ONH eye", "Case, ONH eye")) + 
-  guides(color = guide_legend(aes(title = "Eye type")), alpha = "none") +
+  scale_color_discrete(
+    labels = c("Control", "Case, Non-ONH eye", "Case, ONH eye")) + 
+  guides(color = guide_legend(aes(title = "Eye type")), 
+  alpha = "none") +
   theme_bw()
 ``` 
 
