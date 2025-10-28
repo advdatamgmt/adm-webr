@@ -288,10 +288,7 @@ apply the function to each footnote.
 
 ```{webr}
 tags$caption(
-  style = "caption-side: top; text-align: left; font-weight: bold;",
-"<b>Table 1.</b> Frequency of exposures in cases of low birth \
-         weight (&lt;2500 g) vs. non-low birth weight.", "p")
-
+  tags$strong("Table 1."), "Frequency of exposures in cases of low birth weight (<2500 g) vs. non-low birth weight.")
 
 tags$table(
   span_header,
