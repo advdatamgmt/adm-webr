@@ -1,0 +1,593 @@
+---
+title: "Delicacies: Missing Data, Text, and Dates"
+order: 1100
+webr:
+  packages:
+    - lubridate
+  cell-options:
+    autorun: true
+---
+
+{{< include ../_static/_shared.qmd >}}
+
+## Exposition
+
+### Missing data
+
+We've already seen the missing data value: `NA`.  This special value allows R to 
+handle missing data gracefully.  However, just like in other programming languages 
+you sometimes have to be careful how you handle `NA`.
+
+```{webr}
+NA
+```
+
+Why `is.na`{.r} vs. `is.NA`{.r}?  Not the ideal naming convention, 
+but that's what it is.
+
+```{webr}
+is.na(NA) 
+is.na(2)
+myvec <- c(1, 2, NA, 3)
+is.na(myvec)
+```
+
+Now, let's try to take the mean of `myvec`{.r}.
+
+```{webr}
+mean(myvec)
+```
+
+What happened?  Why is mean of `myvec`{.r} `NA`{.r}?  By default, the `mean`{.r} 
+function does this intentionally so that you know that the `vector`{.r} is missing 
+data because what you want to do is unclear.  Under most circumstances you just want 
+to remove the missing values and calculate the mean on the values you have, 
+like this:
+
+```{webr}
+mean(myvec, na.rm = TRUE)
+```
+
+This is also important when dealing with `data.frame`{.r}'s.  
+Let's inject some missing data into `esoph`{.r}.
+
+```{webr}
+set.seed(596)
+esona <- esoph
+esona[sample(NROW(esona), 3), "ncases"] <- NA
+esona[sample(NROW(esona), 3), "ncontrols"] <- NA
+summary(esona)
+```
+
+Note now three `NA`{.r}'s are tabulated by the `summary`{.r} function and
+these are ignored in the summary statistics.   However, if you try to take the 
+mean of the `ncases`{.r} column without specifying `na.rm`{.r} you'll get `NA`{.r} again...
+
+```{webr}
+mean(esona$ncases)
+```
+
+*vs.*
+
+```{webr}
+mean(esona$ncases, na.rm = TRUE)
+```
+
+You may be interested in which cases/rows are complete and the number of complete 
+and incomplete cases/rows:
+
+```{webr}
+complete.cases(esona)
+sum(complete.cases(esona))
+sum(!complete.cases(esona))
+```
+
+You can also extract the `data.frame`{.r} where every row has complete data 
+(i.e., the complete cases):
+```{webr}
+esocc <- na.omit(esona)
+NROW(esocc)
+```
+
+When you have missing data and you are subsetting you have to be more careful.  
+Let's look at the following to see why.
+
+```{webr}
+esona$ncases == 2
+```
+
+See the `NA`{.r}'s in there?  So, when you select those rows using the techniques in 
+the ["Food Prep"](07-Food-Prep.qmd) module there is some serious weirdness.
+
+```{webr}
+esona[esona$ncases == 2, ]
+```
+
+Why? Consider these examples.
+
+Take a selection containing an `NA`{.r} from a vector.
+
+```{webr}
+x <- c("a", "b", "c")
+x[c(NA, 2, 1)]
+```
+
+Now, try the same with a `data.frame`{.r}.
+
+```{webr}
+esona[c(NA, 2, 1), ]
+```
+
+So, when R finds an `NA`{.r} in a vector to be used as a slice, it returns a empty 
+version.  For, a `data.frame`{.r} that means an empty row.  How do we work around that?  
+Incorporate an`is.NA`{.r} test:
+
+```{webr}
+esona[esona$ncases == 2 & !is.na(esona$ncases),]
+```
+
+That works because anything that is `NA`{.r} will be set to `FALSE`{.r} instead of `NA`{.r}
+and not included in the selection. The `subset`{.r} function does not have this issue, 
+but remember you cannot assign directly to a `subset`{.r} so you'll need the above
+syntax sometimes.
+
+```{webr}
+subset(esona, ncases == 2)
+```
+
+Why? Look at the way `subset`{.r} works.
+
+```{webr}
+subset
+```
+
+Oh - one of those generic functions. How about `subset.default`{.r}?
+
+```{webr}
+subset.default
+```
+
+Look at that line! `x[subset & !is.na(subset)]`{.r} - it handles the `NA`{.r}'s for you 
+automatically in the very way we have to do it ourselves when subsetting
+manually!
+
+### Other special values
+
+You met a lot of these in the very [first module](01-Rithmatic.qmd) on R basics, 
+but let's review them here.
+
+```{webr}
+5/0
+-5/0
+0/0
+```
+
+`NaN`{.r} means "not a number", `Inf`{.r} means "positive infinity", and `-Inf`{.r} means 
+"negative infinity".  They are almost always seen because you are dividing by zero, 
+usually unintentionally.  You can test for these values like this
+which can help you find bugs in your programs.
+
+```{webr}
+is.nan(0/0)
+is.infinite(1/0)
+is.finite(1/0)
+```
+
+Finally, `NULL`{.r} is a marker for "nothing."  Not nothing as in something that 
+ought to be there but is not (i.e., missing), but literally, something that does 
+not or should not exist in the realm of R.  Sometimes it is a good way to remove 
+a column from a `data.frame`{.r}.  Just set it to `NULL`{.r}.
+
+```{webr}
+esocc$ncases <- NULL
+head(esocc)
+```
+
+### Other useful set and subsetting functions
+
+The function `duplicated`{.r} finds duplicated values and also duplicated rows in
+`data.frames`{.r}.  The `unique`{.r} function will extract the values that are, well, 
+unique!
+
+```{webr}
+x <- c(4, 8, 0, 1, 8, 9, 10, 4, 2)
+duplicated(x)
+unique(x)
+```
+
+The following functions allow you to make selections based on "set" operations.
+`union`{.r} joins two things together (without duplication), `intersection`{.r} finds
+the common values between two vectors, and `setdiff`{.r} finds the difference
+between two vectors.
+
+```{webr}
+union(c("a", "b", "c"), c("b", "c", "d", "f"))
+intersect(c("a", "b", "c"), c("b", "c", "d"))
+setdiff(c(1, 2, 3, 8, 9), c(2, 8))
+```
+
+These can be be remarkably useful when working with certain types of 
+data or finding differences between data sets.
+
+### Text
+
+#### Pasting
+
+We have seen `paste0`{.r} (cf. [Food Prep](07-Food-Prep.qmd)) which pastes a series 
+of strings together without any other 
+character between.
+
+```{webr}
+paste0(c("a", "b", "c", "d"), 1, c(1, 2))
+```
+
+The more general function is `paste`{.r} that takes two arguments, 
+
+1. `sep`{.r} which is the separator between the elements, and  
+2. `collapse`{.r} which when set pastes the entire sequence of strings together 
+   using that text.
+
+```{webr}
+paste(c("a", "b", "c"), 1, c(1, 2), sep = " ")
+paste(c("a", "b", "c"), 1, c(1, 2), sep = " ", collapse = "-")
+```
+
+#### Substrings
+
+Sometimes you need to select out a piece of a string by position.  The `substr`{.r} 
+function is helpful for fixed length strings.  Note that the `[1:3]`{.r} selects out 
+the first three elements of the names of esoph while the other 1 and 3 tell it to
+take the first through the third of each string.  The two are **not** related.
+
+```{webr}
+names(esoph)[1:3]
+substr(names(esoph)[1:3], 1, 3)
+```
+
+
+#### Regular expressions / Searching
+
+*Regular expressions* are a very powerful way of finding patterns in text and
+manipulating them.  You could take an entire course on *regular expressions*[^1]
+so I will only be able to introduce you to some basic aspects.  They are a 
+language unto themselves to the extent that a humorous quote often
+stated about them is:
+
+> Some people, when confronted with a problem, think
+> “I know, I'll use regular expressions.”
+> Now they have two problems.
+--- Jamie Zawinski[^2]
+
+[^1]: A great online resource for learning more about regular expressions is [RexEgg](https://www.rexegg.com/).
+[^2]: [Source of the famous “Now you have two problems” quote](https://regex.info/blog/2006-09-15/247)
+
+Start with a list of words.
+
+```{webr}
+words <- c("art", "bat", "bet", "bee", "bees", "beet", "believe", "beat", 
+           "cat", "car", "cars", "can", "cart", "mississipi",
+           "mart", "part", "see", "sat", "set")
+```
+
+We will use the `grep`{.r} function which takes a *regular expression* and 
+character vector to search on.  If you just use a character string
+with specific patterns of letters or numbers
+you will find strings that match that pattern of letters and numbers:
+
+The indexes of the matches in `words`{.r}.
+
+```{webr}
+grep("s", words)
+```
+
+```{webr}
+grep("s", words, value = TRUE)
+```
+
+Note how each contains an "s".  
+
+Another example:
+
+```{webr}
+grep("ee", words, value = TRUE)
+```
+
+Nothing ground breaking there... however some characters have special
+meanings, e.g., `.`{.r} that will match any character.  To find words that have
+an "a" followed by any character:
+
+```{webr}
+grep("a.", words, value = TRUE)
+```
+
+Or...
+
+```{webr}
+grep("s.t", words, value = TRUE)
+```
+
+You can put a group of characters in square brackets, e.g., `[bs]`{.r} to match 
+either "b" or "s":
+
+```{webr}
+grep("[bs].t", words, value = TRUE)
+```
+
+The `*` character matches zero or more characters matching the previous expression
+(character or group):
+```{webr}
+grep("beliea*ve", words, value = TRUE) 
+```
+
+The `+` character matches one or more of the previous expression:
+```{webr}
+grep("beliea+ve", words, value = TRUE) # nothing matches
+grep("be+t", words, value = TRUE)
+```
+
+Finally you can group things in parentheses:
+```{webr}
+grep("m(iss)+ipi", words, value = TRUE)
+```
+
+I find regular expressions to be very helpful for selecting a series of variable
+names in a `data.frame`.
+
+```{webr}
+grep("gp", names(esoph), value = TRUE)
+head(esoph[, grep("gp", names(esoph), value = TRUE)])
+```
+
+The `grepl` function is also useful as it gives the `logical` vector of whether
+a match is found in a sequence and may be useful in some settings where the index
+or value will not work.
+
+```{webr}
+grepl("gp", names(esoph))
+```
+
+There is so much more you could learn about this, but even this basic introduction
+can take you very far.  
+
+Please note that you can use regular expressions to select out parts of text,
+rearrange, or manipulate various strings.  See the `sub`{.r} and `gsub`{.r} 
+functions for more information.
+
+
+### Dates
+
+Dates are often difficult to work with in any programming language 
+because there are many different formats and methods of converting
+to a system that the computer can work with.
+
+In R, the default date format is `YYYY-MM-DD`{.r}, i.e., 4 digit year, hyphen, 
+1–2 digit month, hyphen, and 1–2 digit day. The as.Date() function allows you to 
+take character strings and convert them to dates
+that the computer can understand.
+
+```{webr}
+as.Date("2011-01-12")
+```
+
+You can also use other formats if you receive data from someone who typed it in 
+differently by providing a `format`{.r} argument.
+
+```{webr}
+as.Date("01/12/2011", format="%m/%d/%Y")
+as.Date("12jan2011", "%d%b%Y")
+```
+
+For more information on formats, read the help file for `strptime`{.r}. 
+
+The `difftime` function allows you calculate various intervals
+between dates.
+
+```{webr}
+difftime(as.Date("2011-1-14"),as.Date("2011-1-12"))
+difftime(as.Date("2011-1-14"),as.Date("2011-1-12"),units="hours")
+```
+
+
+However, this is one case where I recommend you avoid base R from the get go
+and instead use the `lubridate`{.r} package.  The `lubridate`{.r} package
+is some of the most magical code I've seen in any language and makes
+working with dates a breeze.  You can install it from CRAN if you don't have it already.
+
+```{webr}
+#| eval: false
+install.packages("lubridate")
+```
+
+Once you have it installed, load it like any other package.
+
+```{webr}
+library(lubridate)
+```
+
+Now, you can use functions like `ymd`{.r}, `mdy`{.r}, and `dmy`{.r} to convert
+character strings to dates without having to worry about format strings.
+
+```{webr}
+ymd("2011-01-12")
+mdy("01/12/2011")
+dmy("12jan2011")
+```
+
+But even more magical is that `lubridate`{.r} will automatically figure outthe format for you in many cases if you give it an ordered list of possible formats to try with the `parse_date_time`{.r} function.
+
+```{webr}
+x <- c("2009-01-01", "02022010", "02-02-2010")
+parse_date_time(x, c("dmY", "ymd"))
+```
+
+Read more about `lubridate`{.r} in the [lubridate documentation](https://lubridate.tidyverse.org/).
+
+## Evaluation
+
+OK, a few exercises to make sure you understand these concepts.
+
+```{webr}
+#| exercise: e1
+#| setup: true
+set.seed(596)
+esona <- esoph
+esona[sample(NROW(esona), 3), "ncases"] <- NA
+esona[sample(NROW(esona), 3), "ncontrols"] <- NA
+```
+
+From the `esona`{.r} `data.frame`{.r} created above, select the rows where 
+`ncases`{.r} equals `3` but not `NA` (without using `subset`).
+
+```{webr}
+#| exercise: e1
+#| caption: Exercise 1
+```
+
+::: { .solution exercise="e1" }
+```{webr}
+#| exercise: e1
+#| solution: true
+esona[esona$ncases == 3 & !is.na(esona$ncases), ]
+```
+:::
+
+```{webr}
+#| exercise: e1
+#| check: true
+gradethis::grade_this_code()
+```
+
+For regular expressions, `^` is used to represent the beginning of a 
+string and `$` is used to select the end of a string.  Use these to select
+the words starting with "b" from the `words` vector above. 
+
+```{webr} 
+#| exercise: e2
+#| caption: Exercise 2
+#| env: global
+```
+
+::: { .solution exercise="e1" }
+```{webr}
+#| exercise: e2
+#| solution: true
+grep("^b", words, value = TRUE)
+```
+:::
+
+```{webr}
+#| exercise: e2
+#| check: true
+gradethis::grade_this_code()
+```
+
+Now, try to get only those words that end with "s".
+
+```{webr} 
+#| exercise: e3
+#| caption: Exercise 3
+#| env: global
+```
+
+::: { .solution exercise="e1" }
+```{webr}
+#| exercise: e3
+#| solution: true
+grep("s$", words, value = TRUE)
+```
+:::
+
+```{webr}
+#| exercise: e3
+#| check: true
+gradethis::grade_this_code()
+```
+
+Presuming that the string `"12Oct1994"` represents the 
+date October 12, 1994 using the `base` R package's `as.Date` function
+to convert that string to a date by using the correct format string 
+(don't forget to look at the help file suggested above!).
+
+```{webr} 
+#| exercise: e4
+#| caption: Exercise 4
+```
+
+::: { .hint exercise="e4" }
+Make sure to read the help file for `strptime`{.r} to understand how to
+specify date formats.
+
+```{webr}
+?strptime
+```
+:::
+
+::: { .solution exercise="e4" }
+```{webr}
+#| exercise: e4
+#| solution: true
+as.Date("12Oct1994", format="%d%b%Y")
+```
+:::
+
+```{webr}
+#| exercise: e4
+#| check: true
+gradethis::grade_this(
+    if(as.Date("12Oct1994", format="%d%b%Y") == .result) {
+        pass()
+    } else {
+        fail("Check the hints if you are having trouble. {random_encouragement()}")
+    }
+)
+```
+
+How many days have you been alive? (Any reasonable date for your birthdate
+will work.). Use `difftime` to calculate the result instead of functions
+in `lubridate` for the purposes of this exercise.
+
+```{webr} 
+#| exercise: e5
+#| caption: Exercise 5
+```
+
+::: { .solution exercise="e5" }
+```{webr}
+#| exercise: e5
+#| solution: true
+difftime(Sys.Date(), as.Date("2004-07-12"), units="days")
+```
+:::
+
+```{webr}
+#| exercise: e5
+#| check: true
+gradethis::grade_this(
+    if(.result < 0) {
+        fail("Are you substracting the dates in the right order?")
+    } else if(.result > difftime("1997-08-04", "1875-02-21", units="days")) {
+        fail("Contact the Guinness Book of World Records! See [Jeanne Calment](https://en.wikipedia.org/wiki/Jeanne_Calment) for the longest verified human lifespan.")
+    } else if(parse(text = .user_code)[[1]][[2]] != "Sys.Date()") {
+        fail("Make sure you are using `Sys.Date()` to get today's date. Don't take a chance with hard coding today's date!") }
+    else {
+        pass()
+    }
+)
+```
+
+On your own, pick a data set of your own choosing (perhaps this 
+is an opportunity to test drive the data you want to use for your
+final project?).  Use one of the text or date functions to do something 
+you feel is useful to your data and demostrate it in compiled `.qmd` file.
+
+### Submit Your Assignment
+
+```{adm}
+#| type: progress-submit
+```
+::: {#adm-progress-submit}
+```{webr}
+#| autorun: true
+.progress_submit("11-Delicacies", 5)
+```
+:::
