@@ -1,14 +1,14 @@
 list(
-    `01-Rithmatic` = "1129571", 
-    `02-Atomic-Data-Types` = "1129572", 
-    `03-Rcel1` = "1129577", 
-    `04-Rcel2` = "1129578",
-    "05-Functions" = "1129576",
-    "06-Branch-Loop" = "1129573",
-    "07-Food-Prep" = "1129574",
-    "08-Base-Graphics" = "1129563",
-    "09-Reproducible-Research" = "1155828",
-    "10-Grammar-of-Graphics" = "1129579",
-    "11-Delicacies" = "1129564",
-    "12-Applying-Yourself" = "1129546"
+    `01-Rithmatic` = "1303111", 
+    `02-Atomic-Data-Types` = "1303086", 
+    `03-Rcel1` = "1303108", 
+    `04-Rcel2` = "1303109",
+    "05-Functions" = "1303107",
+    "06-Branch-Loop" = "1303101",
+    "07-Food-Prep" = "1303106",
+    "08-Base-Graphics" = "1303100",
+    "09-Reproducible-Research" = "1303110",
+    "10-Grammar-of-Graphics" = "1303113",
+    "11-Delicacies" = "1303102",
+    "12-Applying-Yourself" = "1303085"
 )
